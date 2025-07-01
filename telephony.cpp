@@ -2,10 +2,10 @@
 #include <fstream>
 #include <filesystem>
 
-std::string addressAPI = "Address=";
-std::string unique = "Unique=";
-std::string key = "Key=";
-std::string port = "Port=";
+std::string addressAPI;
+std::string unique;
+std::string key;
+std::string port;
 
 
 void reconfigureSettings()
@@ -16,27 +16,27 @@ void reconfigureSettings()
     std::string portValue;
 
     std::cout << "Write API adress: ";
-    std::cin >> addressAPIvalue;
-    addressAPIvalue = addressAPI + addressAPIvalue +"\n";
+    std::cin >> addressAPI;
+    addressAPIvalue = "Address=" + addressAPI +"\n";
 
     std::cout << "Write unique: ";
-    std::cin >> uniqueValue;
-    uniqueValue = unique + uniqueValue +"\n";
+    std::cin >> unique;
+    uniqueValue = "Unique=" + unique +"\n";
 
     std::cout << "Write key: ";
-    std::cin >> keyValue;
-    keyValue = key + keyValue+"\n";
+    std::cin >> key;
+    keyValue = "Key=" + key +"\n";
 
     std::cout << "Write port: ";
-    std::cin >> portValue;
-    portValue = port + portValue;
+    std::cin >> port;
+    portValue = "Port=" + port;
 
     std::ofstream file ("connectionSettings.txt");
     file << addressAPIvalue;
     file << uniqueValue;
     file << keyValue;
     file << portValue;
-
+    file.close();
 }
 
 void readSettings()
