@@ -38,43 +38,46 @@ void writeSettingsLoop(std::map<std::string,std::string> settings)
             }
 }
 
-void reconfigureAddress(std::map<std::string,std::string> settings)
+std::string reconfigureAddress(std::map<std::string,std::string> settings)
 {
     std::cout << "Write API adress: ";
     std::cin >> addressAPI;
-    settings ["Address="] = addressAPI;
-    writeSettingsLoop(settings);
+    return addressAPI;
 }
 
-void reconfigureUnique(std::map<std::string,std::string> settings)
+std::string reconfigureUnique(std::map<std::string,std::string> settings)
 {
     
     std::cout << "Write unique: ";
     std::cin >> unique;
-    settings ["Unique="] = unique;
-    writeSettingsLoop(settings);
+    return unique;
 }
 
-void reconfigureKey(std::map<std::string,std::string> settings)
+std::string reconfigureKey(std::map<std::string,std::string> settings)
 {
     std::cout << "Write key: ";
     std::cin >> key;
-    settings ["Key="] = key;
-    writeSettingsLoop(settings);
+    return key;
 }
 
-void reconfigurePort(std::map<std::string,std::string> settings)
+std::string reconfigurePort(std::map<std::string,std::string> settings)
 {
     std::cout << "Write port: ";
     std::cin >> port;
-    settings ["Port="] = port;
-    writeSettingsLoop(settings);
+    return port;
 }
 
 void reconfigureSettings()
 {
-    
-  
+    std::string address = reconfigureAddress(settings);
+    std::string unique = reconfigureUnique(settings);
+    std::string key = reconfigureKey(settings);
+    std::string port = reconfigurePort(settings);
+    settings ["Address="] = address;
+    settings ["Unique="] = unique;
+    settings ["Key="] = key;
+    settings ["Port="] = port;
+    writeSettingsLoop(settings);
 }
 
 
@@ -95,22 +98,30 @@ void readSettings()
 
                 if(key==("Address="))
                 {
-                    reconfigureAddress(settings);
+                    
+                    settings ["Address="] = reconfigureAddress(settings);
+                    writeSettingsLoop(settings);
                     readSettingsLoop();
                 }
                 else if(key==("Unique="))
                 {
-                    reconfigureUnique(settings);
+                    settings ["Unique="] = reconfigureUnique(settings);
+                    writeSettingsLoop(settings);
+                    
                     readSettingsLoop();
                 }
                 else if(key==("Key="))
                 {
-                    reconfigureKey(settings);
+                    settings ["Key="] = reconfigureKey(settings);
+                    
+                    writeSettingsLoop(settings);
                     readSettingsLoop();
                 }
                 else if(key==("Port="))
                 {
-                    reconfigurePort(settings);
+                    settings ["Port="] = reconfigurePort(settings);
+                    
+                    writeSettingsLoop(settings);
                     readSettingsLoop();
                 }
             }
