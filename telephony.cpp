@@ -1,65 +1,83 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <map>
 
 std::string addressAPI;
 std::string unique;
 std::string key;
 std::string port;
 
-void reconfigureAddress()
+std::map<std::string,std::string> settings
+    {
+        {"Address=",""},
+        {"Unique=",""},
+        {"Key=",""},
+        {"Port=",""}
+    };
+
+void readSettingsLoop()
 {
-    std::string addressAPIvalue;
+    std::string line;
+    std::ifstream file;
+        file.open("/home/mainuser/projects/telephony/connectionSettings.txt");
+    while (std::getline(file, line))
+    {
+        size_t pos = line.find('=');
+        std::string key = line.substr(0,pos+1);
+        std::string value = line.substr(pos+1);
+        settings[key] = value;
+    }
+}
+void writeSettingsLoop(std::map<std::string,std::string> settings)
+{
+    std::ofstream file("/home/mainuser/projects/telephony/connectionSettings.txt");
+    for (const auto& [key,value]:settings)
+            {
+                file<<key<<value<<"\n";
+            }
+}
+
+void reconfigureAddress(std::map<std::string,std::string> settings)
+{
     std::cout << "Write API adress: ";
     std::cin >> addressAPI;
-    addressAPIvalue = "Address=" + addressAPI +"\n";
-    
-    file << addressAPIvalue;
+    settings ["Address="] = addressAPI;
+    writeSettingsLoop(settings);
 }
 
-void reconfigureUnique()
+void reconfigureUnique(std::map<std::string,std::string> settings)
 {
-    std::string uniqueValue;
+    
     std::cout << "Write unique: ";
     std::cin >> unique;
-    uniqueValue = "Unique=" + unique +"\n";
-    std::fstream file;
-    file.open("/home/mainuser/projects/telephony/connectionSettings.txt");
-    file << uniqueValue;
+    settings ["Unique="] = unique;
+    writeSettingsLoop(settings);
 }
 
-void reconfigureKey()
+void reconfigureKey(std::map<std::string,std::string> settings)
 {
-    std::string keyValue;
     std::cout << "Write key: ";
     std::cin >> key;
-    keyValue = "Key=" + key +"\n";
-    std::fstream file;
-    file.open("/home/mainuser/projects/telephony/connectionSettings.txt");
-    file << keyValue;
+    settings ["Key="] = key;
+    writeSettingsLoop(settings);
 }
 
-void reconfigurePort()
+void reconfigurePort(std::map<std::string,std::string> settings)
 {
-    std::string portValue;
     std::cout << "Write port: ";
     std::cin >> port;
-    portValue = "Port=" + port;
-    std::fstream file;
-    file.open("/home/mainuser/projects/telephony/connectionSettings.txt");
-    file << portValue;
+    settings ["Port="] = port;
+    writeSettingsLoop(settings);
 }
 
 void reconfigureSettings()
 {
-    std::ifstream file;
-    file.open("/home/mainuser/projects/telephony/connectionSettings.txt");
-    file.clear();
-    reconfigureAddress();
-    reconfigureUnique();
-    reconfigureKey();
-    reconfigurePort();    
+    
+  
 }
+
+
 
 void readSettings()
 {
@@ -70,17 +88,33 @@ void readSettings()
         file.open("/home/mainuser/projects/telephony/connectionSettings.txt");
         if (file.is_open()) 
         {
-            int check = 0;
-            std::string line;
-            while (std::getline(file, line))
+            readSettingsLoop();
+            for (const auto& [key,value]:settings)
             {
-                check+=1;
+                if (!value.empty()) continue;
+
+                if(key==("Address="))
+                {
+                    reconfigureAddress(settings);
+                    readSettingsLoop();
+                }
+                else if(key==("Unique="))
+                {
+                    reconfigureUnique(settings);
+                    readSettingsLoop();
+                }
+                else if(key==("Key="))
+                {
+                    reconfigureKey(settings);
+                    readSettingsLoop();
+                }
+                else if(key==("Port="))
+                {
+                    reconfigurePort(settings);
+                    readSettingsLoop();
+                }
             }
-            if (check<4)
-            {
-                std::cout << "Error: Settings missing, please reconfigure";
-                reconfigureSettings(); 
-            }
+            
             file.close();
         } 
         else 

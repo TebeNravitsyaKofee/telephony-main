@@ -1,2 +1,5 @@
-Port=12323
 
+Address=7
+Key=5
+Port=12323
+Unique=3
