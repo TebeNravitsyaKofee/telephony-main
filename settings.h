@@ -4,13 +4,13 @@
 #include <string>
 #include <map>
 
+std::string getAddressAPI();
+std::string getUnique();
+std::string getKey();
+std::string getPort();
 
+std::string reconfigureAddress();
 
-void readSettingsLoop();
-void writeSettingsLoop(std::map<std::string,std::string> settings);
-
-
-void reconfigureSettings();
 void readSettings();
 
 #endif
