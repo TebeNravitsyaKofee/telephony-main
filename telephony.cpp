@@ -3,14 +3,22 @@
 
 int main(int argc, char *argv[])
 {
-    if(argc<10)
+    std::string arg;
+    std::string arg2;
+
+    if(argc==0)
     {
-        std::cerr <<"123";
         return 1;
     }
-        std::string arg = argv[1];
-        std::string arg2 = argv[2];
-        
+    if (argc==2)
+    {
+        arg = argv[1];
+    }
+    if (argc==3)
+    {
+        arg = argv[1];
+        arg2 = argv[2];
+    }
         if (arg == "settings") 
         {
             if(readSettings()=="good")
@@ -43,11 +51,26 @@ int main(int argc, char *argv[])
         } 
         else if (arg == "recon") 
         {
-            std::cout << "File specified: " << std::endl;
+            if (arg2 == "address")
+            {
+                reconfigureAddress();
+            }
+            else if (arg2 == "unique")
+            {
+                reconfigureUnique();
+            }
+            else if (arg2 == "port")
+            {
+                reconfigurePort();
+            }
+            else if (arg2 == "key")
+            {
+                reconfigureKey();
+            }
         } 
         else 
         {
-              std::cout << "Unknown argument: " << arg << std::endl;
+              std::cout << "Unknown argument: " << arg << arg2 << std::endl;
         }
     
     
