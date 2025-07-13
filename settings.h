@@ -9,10 +9,12 @@ std::string getUnique();
 std::string getKey();
 std::string getPort();
 
+void partialReconfigure();
 void reconfigureAddress();
 void reconfigureUnique();
 void reconfigurePort();
 void reconfigureKey();
+void reconfigureSettings();
 
 std::string readSettings();
 

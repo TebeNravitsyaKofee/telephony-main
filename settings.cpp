@@ -109,7 +109,7 @@ void reconfigureSettings()
     writeSettingsLoop(settings);
 }
 
-void partiallyReconfigure()
+void partialReconfigure()
 {
     readSettingsLoop();
     for (const auto& [key,value]:settings)
