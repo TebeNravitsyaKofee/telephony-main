@@ -59,7 +59,7 @@ void writeSettingsLoop(std::map<std::string,std::string> settings)
             }
 }
 
-std::string reconfigureAddress()
+void reconfigureAddress()
 {
     readSettingsLoop();
     std::string value;
@@ -69,7 +69,7 @@ std::string reconfigureAddress()
     writeSettingsLoop(settings);
 }
 
-std::string reconfigureUnique()
+void reconfigureUnique()
 {
     readSettingsLoop();
     std::string value;
@@ -79,7 +79,7 @@ std::string reconfigureUnique()
     writeSettingsLoop(settings);
 }
 
-std::string reconfigureKey()
+void reconfigureKey()
 {
     readSettingsLoop();
     std::string value;
@@ -89,29 +89,60 @@ std::string reconfigureKey()
     writeSettingsLoop(settings);
 }
 
-std::string reconfigurePort()
+void reconfigurePort()
 {
     readSettingsLoop();
     std::string value;
     std::cout << "Write port: ";
     std::cin >> value;
     settings ["Port="] = value;
-    return value;
+    writeSettingsLoop(settings);
 }
 
 void reconfigureSettings()
 {
     readSettingsLoop();
-    std::string address = reconfigureAddress();
-    std::string unique = reconfigureUnique();
-    std::string key = reconfigureKey();
-    std::string port = reconfigurePort();
+    reconfigureAddress();
+    reconfigureUnique();
+    reconfigureKey();
+    reconfigurePort();
     writeSettingsLoop(settings);
 }
 
+void partiallyReconfigure()
+{
+    readSettingsLoop();
+    for (const auto& [key,value]:settings)
+    {
+        if (!value.empty()) continue;
+        if(key==("Address="))
+        {
+            reconfigureAddress();
+            writeSettingsLoop(settings);
+            readSettingsLoop();
+        }
+        else if(key==("Unique="))
+        {
+            reconfigureUnique();
+            writeSettingsLoop(settings);
+            readSettingsLoop();
+        }
+        else if(key==("Key="))
+        {
+            reconfigureKey();
+            writeSettingsLoop(settings);
+            readSettingsLoop();
+        }
+        else if(key==("Port="))
+        {
+            reconfigurePort();
+            writeSettingsLoop(settings);
+            readSettingsLoop();
+        }
+    }
+}
 
-
-void readSettings()
+std::string readSettings()
 {
     if (std::filesystem::exists("/home/mainuser/projects/telephony/connectionSettings.txt"))
     {
@@ -120,37 +151,14 @@ void readSettings()
         if (file.is_open()) 
         {
             readSettingsLoop();
+            
             for (const auto& [key,value]:settings)
             {
                 if (!value.empty()) continue;
-
-                if(key==("Address="))
+                else 
                 {
-                    
-                    settings ["Address="] = reconfigureAddress();
-                    writeSettingsLoop(settings);
-                    readSettingsLoop();
-                }
-                else if(key==("Unique="))
-                {
-                    settings ["Unique="] = reconfigureUnique();
-                    writeSettingsLoop(settings);
-                    
-                    readSettingsLoop();
-                }
-                else if(key==("Key="))
-                {
-                    settings ["Key="] = reconfigureKey();
-                    
-                    writeSettingsLoop(settings);
-                    readSettingsLoop();
-                }
-                else if(key==("Port="))
-                {
-                    settings ["Port="] = reconfigurePort();
-                    
-                    writeSettingsLoop(settings);
-                    readSettingsLoop();
+                    return "precon";
+                    break;
                 }
             }
 
@@ -160,20 +168,16 @@ void readSettings()
             port = settings ["Port="];
             
             file.close();
+            return "good";
         } 
         else 
         {
             std::cerr << "Error: Unable to open the file.\n";
+            return "fileError";
         }
     }  
     else
     {
-        std::cout << "File not found, configuring settings\n";
-        reconfigureSettings(); 
-        readSettingsLoop();
-        addressAPI = settings ["Address="];
-        unique = settings ["Unique="];
-        key = settings ["Key="];
-        port = settings ["Port="];
+        return "fileExistingError";
     }
 }
