@@ -37,6 +37,8 @@ std::string getPort()
     return port;
 }
 
+//метод для прочтения настроечного файла, интегрируется в уже созданную мапу, 
+//игнорирует строки, которых нет в мапе
 void readSettingsLoop()
 {
     std::string line;
@@ -50,6 +52,8 @@ void readSettingsLoop()
         settings[key] = value;
     }
 }
+
+//метод для записи настроечного файла, перезаписывает файл в соответствии с мапой
 void writeSettingsLoop(std::map<std::string,std::string> settings)
 {
     std::ofstream file("/home/mainuser/projects/telephony/connectionSettings.txt");
@@ -59,6 +63,7 @@ void writeSettingsLoop(std::map<std::string,std::string> settings)
             }
 }
 
+//методы реконфигурации файла
 void reconfigureAddress()
 {
     readSettingsLoop();
@@ -178,6 +183,6 @@ std::string readSettings()
     }  
     else
     {
-        return "fileExistingError";
+        return "fileExistanceError";
     }
 }
