@@ -17,6 +17,24 @@ static SSL_CTX* server_ctx;
 
 std::string hostname = "https://app.mango-office.ru/vpbx";
 
+bool read(int fd)
+{
+    fd_set fds;
+    FD_ZERO(&fds);
+    FD_SET(fd,&fds);
+    timeval tv{5,0};
+    return select(fd+1, &fds, nullptr, nullptr, &tv) > 0;
+}
+
+bool write(int fd)
+{
+    fd_set fds;
+    FD_ZERO(&fds);
+    FD_SET(fd,&fds);
+    timeval tv{5,0};
+    return select(fd+1, nullptr, &fds, nullptr, &tv) > 0;
+}
+
 void sslInit()
 {
     //initializing ssl
@@ -36,26 +54,78 @@ void sslInit()
 
 int sendMessage()
 {
-    int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if(clientSocket <0)
+    int client_socket = socket(AF_INET, SOCK_STREAM, 0);
+    if(client_socket <0)
     {
         perror("clientSocket");
         return 1;
     }
-    fcntl(clientSocket , F_SETFL, O_NONBLOCK);//nonblocking port
+    fcntl(client_socket , F_SETFL, O_NONBLOCK);//nonblocking port
 
+    //inet pton converts ip to binary and adds it to descriptor
     sockaddr_in server_addr{};
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(443);
     inet_pton(AF_INET, "81.88.85.67", &server_addr.sin_addr);
 
-    int con = connect(clientSocket, (sockaddr*)&server_addr,sizeof(server_addr));
+    //con will give -1 and EINPROGRESS error cause of nonblocking port
+    int con = connect(client_socket, (sockaddr*)&server_addr,sizeof(server_addr));
     if(con<0 && errno != EINPROGRESS)
     {
         perror("clientConnect");
-        close(clientSocket);
+        close(client_socket);
         return 1;
     }
+
+    SSL* ssl = SSL_new(client_ctx);
+    SSL_set_fd(ssl,client_socket);
+    SSL_set_connect_state(ssl);
+
+    //handshake
+    while(true)
+    {
+        //1 = end of stream
+        //0 = bad
+        //<0 = SSL_get_error
+        int stream = SSL_connect(ssl);
+        if (stream == 1)
+        {
+            break;
+        }
+
+        int err = SSL_get_error(ssl, stream);
+        //want read and write are not fatal
+        if (err = SSL_ERROR_WANT_READ)
+        {
+            if(!read(client_socket))
+            {
+                std::cerr << "Handshake timeout (read)\n";
+                return 1;
+            }
+
+        }
+        else if(err = SSL_ERROR_WANT_WRITE)
+        {
+            if(!write(client_socket))
+            {
+                std::cerr << "Handshake timeout (write)\n";
+                return 1;
+            }
+        }
+        //everything else is fatal
+        else
+        {
+            std::cerr << "SSL error: " << ERR_error_string(ERR_get_error(),nullptr)<<std::endl;
+            //disposing garbage
+            SSL_free(ssl);
+            SSL_CTX_free(client_ctx);
+            close(client_socket);
+            return 1;
+        }
+    }
+
+    std::cout << "SSL connection succesfull";
+
     return 1;
 }
 
