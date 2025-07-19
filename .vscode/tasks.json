@@ -9,7 +9,9 @@
                 "-g",
                 "${workspaceFolder}/*.cpp",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "-lssl",
+                "-lcrypto"
             ],
             "options": {
                 "cwd": "${fileDirname}"
