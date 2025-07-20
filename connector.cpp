@@ -19,6 +19,7 @@ static SSL_CTX* client_ctx;
 static SSL_CTX* server_ctx;
 
 std::string hostname = "https://app.mango-office.ru/vpbx";
+const char* host = "app.mango-office.ru";
 
 bool read(int fd)
 {
@@ -73,6 +74,19 @@ std::string sha256(const std::string& input)
 
 int sendMessage()
 {
+    //resolving mango ip
+    addrinfo hints{}, *res;
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+
+    int status = getaddrinfo(host, nullptr, &hints, &res);
+    if (status != 0)
+    {
+        std::cerr << "getaddrinfo error" << gai_strerror(status) << std::endl;
+    }
+
+
+
     //initializing client
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if(client_socket <0)
@@ -86,7 +100,8 @@ int sendMessage()
     sockaddr_in server_addr{};
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(443);
-    inet_pton(AF_INET, "81.88.85.67", &server_addr.sin_addr);
+    server_addr.sin_addr = ((sockaddr_in*)res->ai_addr)->sin_addr;
+    //inet_pton(AF_INET, "81.88.85.67", &server_addr.sin_addr);
 
     //con will give -1 and EINPROGRESS error cause of nonblocking port
     int con = connect(client_socket, (sockaddr*)&server_addr,sizeof(server_addr));
