@@ -9,8 +9,11 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
+#include <nlohmann/json.hpp>
 
 #include "settings.h"
+
+using json = nlohmann::json;
 
 static SSL_CTX* client_ctx;
 static SSL_CTX* server_ctx;
@@ -52,15 +55,32 @@ void sslInit()
     
 }
 
+std::string generateSignature(const std::string& key, const json& body, const std::string& salt)
+{
+    std::string signature = key + body.dump() + salt;
+    return signature;
+}
+
+std::string sha256(const std::string& input)
+{
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256(reinterpret_cast<const unsigned char*>(input.c_str()),input.size(),hash);
+    std::ostringstream result;
+    for (unsigned char byte : hash)
+        result << std::hex << std::setw(2) << std::setfill('0') << (int)byte;
+    return result.str();
+}
+
 int sendMessage()
 {
+    //initializing client
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if(client_socket <0)
     {
         perror("clientSocket");
         return 1;
     }
-    fcntl(client_socket , F_SETFL, O_NONBLOCK);//nonblocking port
+    fcntl(client_socket , F_SETFL, O_NONBLOCK);//setting nonblocking port
 
     //inet pton converts ip to binary and adds it to descriptor
     sockaddr_in server_addr{};
@@ -102,7 +122,6 @@ int sendMessage()
                 std::cerr << "Handshake timeout (read)\n";
                 return 1;
             }
-
         }
         else if(err = SSL_ERROR_WANT_WRITE)
         {
@@ -126,6 +145,32 @@ int sendMessage()
 
     std::cout << "SSL connection succesfull";
 
+    
+    std::string key = getUnique();
+    std::string secret = getKey();
+    json a = {};
+
+    std::string gen_sign = generateSignature(key, a, secret);
+
+    std::string sign = sha256(gen_sign);
+
+    char body[1024];
+    snprintf(body,sizeof(body),"vpbx_api_key=%ssign=%sjson=%s",key, sign, a);
+
+    size_t body_len = strlen(body);
+
+    char request[1024];
+
+    
+
+    //s - char, zu - size_t
+    snprintf(request, sizeof(request),
+    "GET /vpbx/config/users/request HTTP/1.1\r\n"
+    "Host: %s\r\n"
+    "Content-Length: %zu\r\n"
+    "\r\n"
+    "%s",
+    hostname, body_len, body);
     return 1;
 }
 
