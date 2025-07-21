@@ -103,6 +103,10 @@ int sendMessage()
     server_addr.sin_addr = ((sockaddr_in*)res->ai_addr)->sin_addr;
     //inet_pton(AF_INET, "81.88.85.67", &server_addr.sin_addr);
 
+    char ip_str[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET,&server_addr.sin_addr,ip_str,sizeof(ip_str));
+    std::cout << ip_str;
+
     //con will give -1 and EINPROGRESS error cause of nonblocking port
     int con = connect(client_socket, (sockaddr*)&server_addr,sizeof(server_addr));
     if(con<0 && errno != EINPROGRESS)
@@ -130,7 +134,7 @@ int sendMessage()
 
         int err = SSL_get_error(ssl, stream);
         //want read and write are not fatal
-        if (err = SSL_ERROR_WANT_READ)
+        if (err == SSL_ERROR_WANT_READ)
         {
             if(!read(client_socket))
             {
@@ -138,7 +142,7 @@ int sendMessage()
                 return 1;
             }
         }
-        else if(err = SSL_ERROR_WANT_WRITE)
+        else if(err ==SSL_ERROR_WANT_WRITE)
         {
             if(!write(client_socket))
             {
