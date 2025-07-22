@@ -1,4 +1,0 @@
-Address=444
-Key=123
-Port=5555
-Unique=123
