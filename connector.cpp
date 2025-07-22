@@ -173,27 +173,29 @@ int sendMessage()
 
     //json initializing, need to initialize it as an sendMessage argument later
     json a = {};
+    std::string json_str = a.dump();
 
     //contatinating all the data for sign generating
-    std::string gen_sign = generateSignature(key, a, secret);
+    //std::string gen_sign = generateSignature(key, a, secret);
+    std::string to_sign = key + json_str + secret;
     //generating sha256 sign
-    std::string sign = sha256(gen_sign);
+    std::string sign = sha256(to_sign);
 
     char body[1024];
-    snprintf(body,sizeof(body),"vpbx_api_key=%ssign=%sjson=%s",key, sign, a);
+    snprintf(body,sizeof(body),"vpbx_api_key=%s&sign=%s&json=%s",key.c_str(), sign.c_str(), json_str.c_str());
 
     size_t body_len = strlen(body);
 
     char request[1024];   
     //s - char, zu - size_t
     snprintf(request, sizeof(request),
-    "GET /vpbx/config/users/request HTTP/1.1\r\n"
+    "POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1\r\n"
     "Host: %s\r\n"
+    "Content-Type: application/x-www-form-urlencoded\r\n"
     "Content-Length: %zu\r\n"
     "\r\n"
     "%s",
     hostname, body_len, body);
-    return 1;
 
     int sent = 0;
     int request_len = strlen(request);
@@ -224,6 +226,43 @@ int sendMessage()
             }
         }
     }
+
+    char buffer[4096];
+
+    while(true)
+    {
+        int ret = SSL_read(ssl,buffer,sizeof(buffer)-1);
+        if (ret > 0)
+        {
+            buffer[ret]='\0';
+            std::cout << buffer;
+        }
+        else
+        {
+            int err = SSL_get_error(ssl,ret);
+            //everything else except SSL_ERROR_WANT_WRITE is critical
+            if (err == SSL_ERROR_WANT_READ)
+            {
+                if(!read(client_socket))
+                {
+                    std::cerr << "Error in SSL_read\n";
+                    break;
+                }
+            }
+            else
+            {
+                std::cerr << "Error during request reading\n";
+                break;
+            }
+        }
+    }
+
+    SSL_shutdown(ssl);
+    SSL_free(ssl);
+    close(client_socket);
+    freeaddrinfo(res);
+
+    return 0;
 }
 
 void getLines()

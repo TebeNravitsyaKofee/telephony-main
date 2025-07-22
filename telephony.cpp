@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     std::string arg1;
     std::string arg2;
-
+    
     sslInit();
     sendMessage();
     //считаем количество аргументов, чтобы не возникала ошибка ссылания на несуществующий поинтер

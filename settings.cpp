@@ -4,10 +4,10 @@
 #include <map>
 #include "settings.h"
 
-std::string addressAPI;
-std::string unique;
-std::string key;
-std::string port;
+static std::string addressAPI;
+static std::string unique;
+static std::string key;
+static std::string port;
 
 std::map<std::string,std::string> settings
     {
@@ -19,21 +19,25 @@ std::map<std::string,std::string> settings
 
 std::string getAddressAPI()
 {
+    readSettings();
     return addressAPI;
 }
 
 std::string getUnique()
 {
+    readSettings();
     return unique;
 }
 
 std::string getKey()
 {
+    readSettings();
     return key;
 }
 
 std::string getPort()
 {
+    readSettings();
     return port;
 }
 
