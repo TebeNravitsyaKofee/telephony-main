@@ -74,7 +74,7 @@ std::string sha256(const std::string& input)
 
 int sendMessage()
 {
-    //resolving mango ip
+    //resolving mango hostname to ip
     addrinfo hints{}, *res;
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
@@ -84,8 +84,6 @@ int sendMessage()
     {
         std::cerr << "getaddrinfo error" << gai_strerror(status) << std::endl;
     }
-
-
 
     //initializing client
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -97,15 +95,20 @@ int sendMessage()
     fcntl(client_socket , F_SETFL, O_NONBLOCK);//setting nonblocking port
 
     //inet pton converts ip to binary and adds it to descriptor
+    //pton now commented, now we get dns name resolving, might uncomment later
     sockaddr_in server_addr{};
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(443);
     server_addr.sin_addr = ((sockaddr_in*)res->ai_addr)->sin_addr;
     //inet_pton(AF_INET, "81.88.85.67", &server_addr.sin_addr);
 
+    //dns resolving for debugging, not needed in code
+    /*
     char ip_str[INET_ADDRSTRLEN];
     inet_ntop(AF_INET,&server_addr.sin_addr,ip_str,sizeof(ip_str));
     std::cout << ip_str;
+    */
+    
 
     //con will give -1 and EINPROGRESS error cause of nonblocking port
     int con = connect(client_socket, (sockaddr*)&server_addr,sizeof(server_addr));
@@ -164,13 +167,16 @@ int sendMessage()
 
     std::cout << "SSL connection succesfull";
 
-    
+    //getting unique and salt
     std::string key = getUnique();
     std::string secret = getKey();
+
+    //json initializing, need to initialize it as an sendMessage argument later
     json a = {};
 
+    //contatinating all the data for sign generating
     std::string gen_sign = generateSignature(key, a, secret);
-
+    //generating sha256 sign
     std::string sign = sha256(gen_sign);
 
     char body[1024];
@@ -178,10 +184,7 @@ int sendMessage()
 
     size_t body_len = strlen(body);
 
-    char request[1024];
-
-    
-
+    char request[1024];   
     //s - char, zu - size_t
     snprintf(request, sizeof(request),
     "GET /vpbx/config/users/request HTTP/1.1\r\n"
@@ -191,6 +194,36 @@ int sendMessage()
     "%s",
     hostname, body_len, body);
     return 1;
+
+    int sent = 0;
+    int request_len = strlen(request);
+
+    while(sent<request_len)
+    {
+        int ret = SSL_write(ssl,request+sent,request_len-sent);
+        if (ret > 0)
+        {
+            sent += ret;
+        }
+        else
+        {
+            int err = SSL_get_error(ssl,ret);
+            //everything else except SSL_ERROR_WANT_WRITE is critical
+            if (err == SSL_ERROR_WANT_WRITE)
+            {
+                if(!write(client_socket))
+                {
+                    std::cerr << "Error in SSL_write\n";
+                    break;
+                }
+            }
+            else
+            {
+                std::cerr << "Error during request sending\n";
+                break;
+            }
+        }
+    }
 }
 
 void getLines()
