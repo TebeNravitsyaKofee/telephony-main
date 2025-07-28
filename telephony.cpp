@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     std::string arg2;
     
     sslInit();
-    sendMessage();
+    getLines();
     //считаем количество аргументов, чтобы не возникала ошибка ссылания на несуществующий поинтер
     if(argc==0)
     {

@@ -5,7 +5,7 @@
 
 
 void sslInit();
-int sendMessage();
+int getLines();
 
 
 #endif

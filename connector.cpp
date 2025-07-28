@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <nlohmann/json.hpp>
+#include <vector>
 
 #include "settings.h"
 
@@ -72,7 +73,7 @@ std::string sha256(const std::string& input)
     return result.str();
 }
 
-int sendMessage()
+std::string sendMessage(std::string(request))
 {
     //resolving mango hostname to ip
     addrinfo hints{}, *res;
@@ -90,7 +91,7 @@ int sendMessage()
     if(client_socket <0)
     {
         perror("clientSocket");
-        return 1;
+        return "client socket error";
     }
     fcntl(client_socket , F_SETFL, O_NONBLOCK);//setting nonblocking port
 
@@ -116,7 +117,7 @@ int sendMessage()
     {
         perror("clientConnect");
         close(client_socket);
-        return 1;
+        return "client connection error";
     }
 
     SSL* ssl = SSL_new(client_ctx);
@@ -142,7 +143,7 @@ int sendMessage()
             if(!read(client_socket))
             {
                 std::cerr << "Handshake timeout (read)\n";
-                return 1;
+                return "Handshake timeout (read)";
             }
         }
         else if(err ==SSL_ERROR_WANT_WRITE)
@@ -150,7 +151,7 @@ int sendMessage()
             if(!write(client_socket))
             {
                 std::cerr << "Handshake timeout (write)\n";
-                return 1;
+                return "Handshake timeout (write)";
             }
         }
         //everything else is fatal
@@ -161,48 +162,20 @@ int sendMessage()
             SSL_free(ssl);
             SSL_CTX_free(client_ctx);
             close(client_socket);
-            return 1;
+            return "SSL error";
         }
     }
 
     std::cout << "SSL connection succesfull";
 
-    //getting unique and salt
-    std::string key = getUnique();
-    std::string secret = getKey();
-
-    //json initializing, need to initialize it as an sendMessage argument later
-    json a = {};
-    std::string json_str = a.dump();
-
-    //contatinating all the data for sign generating
-    //std::string gen_sign = generateSignature(key, a, secret);
-    std::string to_sign = key + json_str + secret;
-    //generating sha256 sign
-    std::string sign = sha256(to_sign);
-
-    char body[1024];
-    snprintf(body,sizeof(body),"vpbx_api_key=%s&sign=%s&json=%s",key.c_str(), sign.c_str(), json_str.c_str());
-
-    size_t body_len = strlen(body);
-
-    char request[1024];   
-    //s - char, zu - size_t
-    snprintf(request, sizeof(request),
-    "POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1\r\n"
-    "Host: %s\r\n"
-    "Content-Type: application/x-www-form-urlencoded\r\n"
-    "Content-Length: %zu\r\n"
-    "\r\n"
-    "%s",
-    hostname, body_len, body);
+    
 
     int sent = 0;
-    int request_len = strlen(request);
+    int request_len = request.size();
 
     while(sent<request_len)
     {
-        int ret = SSL_write(ssl,request+sent,request_len-sent);
+        int ret = SSL_write(ssl,request.c_str() + sent,request_len-sent);
         if (ret > 0)
         {
             sent += ret;
@@ -262,10 +235,70 @@ int sendMessage()
     close(client_socket);
     freeaddrinfo(res);
 
-    return 0;
+    return buffer;
 }
 
 void getLines()
 {
+//getting unique and salt
+    std::string key = getUnique();
+    std::string secret = getKey();
 
+    //json initializing, need to initialize it as an sendMessage argument later
+    json a = {};
+    std::string json_str = a.dump();
+
+    //contatinating all the data for sign generating
+    //std::string gen_sign = generateSignature(key, a, secret);
+    std::string to_sign = key + json_str + secret;
+    //generating sha256 sign
+    std::string sign = sha256(to_sign);
+
+    char body[1024];
+    snprintf(body,sizeof(body),"vpbx_api_key=%s&sign=%s&json=%s",key.c_str(), sign.c_str(), json_str.c_str());
+
+    size_t body_len = strlen(body);
+
+    char request[1024];   
+    //s - char, zu - size_t
+    snprintf(request, sizeof(request),
+    "POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1\r\n"
+    "Host: %s\r\n"
+    "Content-Type: application/x-www-form-urlencoded\r\n"
+    "Content-Length: %zu\r\n"
+    "\r\n"
+    "%s",
+    hostname, body_len, body);
+
+    std::string json_data = sendMessage(request);
+    
+    //method of getting json body
+    std::string b = json_data.substr(json_data.find("\r\n\r\n"));
+
+    std::vector<std::string> extensions;7
+    try 
+    {
+        size_t start = b.find_first_of('{');
+        size_t end = b.find_last_of('}');
+
+        if (end != std::string::npos) 
+        {
+        b = b.substr(start, end - start +1 ); 
+        }
+        json j = json::parse(b);
+        
+        
+        for (const auto& user : j["users"]) 
+        {
+            if (user.contains("telephony") && user["telephony"].contains("extension")) 
+            {
+                extensions.push_back(user["telephony"]["extension"].get<std::string>());
+            }
+        }
+    } 
+    catch (const json::parse_error& e) 
+    {
+        std::cerr << "JSON parse error: " << e.what() << std::endl;
+        std::cerr << "Body content: " << b << std::endl;
+    }
 }
