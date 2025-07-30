@@ -2,6 +2,8 @@
 #include <fstream>
 #include <filesystem>
 #include <map>
+#include <vector>
+#include <string>
 #include "settings.h"
 
 static std::string addressAPI;
@@ -10,12 +12,15 @@ static std::string key;
 static std::string port;
 
 std::map<std::string,std::string> settings
-    {
-        {"Address=",""},
-        {"Unique=",""},
-        {"Key=",""},
-        {"Port=",""}
-    };
+{
+    {"Address=",""},
+    {"Unique=",""},
+    {"Key=",""},
+    {"Port=",""}
+};
+
+static std::map<std::string,std::string> lines;
+
 
 std::string getAddressAPI()
 {
@@ -41,6 +46,87 @@ std::string getPort()
     return port;
 }
 
+void insertLines(std::map<std::string,std::string> actual_lines)
+{
+    std::map<std::string,std::string> current_lines, final_lines;
+
+    std::string line;
+    std::ifstream file;
+
+    file.open("/home/mainuser/projects/telephony/lines.txt");
+    
+    while (std::getline(file, line))
+    {
+        size_t pos = line.find('=');
+        std::string key = line.substr(0,pos+1);
+        std::string value = line.substr(pos+1);
+        current_lines.insert({key,value});
+    }
+
+    for(const auto& pair : actual_lines)
+    {
+        auto current_line = current_lines.find(pair.first);
+        if (pair.first == current_line->first)
+        {
+            final_lines.insert({pair.first,current_line->second});
+        }
+    }
+}
+
+void readLinesLoop()
+{
+
+    std::string line;
+    std::ifstream file;
+
+    file.open("/home/mainuser/projects/telephony/lines.txt");
+    
+    while (std::getline(file, line))
+    {
+        
+    }
+}
+
+void writeLinesFromMap()
+{
+    std::ofstream file("/home/mainuser/projects/telephony/connectionSettings.txt");
+    for (const auto& [key,value]:lines)
+    {
+        file<<key<<value<<"\n";
+    }
+}
+
+
+
+std::string readLines(std::vector<std::string> ext)
+{
+
+
+    if (std::filesystem::exists("/home/mainuser/projects/telephony/lines.txt"))
+    {
+        std::ifstream file;
+        file.open("/home/mainuser/projects/telephony/lines.txt");
+        if (file.is_open()) 
+        {
+
+            
+            
+            
+            file.close();
+            return "good";
+        } 
+        else 
+        {
+            std::cerr << "Error: Unable to open the file.\n";
+            return "fileError";
+        }
+    }  
+    else
+    {
+        return "fileExistanceError";
+    }
+}
+
 //метод для прочтения настроечного файла, интегрируется в уже созданную мапу, 
 //игнорирует строки, которых нет в мапе
 void readSettingsLoop()
@@ -62,9 +148,9 @@ void writeSettingsLoop(std::map<std::string,std::string> settings)
 {
     std::ofstream file("/home/mainuser/projects/telephony/connectionSettings.txt");
     for (const auto& [key,value]:settings)
-            {
-                file<<key<<value<<"\n";
-            }
+    {
+        file<<key<<value<<"\n";
+    }
 }
 
 //методы реконфигурации файла

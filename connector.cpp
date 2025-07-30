@@ -275,7 +275,7 @@ void getLines()
     //method of getting json body
     std::string b = json_data.substr(json_data.find("\r\n\r\n"));
 
-    std::vector<std::string> extensions;7
+    std::vector<std::string> extensions;
     try 
     {
         size_t start = b.find_first_of('{');
@@ -301,4 +301,7 @@ void getLines()
         std::cerr << "JSON parse error: " << e.what() << std::endl;
         std::cerr << "Body content: " << b << std::endl;
     }
+
+    
+
 }
