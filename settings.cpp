@@ -4,12 +4,14 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <ctime>
 #include "settings.h"
 
 static std::string addressAPI;
 static std::string unique;
 static std::string key;
 static std::string port;
+static std::map<std::string,std::string> lines;
 
 std::map<std::string,std::string> settings
 {
@@ -18,9 +20,6 @@ std::map<std::string,std::string> settings
     {"Key=",""},
     {"Port=",""}
 };
-
-static std::map<std::string,std::string> lines;
-
 
 std::string getAddressAPI()
 {
@@ -46,7 +45,40 @@ std::string getPort()
     return port;
 }
 
-void insertLines(std::map<std::string,std::string> actual_lines)
+//use this to save cuurent map into a file
+void writeLinesFromMap(std::map<std::string,std::string> final_lines)
+{
+    std::ofstream file("/home/mainuser/projects/telephony/lines.txt");
+    for (const auto& [key,value]:final_lines)
+    {
+        file<<key<<value<<"\n";
+    }
+}
+
+//loop, which is used to read lines from a text file, use it to re-write inner static map
+void readLinesLoop()
+{
+    lines.clear();
+    std::string line;
+    std::ifstream file;
+    file.open("/home/mainuser/projects/telephony/lines.txt");
+    while (std::getline(file, line))
+    {
+        size_t pos = line.find('=');
+        std::string key = line.substr(0,pos+1);
+        std::string value = line.substr(pos+1);
+        lines.insert({key,value});
+    }
+}
+
+std::map<std::string,std::string> drawLines()
+{
+    readLinesLoop();
+    return lines;
+}
+
+//only use this for lines program gets from Mango
+void initializeLines(std::map<std::string,std::string> actual_lines)
 {
     std::map<std::string,std::string> current_lines, final_lines;
 
@@ -70,48 +102,25 @@ void insertLines(std::map<std::string,std::string> actual_lines)
         {
             final_lines.insert({pair.first,current_line->second});
         }
+        else
+        {
+            final_lines.insert({pair.first,pair.second});
+        }
     }
+    writeLinesFromMap(final_lines);
+    readLinesLoop();
 }
 
-void readLinesLoop()
+//use this initializing lines at the start, checking for file existance
+std::string readLines()
 {
-
-    std::string line;
-    std::ifstream file;
-
-    file.open("/home/mainuser/projects/telephony/lines.txt");
-    
-    while (std::getline(file, line))
-    {
-        
-    }
-}
-
-void writeLinesFromMap()
-{
-    std::ofstream file("/home/mainuser/projects/telephony/connectionSettings.txt");
-    for (const auto& [key,value]:lines)
-    {
-        file<<key<<value<<"\n";
-    }
-}
-
-
-
-std::string readLines(std::vector<std::string> ext)
-{
-
-
     if (std::filesystem::exists("/home/mainuser/projects/telephony/lines.txt"))
     {
         std::ifstream file;
         file.open("/home/mainuser/projects/telephony/lines.txt");
         if (file.is_open()) 
         {
-
-            
-            
-            
+            readLinesLoop();
             file.close();
             return "good";
         } 
@@ -125,6 +134,85 @@ std::string readLines(std::vector<std::string> ext)
     {
         return "fileExistanceError";
     }
+}
+
+
+
+void processChunks(const std::vector<std::string>& tokens) 
+{
+    std::map<int, std::string> result;
+    std::vector<int> buffer;
+
+    auto parseRange = [](const std::string& token, std::vector<int>& output) 
+    {
+        size_t dashPos = token.find('-');
+        if (dashPos == std::string::npos) 
+        {
+            output.push_back(std::stoi(token));
+        } 
+        else 
+        {
+            int start = std::stoi(token.substr(0, dashPos));
+            int end   = std::stoi(token.substr(dashPos + 1));
+            if (start > end) std::swap(start, end);
+
+            for (int i = start; i <= end; ++i) 
+            {
+                output.push_back(i);
+            }
+        }
+    };
+
+    for (const auto& token : tokens) 
+    {
+        if (token == "on" || token == "off") 
+        {
+            // Записываем накопленные числа в map
+            for (int num : buffer) 
+            {
+                result[num] = token;
+            }
+            buffer.clear();
+        } 
+        else 
+        {
+            parseRange(token, buffer);
+        }
+    }
+    if (!buffer.empty()) 
+    {
+        std::cerr << "Ошибка: после диапазона или числа отсутствует 'on'/'off'\n";
+    }
+
+    std::map<std::string, std::string> resultStr;
+    for (const auto& [key, value] : result) 
+    {
+        resultStr[std::to_string(key) + "="] = value;
+    }
+    
+    //reading current lines, replace it later with readLines();
+    readLinesLoop();
+    for(const auto& pair : resultStr)
+    {
+        auto current_line = lines.find(pair.first);
+        if (current_line != lines.end())
+        {
+            current_line->second = pair.second;
+        }
+        else
+        {
+            std::cout << "line " << pair.first << " not found\n";
+        }
+    }
+
+    writeLinesFromMap(lines);
+
+    //for debugging, remove later
+    /*for (const auto& [key, value] : resultStr) 
+    {
+        std::cout << key << "=" << value << "\n";
+    }
+        */
 }
 
 //метод для прочтения настроечного файла, интегрируется в уже созданную мапу, 
@@ -276,3 +364,34 @@ std::string readSettings()
         return "fileExistanceError";
     }
 }
+
+int appendLog(std::string text)
+{
+    if (std::filesystem::exists("/home/mainuser/projects/telephony/log.txt"))
+    {
+        std::time_t now = std::time(0); 
+
+        // Convert time_t to a human-readable string (local time)
+        char* dt_local = std::ctime(&now);
+        std::ofstream log_file("/home/mainuser/projects/telephony/log.txt", std::ios::app);
+
+        // Check if the file was successfully opened
+        if (log_file.is_open()) 
+        {
+            log_file << "\n" << dt_local << "  " << text << std::endl;
+            log_file.close();
+        } 
+        else 
+        {
+            std::cerr << "Error: Unable to open log file\n";
+        }
+    }
+    else
+    {
+        std::ofstream new_file("/home/mainuser/projects/telephony/log.txt");
+        new_file << "Log started" << std::endl;
+        new_file.close();
+        appendLog(text);
+    }
+    return 0;
+}     

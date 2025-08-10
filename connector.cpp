@@ -28,7 +28,20 @@ bool read(int fd)
     FD_ZERO(&fds);
     FD_SET(fd,&fds);
     timeval tv{5,0};
-    return select(fd+1, &fds, nullptr, nullptr, &tv) > 0;
+
+    int ret = select(fd+1, &fds, nullptr, nullptr, &tv);
+    if (ret < 0) 
+    {
+        std::string error = "select() error in read() function: " + std::string(strerror(errno));
+        appendLog(error);
+    }
+    else if (ret == 0) 
+    {
+        std::string error = "select() timeout in read() function: " + std::string(strerror(errno));
+        appendLog(error);
+    }
+
+    return ret > 0;
 }
 
 bool write(int fd)
@@ -37,7 +50,20 @@ bool write(int fd)
     FD_ZERO(&fds);
     FD_SET(fd,&fds);
     timeval tv{5,0};
-    return select(fd+1, nullptr, &fds, nullptr, &tv) > 0;
+    
+    int ret = select(fd+1, nullptr, &fds, nullptr, &tv);
+    if (ret < 0) 
+    {
+        std::string error = "select() error in write() function: " + std::string(strerror(errno));
+        appendLog(error);
+    }
+    else if (ret == 0) 
+    {
+        std::string error = "select() timeout in write() function: " + std::string(strerror(errno));
+        appendLog(error);
+    }
+    
+    return ret > 0;
 }
 
 void sslInit()
@@ -49,9 +75,19 @@ void sslInit()
 
     const SSL_METHOD* client_method = TLS_client_method();
     client_ctx = SSL_CTX_new(client_method);
+    if (!client_ctx) 
+    {
+        std::string error = "SSL_CTX_new (client) failed: " + std::string(ERR_error_string(ERR_get_error(), nullptr));
+        appendLog(error);
+    }
 
     const SSL_METHOD* server_method = TLS_server_method();
     server_ctx = SSL_CTX_new(server_method);
+    if (!server_ctx) 
+    {
+        std::string error = "SSL_CTX_new (server) failed: " + std::string(ERR_error_string(ERR_get_error(), nullptr));
+        appendLog(error);
+    }
 
     //initializing client
     
@@ -83,17 +119,28 @@ std::string sendMessage(std::string(request))
     int status = getaddrinfo(host, nullptr, &hints, &res);
     if (status != 0)
     {
-        std::cerr << "getaddrinfo error" << gai_strerror(status) << std::endl;
+        std::cerr << "getaddrinfo error" << std::string(gai_strerror(status)) << std::endl;
+        std::string error = "getaddrinfo error: " + std::string(gai_strerror(status));
+        appendLog(error);
     }
 
     //initializing client
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if(client_socket <0)
+    if(client_socket < 0)
     {
-        perror("clientSocket");
-        return "client socket error";
+        std::cerr << "client_socket error" << std::string(strerror(errno)) << std::endl;
+        std::string error = "client_socket error: " + std::string(strerror(errno));
+        appendLog(error);
     }
+
     fcntl(client_socket , F_SETFL, O_NONBLOCK);//setting nonblocking port
+    if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1) 
+    {
+        close(client_socket);
+        std::cerr << "fcntl(O_NONBLOCK) failed: " + std::string(strerror(errno)) << std::endl;
+        std::string error = "fcntl(O_NONBLOCK) failed: " + std::string(strerror(errno));
+        appendLog(error);
+    }  
 
     //inet pton converts ip to binary and adds it to descriptor
     //pton now commented, now we get dns name resolving, might uncomment later
@@ -115,9 +162,10 @@ std::string sendMessage(std::string(request))
     int con = connect(client_socket, (sockaddr*)&server_addr,sizeof(server_addr));
     if(con<0 && errno != EINPROGRESS)
     {
-        perror("clientConnect");
         close(client_socket);
-        return "client connection error";
+        std::cerr << "setting nonblocking port (connect()) failed: " + std::string(strerror(errno)) << std::endl;
+        std::string error = "setting nonblocking port (connect()) failed: " + std::string(strerror(errno));
+        appendLog(error);
     }
 
     SSL* ssl = SSL_new(client_ctx);
@@ -158,6 +206,8 @@ std::string sendMessage(std::string(request))
         else
         {
             std::cerr << "SSL error: " << ERR_error_string(ERR_get_error(),nullptr)<<std::endl;
+            std::string error = "SSL error: " + std::string(ERR_error_string(ERR_get_error(), nullptr));
+            appendLog(error);
             //disposing garbage
             SSL_free(ssl);
             SSL_CTX_free(client_ctx);
@@ -194,6 +244,8 @@ std::string sendMessage(std::string(request))
             }
             else
             {
+                std::string error = "SSL_write error: " + std::string(ERR_error_string(ERR_get_error(), nullptr));
+                appendLog(error);
                 std::cerr << "Error during request sending\n";
                 break;
             }
@@ -224,11 +276,15 @@ std::string sendMessage(std::string(request))
             }
             else
             {
+                std::string error = "SSL_write error: " + std::string(ERR_error_string(ERR_get_error(), nullptr));
+                appendLog(error);
                 std::cerr << "Error during request reading\n";
                 break;
             }
         }
     }
+
+    appendLog(buffer);
 
     SSL_shutdown(ssl);
     SSL_free(ssl);
@@ -270,12 +326,14 @@ void getLines()
     "%s",
     hostname, body_len, body);
 
+    appendLog(request);
+
     std::string json_data = sendMessage(request);
     
     //method of getting json body
     std::string b = json_data.substr(json_data.find("\r\n\r\n"));
 
-    std::vector<std::string> extensions;
+    std::map<std::string,std::string> extensions;
     try 
     {
         size_t start = b.find_first_of('{');
@@ -292,7 +350,7 @@ void getLines()
         {
             if (user.contains("telephony") && user["telephony"].contains("extension")) 
             {
-                extensions.push_back(user["telephony"]["extension"].get<std::string>());
+                extensions.insert({user["telephony"]["extension"].get<std::string>()+"=","off"});
             }
         }
     } 
@@ -300,8 +358,11 @@ void getLines()
     {
         std::cerr << "JSON parse error: " << e.what() << std::endl;
         std::cerr << "Body content: " << b << std::endl;
+
+        appendLog(std::string("JSON parse error: ") + e.what());
+        appendLog("Body content: " + b);
     }
 
-    
+    initializeLines(extensions);
 
 }

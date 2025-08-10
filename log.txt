@@ -1,0 +1,135 @@
+Log started
+Thu Aug  7 20:04:49 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: �caUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 125
+
+vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=25a96595a1034f21a7245a31be3bfe1d09590047d1b339c45b570f5d03f26340&json=null
+Thu Aug  7 20:05:34 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: �caUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 125
+
+vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=25a96595a1034f21a7245a31be3bfe1d09590047d1b339c45b570f5d03f26340&json=null
+Thu Aug  7 20:05:39 2025
+  HTTP/1.1 200 OK
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+server: nginx
+date: Thu, 07 Aug 2025 17:05:34 GMT
+x-uuid: e81b1ea37040d60c4f2fd41368f0afad
+x-request-id: e81b1ea37040d60c4f2fd41368f0afad
+X-Request-Id: e81b1ea37040d60c4f2fd41368f0afad
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: Content-Disposition
+Access-Control-Allow-Headers: X-AUTH-TOKEN, Content-Type, X-Requested-With
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+
+618
+{"users":[{"general":{"name":"101","email":"","department":"","position":""},"telephony":{"extension":"101","outgoingline":"74992887904","numbers":[{"number":"sip:user0@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":0,"status":"on"}]}},{"general":{"name":"102","email":null,"department":null,"position":null},"telephony":{"extension":"102","outgoingline":"74992887904","numbers":[{"number":"sip:user2@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":120,"status":"on"}]}},{"general":{"name":"104","email":"","department":"","position":"400181673/Test - пароль"},"telephony":{"extension":"104","outgoingline":"74992887904","numbers":[{"number":"sip:user3@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":5,"status":"on"}]}},{"general":{"name":"202","email":"","department":"","position":""},"telephony":{"extension":"202","outgoingline":"74992887904","numbers":[{"number":"sip:user1@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":15,"status":"on"}]}},{"general":{"name":"Александр","email":null,"department":null,"position":null},"telephony":{"extension":"103","outgoingline":"74992887904","numbers":[{"number":"sip:user4@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":120,"status":"on"}]}},{"general":{"name":"Битрикс24","email":null,"department":null,"position":null},"telephony":{"extension":"203","outgoingline":"74992887904","numbers":[{"number":"sip:bitrix24@vpbx400181673.mangosip.ru","protocol":"sip","order":0,"wait_sec":120,"status":"on"}]}}]}
+0
+
+
+
+Thu Aug  7 20:07:34 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: �caUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 125
+
+vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=25a96595a1034f21a7245a31be3bfe1d09590047d1b339c45b570f5d03f26340&json=null
+
+Thu Aug  7 20:07:39 2025
+  HTTP/1.1 200 OK
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+server: nginx
+date: Thu, 07 Aug 2025 17:07:34 GMT
+x-uuid: b72f81605a2b52a6344a3e89e9413ce8
+x-request-id: b72f81605a2b52a6344a3e89e9413ce8
+X-Request-Id: b72f81605a2b52a6344a3e89e9413ce8
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: Content-Disposition
+Access-Control-Allow-Headers: X-AUTH-TOKEN, Content-Type, X-Requested-With
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+
+618
+{"users":[{"general":{"name":"101","email":"","department":"","position":""},"telephony":{"extension":"101","outgoingline":"74992887904","numbers":[{"number":"sip:user0@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":0,"status":"on"}]}},{"general":{"name":"102","email":null,"department":null,"position":null},"telephony":{"extension":"102","outgoingline":"74992887904","numbers":[{"number":"sip:user2@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":120,"status":"on"}]}},{"general":{"name":"104","email":"","department":"","position":"400181673/Test - пароль"},"telephony":{"extension":"104","outgoingline":"74992887904","numbers":[{"number":"sip:user3@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":5,"status":"on"}]}},{"general":{"name":"202","email":"","department":"","position":""},"telephony":{"extension":"202","outgoingline":"74992887904","numbers":[{"number":"sip:user1@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":15,"status":"on"}]}},{"general":{"name":"Александр","email":null,"department":null,"position":null},"telephony":{"extension":"103","outgoingline":"74992887904","numbers":[{"number":"sip:user4@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":120,"status":"on"}]}},{"general":{"name":"Битрикс24","email":null,"department":null,"position":null},"telephony":{"extension":"203","outgoingline":"74992887904","numbers":[{"number":"sip:bitrix24@vpbx400181673.mangosip.ru","protocol":"sip","order":0,"wait_sec":120,"status":"on"}]}}]}
+0
+
+
+
+Thu Aug  7 21:09:12 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: �caUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 125
+
+vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=25a96595a1034f21a7245a31be3bfe1d09590047d1b339c45b570f5d03f26340&json=null
+
+Thu Aug  7 21:09:18 2025
+  select() timeout in read() function: Resource temporarily unavailable
+
+Thu Aug  7 21:09:18 2025
+  HTTP/1.1 200 OK
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+server: nginx
+date: Thu, 07 Aug 2025 18:09:12 GMT
+x-uuid: 5a6187130021fb1b3809dfb7ea5893a4
+x-request-id: 5a6187130021fb1b3809dfb7ea5893a4
+X-Request-Id: 5a6187130021fb1b3809dfb7ea5893a4
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: Content-Disposition
+Access-Control-Allow-Headers: X-AUTH-TOKEN, Content-Type, X-Requested-With
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+
+618
+{"users":[{"general":{"name":"101","email":"","department":"","position":""},"telephony":{"extension":"101","outgoingline":"74992887904","numbers":[{"number":"sip:user0@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":0,"status":"on"}]}},{"general":{"name":"102","email":null,"department":null,"position":null},"telephony":{"extension":"102","outgoingline":"74992887904","numbers":[{"number":"sip:user2@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":120,"status":"on"}]}},{"general":{"name":"104","email":"","department":"","position":"400181673/Test - пароль"},"telephony":{"extension":"104","outgoingline":"74992887904","numbers":[{"number":"sip:user3@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":5,"status":"on"}]}},{"general":{"name":"202","email":"","department":"","position":""},"telephony":{"extension":"202","outgoingline":"74992887904","numbers":[{"number":"sip:user1@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":15,"status":"on"}]}},{"general":{"name":"Александр","email":null,"department":null,"position":null},"telephony":{"extension":"103","outgoingline":"74992887904","numbers":[{"number":"sip:user4@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":120,"status":"on"}]}},{"general":{"name":"Битрикс24","email":null,"department":null,"position":null},"telephony":{"extension":"203","outgoingline":"74992887904","numbers":[{"number":"sip:bitrix24@vpbx400181673.mangosip.ru","protocol":"sip","order":0,"wait_sec":120,"status":"on"}]}}]}
+0
+
+
+
+Thu Aug  7 21:31:42 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: �saUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 125
+
+vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=25a96595a1034f21a7245a31be3bfe1d09590047d1b339c45b570f5d03f26340&json=null
+
+Thu Aug  7 21:31:48 2025
+  select() timeout in read() function: Resource temporarily unavailable
+
+Thu Aug  7 21:31:48 2025
+  HTTP/1.1 200 OK
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+server: nginx
+date: Thu, 07 Aug 2025 18:31:43 GMT
+x-uuid: eccf5260900c8b2121bab3e2900ad02d
+x-request-id: eccf5260900c8b2121bab3e2900ad02d
+X-Request-Id: eccf5260900c8b2121bab3e2900ad02d
+Access-Control-Allow-Credentials: true
+Access-Control-Expose-Headers: Content-Disposition
+Access-Control-Allow-Headers: X-AUTH-TOKEN, Content-Type, X-Requested-With
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+
+618
+{"users":[{"general":{"name":"101","email":"","department":"","position":""},"telephony":{"extension":"101","outgoingline":"74992887904","numbers":[{"number":"sip:user0@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":0,"status":"on"}]}},{"general":{"name":"102","email":null,"department":null,"position":null},"telephony":{"extension":"102","outgoingline":"74992887904","numbers":[{"number":"sip:user2@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":120,"status":"on"}]}},{"general":{"name":"104","email":"","department":"","position":"400181673/Test - пароль"},"telephony":{"extension":"104","outgoingline":"74992887904","numbers":[{"number":"sip:user3@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":5,"status":"on"}]}},{"general":{"name":"202","email":"","department":"","position":""},"telephony":{"extension":"202","outgoingline":"74992887904","numbers":[{"number":"sip:user1@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":15,"status":"on"}]}},{"general":{"name":"Александр","email":null,"department":null,"position":null},"telephony":{"extension":"103","outgoingline":"74992887904","numbers":[{"number":"sip:user4@vpbx400181673.mangosip.ru","protocol":"sip","order":1,"wait_sec":120,"status":"on"}]}},{"general":{"name":"Битрикс24","email":null,"department":null,"position":null},"telephony":{"extension":"203","outgoingline":"74992887904","numbers":[{"number":"sip:bitrix24@vpbx400181673.mangosip.ru","protocol":"sip","order":0,"wait_sec":120,"status":"on"}]}}]}
+0
+
+
+
+Fri Aug  8 15:04:39 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: ��aUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 125
+
+vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=25a96595a1034f21a7245a31be3bfe1d09590047d1b339c45b570f5d03f26340&json=null
+
+Fri Aug  8 15:04:59 2025
+  getaddrinfo error: Temporary failure in name resolution
