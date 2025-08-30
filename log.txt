@@ -133,3 +133,254 @@ vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=25a96595a1034f21a7245a31be3bf
 
 Fri Aug  8 15:04:59 2025
   getaddrinfo error: Temporary failure in name resolution
+
+Wed Aug 20 16:22:24 2025
+  Request: POST /vpbx/config/users/request HTTP/1.1
+Host: app.mango-office.ru
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 93
+Connection: close
+
+vpbx_api_key=&sign=74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b&json=null
+
+Wed Aug 20 16:22:24 2025
+  Response body: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:22:24 2025
+  Invalid JSON response structure: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:23:34 2025
+  Request: POST /vpbx/config/users/request HTTP/1.1
+Host: app.mango-office.ru
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 93
+Connection: close
+
+vpbx_api_key=&sign=74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b&json=null
+
+Wed Aug 20 16:23:34 2025
+  Response body: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:23:34 2025
+  Invalid JSON response structure: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:24:17 2025
+  Request: POST /vpbx/config/users/request HTTP/1.1
+Host: app.mango-office.ru
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 93
+Connection: close
+
+vpbx_api_key=&sign=74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b&json=null
+
+Wed Aug 20 16:24:17 2025
+  Response body: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:24:17 2025
+  Invalid JSON response structure: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:24:37 2025
+  Request: POST /vpbx/config/users/request HTTP/1.1
+Host: app.mango-office.ru
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 93
+Connection: close
+
+vpbx_api_key=&sign=74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b&json=null
+
+Wed Aug 20 16:24:37 2025
+  Response body: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:24:37 2025
+  Invalid JSON response structure: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:24:51 2025
+  Request: POST /vpbx/config/users/request HTTP/1.1
+Host: app.mango-office.ru
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 93
+Connection: close
+
+vpbx_api_key=&sign=74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b&json=null
+
+Wed Aug 20 16:24:51 2025
+  Response body: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:24:51 2025
+  Invalid JSON response structure: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:35:52 2025
+  Request: POST /vpbx/config/users/request HTTP/1.1
+Host: app.mango-office.ru
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 93
+Connection: close
+
+vpbx_api_key=&sign=74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b&json=null
+
+Wed Aug 20 16:36:43 2025
+  Response body: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:36:54 2025
+  Invalid JSON response structure: {"name":"Unauthorized","message":"Service disabled","code":0,"status":401}
+
+Wed Aug 20 16:37:43 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: à
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 93
+
+vpbx_api_key=&sign=74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b&json=null
+
+Wed Aug 20 16:37:49 2025
+  select() timeout in read() function: Resource temporarily unavailable
+
+Wed Aug 20 16:37:49 2025
+  HTTP/1.1 401 Unauthorized
+Server: nginx
+Date: Wed, 20 Aug 2025 13:37:44 GMT
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+X-Uuid: 68a5cfa8b7adc
+X-Request-Id: ec860cfcaef7ebbcf8ddc2aae27b1a13
+
+69
+{"name":"Unauthorized","message":"Your request was made with invalid credentials.","code":0,"status":401}
+0
+
+
+
+Wed Aug 20 16:40:19 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: à`_UUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 93
+
+vpbx_api_key=&sign=74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b&json=null
+
+Wed Aug 20 16:40:24 2025
+  select() timeout in read() function: Resource temporarily unavailable
+
+Wed Aug 20 16:40:24 2025
+  HTTP/1.1 401 Unauthorized
+Server: nginx
+Date: Wed, 20 Aug 2025 13:40:19 GMT
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+X-Uuid: 68a5d043ac659
+X-Request-Id: 335cda48f598b2e377c4fe93c3c86a3d
+
+69
+{"name":"Unauthorized","message":"Your request was made with invalid credentials.","code":0,"status":401}
+0
+
+
+
+Wed Aug 20 16:40:53 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: à
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 93
+
+vpbx_api_key=&sign=74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b&json=null
+
+Wed Aug 20 16:40:58 2025
+  select() timeout in read() function: Resource temporarily unavailable
+
+Wed Aug 20 16:40:58 2025
+  HTTP/1.1 401 Unauthorized
+Server: nginx
+Date: Wed, 20 Aug 2025 13:40:53 GMT
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+X-Uuid: 68a5d0654f682
+X-Request-Id: 9da5d803a1fd363d8679beaa2ba04497
+
+69
+{"name":"Unauthorized","message":"Your request was made with invalid credentials.","code":0,"status":401}
+0
+
+
+
+Wed Aug 20 16:41:29 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: à
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 93
+
+vpbx_api_key=&sign=74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b&json=null
+
+Wed Aug 20 16:41:34 2025
+  select() timeout in read() function: Resource temporarily unavailable
+
+Wed Aug 20 16:41:34 2025
+  HTTP/1.1 401 Unauthorized
+Server: nginx
+Date: Wed, 20 Aug 2025 13:41:29 GMT
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+X-Uuid: 68a5d08987be1
+X-Request-Id: a2244c89c8f16a6282774b474a77c539
+
+69
+{"name":"Unauthorized","message":"Your request was made with invalid credentials.","code":0,"status":401}
+0
+
+
+
+Wed Aug 20 17:21:41 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: À‚_UUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 96
+
+vpbx_api_key=123&sign=186555e2783b1b6f2db730057497bf693d679151df07a6ea629a1440d16e2108&json=null
+
+Wed Aug 20 17:21:42 2025
+  HTTP/1.1 401 Unauthorized
+Server: nginx
+Date: Wed, 20 Aug 2025 14:21:42 GMT
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+X-Uuid: 68a5d9f611341
+X-Request-Id: b32d695037f661ad6692bb7e5c87067c
+
+{"name":"Unauthorized","message":"Your request was made with invalid credentials.","code":0,"status":401}
+
+Wed Aug 20 17:22:05 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: À"bUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 96
+
+vpbx_api_key=123&sign=186555e2783b1b6f2db730057497bf693d679151df07a6ea629a1440d16e2108&json=null
+
+Wed Aug 20 17:22:05 2025
+  HTTP/1.1 401 Unauthorized
+Server: nginx
+Date: Wed, 20 Aug 2025 14:22:05 GMT
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+X-Uuid: 68a5da0dd55da
+X-Request-Id: 54669cce844cf721bd2042bd9dcb3c6a
+
+{"name":"Unauthorized","message":"Your request was made with invalid credentials.","code":0,"status":401}
+
+Wed Aug 20 17:24:12 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: À"bUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 96
+
+vpbx_api_key=123&sign=186555e2783b1b6f2db730057497bf693d679151df07a6ea629a1440d16e2108&json=null
+
+Wed Aug 20 17:24:27 2025
+  HTTP/1.1 401 Unauthorized
+Server: nginx
+Date: Wed, 20 Aug 2025 14:24:13 GMT
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+X-Uuid: 68a5da8d340db
+X-Request-Id: a8c229a83f33f6f557d1584a7a949b9d
+
+{"name":"Unauthorized","message":"Your request was made with invalid credentials.","code":0,"status":401}

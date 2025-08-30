@@ -7,6 +7,9 @@
 #include <fstream>
 #include <filesystem>
 
+
+
+
 //this is for line testing
 /*
 std::map<std::string,std::string> set
@@ -17,36 +20,40 @@ std::map<std::string,std::string> set
     };
 */
 
+    
 
 
 int main(int argc, char *argv[])
 {
-    //sslInit();
-    //getLines();
-    
+    sslInit();
+    getLines();
+
         
 
-    //считаем количество аргументов, чтобы не возникала ошибка ссылания на несуществующий поинтер
-    /*if(argc==0)
-    {
-        return 1;
-    }
-    if (argc==2)
-    {
-        arg1 = argv[1];
-    }
-    if (argc==3)
-    {
-        arg1 = argv[1];
-        arg2 = argv[2];
-    }*/
-
-    //command line args processing
     std::vector<std::string> args(argv + 1, argv + argc);
-    if (args.empty()) {
+    #ifdef DEBUG
+    //debug command line processing
+    
+    if (argc <= 1) {
+
+        args = {"lines"};
+    } 
+    else 
+    {
+        for (int i = 1; i < argc; ++i) 
+        {
+            args.push_back(argv[i]);
+        }
+    }
+    #else
+    //command line args processing
+    if (args.empty()) 
+    {
         std::cout << "No arguments provided.\n";
         return 1;
     }
+    #endif
+    
     std::string command = args[0];
     std::string subcommand = args.size() > 1 ? args[1] : "";
 
@@ -101,25 +108,20 @@ int main(int argc, char *argv[])
     else if (command == "lines")
     {
         std::vector<std::string> line_args = args;
-
         if (subcommand == "recon")
         {
             line_args.erase(line_args.begin(), line_args.begin() + 2);
             processChunks(line_args);
         }
-
         else
         {
+            //drawing lines to console
             std::map<std::string,std::string> lines_map;
             lines_map = drawLines();
-            //move to debug version later
-            /*
             for (const auto& [key,value]:lines_map)
             {
                 std::cout<<key<<value<<"\n";
             }  
-            */
-            
         }  
     }
     else 
