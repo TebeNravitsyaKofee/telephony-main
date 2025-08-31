@@ -291,7 +291,11 @@ std::string sendMessage(std::string request)
             int err = SSL_get_error(ssl, rc);
             if (err == SSL_ERROR_WANT_WRITE) 
             {
-                if (!write(client_socket)) { appendLog("SSL_write timeout"); goto cleanup_error; }
+                if (!write(client_socket))
+                {
+                    appendLog("SSL_write timeout");
+                    goto cleanup_error;
+                }
             } 
             else if (err == SSL_ERROR_WANT_READ) 
             {
@@ -678,3 +682,317 @@ void getLines()
 
 }
 
+//generating key for websocket
+std::string generateWebSocketKey() 
+{
+    unsigned char rand_bytes[16];
+    RAND_bytes(rand_bytes, sizeof(rand_bytes));
+    std::ostringstream oss;
+    for (auto b : rand_bytes) oss << std::hex << std::setw(2) << std::setfill('0') << (int)b;
+    return oss.str();
+}
+
+bool sendWebSocketHandshake(SSL* ssl)
+{
+    std::string ws_key = generateWebSocketKey();
+
+    char req[1024];
+    snprintf(req, sizeof(req),
+    "GET https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1\r\n"
+    "Host: %s\r\n"
+    "Upgrade: websocket\r\n"
+    "Connection: Upgrade\r\n"
+    "Sec-WebSocket-Key: %s\r\n"
+    "Sec-WebSocket-Version: 13\r\n\r\n",
+    hostname, ws_key.c_str());
+
+    size_t sent = 0;
+    int total = strlen(req);
+    while (sent < total) 
+    {
+        int rc = SSL_write(ssl, req + sent, static_cast<int>(total - sent));
+        if (rc > 0) 
+        {
+            sent += rc;
+            continue;
+        }
+
+        int err = SSL_get_error(ssl, rc);
+        if (err == SSL_ERROR_WANT_WRITE) 
+        {
+            if (!write(SSL_get_fd(ssl))) 
+            {
+                appendLog("SSL_write WANT_WRITE timeout");
+                return false;
+            }
+        } 
+        else if (err == SSL_ERROR_WANT_READ) 
+        {
+            if (!read(SSL_get_fd(ssl))) 
+            {
+                appendLog("SSL_write WANT_READ timeout");
+                return false;
+            }
+        } 
+        else if (err == SSL_ERROR_ZERO_RETURN) 
+        {
+            appendLog("SSL connection closed by peer during write");
+            return false;
+        } 
+        else if (err == SSL_ERROR_SYSCALL) 
+        {
+            appendLog("SSL_write syscall error");
+            return false;
+        } 
+        else // SSL_ERROR_SSL or unknown
+        {
+            appendLog("SSL_write error: " + std::string(ERR_error_string(ERR_get_error(), nullptr)));
+            return false;
+        }
+    }
+    return true;
+    
+}
+
+std::string readWebSocketMessage(SSL* ssl, int client_socket) 
+{
+    //8-bit integer
+    uint8_t header[2];
+    int rc = SSL_read(ssl, header, 2);
+    if (rc != 2) return "";
+
+    //1-bit - FIN
+    //2-4 - RCV1
+    //5-8 - OPCODE
+    bool fin = header[0] & 0x80;
+    uint8_t opcode = header[0] & 0x0F;
+
+    //1-bit - MASK
+    //2-8 - PAYLOAD LEN
+    //126 means length is in next 2 bytes, 127 - 8 bytes
+    bool mask = header[1] & 0x80;
+    uint64_t payload_len = header[1] & 0x7F;
+
+    if (payload_len == 126) 
+    {
+        uint8_t ext[2]; 
+        SSL_read(ssl, ext, 2);
+        payload_len = (ext[0] << 8) | ext[1];
+    } 
+    else if (payload_len == 127) 
+    {
+        uint8_t ext[8]; 
+        SSL_read(ssl, ext, 8);
+        payload_len = 0;
+        for (int i=0; i<8; i++) 
+        {
+            payload_len = (payload_len << 8) | ext[i];
+        }
+    }
+
+    //probably not needed, but i copied that anyways
+    //code down below gets the mask
+    std::vector<uint8_t> masking_key(4);
+    if (mask) 
+    {
+        SSL_read(ssl, masking_key.data(), 4);
+    }
+
+    std::vector<uint8_t> payload(payload_len);
+    size_t received = 0;
+
+    //getting the useful payload data
+    while (received < payload_len) 
+    {
+        int r = SSL_read(ssl, payload.data() + received, payload_len - received);
+        if (r <= 0) 
+        {
+            break;
+        }
+        received += r;
+    }
+
+    //de-masking data if it's masked, just xor every byte with mask
+    if (mask) 
+    {
+        for (size_t i=0; i<payload_len; i++) 
+        {
+            payload[i] ^= masking_key[i%4];
+        }
+    }
+
+    return std::string(payload.begin(), payload.end());
+}
+
+void startWebSocketClient() 
+{
+    addrinfo hints{}, *res = nullptr;
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+
+    int status = getaddrinfo(host, "443", &hints, &res);
+    if (status != 0) {
+        std::string error = "getaddrinfo error in ws connecton: " + std::string(gai_strerror(status));
+        appendLog(error);
+        #ifdef DEBUG
+        std::cerr << error << std::endl;
+        #endif
+    }
+
+    int client_socket = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    if (client_socket < 0) 
+    {
+        std::string error = "socket() error: " + std::string(strerror(errno));
+        appendLog(error);
+        #ifdef DEBUG
+        std::cerr << error << std::endl;
+        #endif
+        freeaddrinfo(res);
+        return;
+    }
+
+    if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1) 
+    {
+        std::string error = "fcntl(O_NONBLOCK) failed: " + std::string(strerror(errno));
+        appendLog(error);
+        #ifdef DEBUG
+        std::cerr << error << std::endl;
+        #endif
+        close(client_socket);
+        freeaddrinfo(res);
+        return;
+    }
+
+    int con = connect(client_socket, res->ai_addr, res->ai_addrlen);
+    if (con < 0 && errno != EINPROGRESS) 
+    {
+        std::string error = "connect() error: " + std::string(strerror(errno));
+        appendLog(error);
+        #ifdef DEBUG
+        std::cerr << error << std::endl;
+        #endif
+        close(client_socket);
+        freeaddrinfo(res);
+        return;
+    }
+
+    if (!write(client_socket)) 
+    {
+        std::string error = "client socket is not ready after connect()";
+        appendLog(error);
+        #ifdef DEBUG
+        std::cerr << error << std::endl;
+        #endif
+        close(client_socket);
+        freeaddrinfo(res);
+        return;
+    }
+
+    int so_error = 0;
+    socklen_t len = sizeof(so_error);
+    if (getsockopt(client_socket, SOL_SOCKET, SO_ERROR, &so_error, &len) < 0 || so_error != 0) 
+    {
+        std::string error = "connect failed (SO_ERROR): " + std::string(strerror(so_error));
+        appendLog(error);
+        #ifdef DEBUG
+        std::cerr << error << std::endl;
+        #endif
+        close(client_socket);
+        freeaddrinfo(res);
+        return;
+    }
+
+    SSL* ssl = SSL_new(client_ctx);
+    if (!ssl) 
+    {
+        std::string error = "SSL_new failed: " + std::string(ERR_error_string(ERR_get_error(), nullptr));
+        appendLog(error);
+        #ifdef DEBUG
+        std::cerr << error << std::endl;
+        #endif
+        close(client_socket);
+        freeaddrinfo(res);
+        return;
+    }
+
+    SSL_set_tlsext_host_name(ssl, host);
+    SSL_set_fd(ssl, client_socket);
+    SSL_set_connect_state(ssl);
+
+    while (true) 
+    {
+        int rc = SSL_connect(ssl);
+        if (rc == 1) 
+        {
+            break;
+        }
+        int err = SSL_get_error(ssl, rc);
+        if (err == SSL_ERROR_WANT_READ) 
+        {
+            if (!read(client_socket)) 
+            { 
+                appendLog("Handshake timeout (read)"); 
+                goto cleanup_error; 
+            }
+        } 
+        else if (err == SSL_ERROR_WANT_WRITE) 
+        {
+            if (!write(client_socket)) 
+            { 
+                appendLog("Handshake timeout (write)"); 
+                goto cleanup_error; 
+            }
+        } 
+        else 
+        {
+            std::string error = "SSL_connect error: " + std::string(ERR_error_string(ERR_get_error(), nullptr));
+            appendLog(error);
+            #ifdef DEBUG
+            std::cerr << error << std::endl;
+            #endif
+            goto cleanup_error;
+        }
+    }
+
+    cleanup_error:
+    SSL_shutdown(ssl);
+    SSL_free(ssl);
+    close(client_socket);
+    freeaddrinfo(res);
+
+    std::string ws_key;
+    if (!sendWebSocketHandshake(ssl)) 
+    {
+        appendLog("Handshake failed");
+        return;
+    }
+
+    char buf[4096]; std::string headers;
+    while (headers.find("\r\n\r\n") == std::string::npos)
+    {
+        int rc = SSL_read(ssl, buf, sizeof(buf));
+        if (rc <= 0) 
+        {
+            break;
+        }
+        headers.append(buf, rc);
+    }
+
+    appendLog("WebSocket handshake successful");
+
+    //recieving cycle
+    while (true)
+    {
+        std::string msg = readWebSocketMessage(ssl, client_socket);
+        if (msg.empty()) 
+        {
+            break;
+        }
+        appendLog("Received WS message: " + msg);
+    }
+
+    SSL_shutdown(ssl);
+    SSL_free(ssl);
+    close(client_socket);
+    freeaddrinfo(res);
+}
