@@ -384,3 +384,63 @@ X-Uuid: 68a5da8d340db
 X-Request-Id: a8c229a83f33f6f557d1584a7a949b9d
 
 {"name":"Unauthorized","message":"Your request was made with invalid credentials.","code":0,"status":401}
+
+Sun Aug 31 00:39:48 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: ÀRbUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 96
+
+vpbx_api_key=123&sign=186555e2783b1b6f2db730057497bf693d679151df07a6ea629a1440d16e2108&json=null
+
+Sun Aug 31 00:40:20 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: ÀRbUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 96
+
+vpbx_api_key=123&sign=186555e2783b1b6f2db730057497bf693d679151df07a6ea629a1440d16e2108&json=null
+
+Sun Aug 31 00:42:32 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: ÀRbUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 96
+
+vpbx_api_key=123&sign=186555e2783b1b6f2db730057497bf693d679151df07a6ea629a1440d16e2108&json=null
+
+Sun Aug 31 00:42:32 2025
+  Malformed header: Content-Length line not terminated
+
+Sun Aug 31 00:42:32 2025
+  HTTP/1.1 401 Unauthorized
+Server: nginx
+Date: Sat, 30 Aug 2025 21:42:32 GMT
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+X-Uuid: 68b37048dfbd5
+X-Request-Id: 2f3fed77f77faea1e612495b2b2546a6
+
+{"name":"Unauthorized","message":"Your request was made with invalid credentials.","code":0,"status":401}
+
+Sun Aug 31 00:43:52 2025
+  POST https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1
+Host: ÀRbUUU
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 96
+
+vpbx_api_key=123&sign=186555e2783b1b6f2db730057497bf693d679151df07a6ea629a1440d16e2108&json=null
+
+Sun Aug 31 00:43:53 2025
+  Malformed header
+
+Sun Aug 31 00:43:53 2025
+  HTTP/1.1 401 Unauthorized
+Server: nginx
+Date: Sat, 30 Aug 2025 21:43:53 GMT
+Content-Type: application/json; charset=UTF-8
+Transfer-Encoding: chunked
+X-Uuid: 68b3709900c7d
+X-Request-Id: afe646ed558c04ecff54ee7ad51a5b53
+
+{"name":"Unauthorized","message":"Your request was made with invalid credentials.","code":0,"status":401}

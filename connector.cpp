@@ -4,6 +4,7 @@
 #include <iostream>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
+#include <openssl/rand.h>
 #include <netdb.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
@@ -142,7 +143,8 @@ std::string sendMessage(std::string request)
     hints.ai_socktype = SOCK_STREAM;
 
     int status = getaddrinfo(host, "443", &hints, &res);
-    if (status != 0) {
+    if (status != 0) 
+    {
         std::string error = "getaddrinfo error: " + std::string(gai_strerror(status));
         appendLog(error);
         #ifdef DEBUG
@@ -152,7 +154,8 @@ std::string sendMessage(std::string request)
     }
 
     int client_socket = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-    if (client_socket < 0) {
+    if (client_socket < 0) 
+    {
         std::string error = "socket() error: " + std::string(strerror(errno));
         appendLog(error);
         #ifdef DEBUG
@@ -162,8 +165,8 @@ std::string sendMessage(std::string request)
         return "";
     }
 
-    // неблокирующий режим
-    if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1) {
+    if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1) 
+    {
         std::string error = "fcntl(O_NONBLOCK) failed: " + std::string(strerror(errno));
         appendLog(error);
         #ifdef DEBUG
@@ -174,9 +177,9 @@ std::string sendMessage(std::string request)
         return "";
     }
 
-    // стартуем connect (получим EINPROGRESS)
     int con = connect(client_socket, res->ai_addr, res->ai_addrlen);
-    if (con < 0 && errno != EINPROGRESS) {
+    if (con < 0 && errno != EINPROGRESS) 
+    {
         std::string error = "connect() error: " + std::string(strerror(errno));
         appendLog(error);
         #ifdef DEBUG
@@ -188,7 +191,8 @@ std::string sendMessage(std::string request)
     }
 
     //checking for socket readiness
-    if (!write(client_socket)) {
+    if (!write(client_socket)) 
+    {
         std::string error = "client socket is not ready after connect()";
         appendLog(error);
         #ifdef DEBUG
@@ -202,7 +206,8 @@ std::string sendMessage(std::string request)
     //getting socket error and writing it to to log
     int so_error = 0;
     socklen_t len = sizeof(so_error);
-    if (getsockopt(client_socket, SOL_SOCKET, SO_ERROR, &so_error, &len) < 0 || so_error != 0) {
+    if (getsockopt(client_socket, SOL_SOCKET, SO_ERROR, &so_error, &len) < 0 || so_error != 0) 
+    {
         std::string error = "connect failed (SO_ERROR): " + std::string(strerror(so_error));
         appendLog(error);
         #ifdef DEBUG
@@ -215,7 +220,8 @@ std::string sendMessage(std::string request)
 
     //
     SSL* ssl = SSL_new(client_ctx);
-    if (!ssl) {
+    if (!ssl) 
+    {
         std::string error = "SSL_new failed: " + std::string(ERR_error_string(ERR_get_error(), nullptr));
         appendLog(error);
         #ifdef DEBUG
@@ -312,13 +318,12 @@ std::string sendMessage(std::string request)
         std::string response;
         std::string headers;
         std::string body;
+        std::string s;
         bool headers_done = false;
         bool chunked = false;
         size_t content_length = 0;
 
 
-        std::transform(s.begin(), s.end(), s.begin(),[](unsigned char c){return std::tolower(c);});
-        return s;
 
 
         char buf[4096];
@@ -326,19 +331,28 @@ std::string sendMessage(std::string request)
         //lambda that parses headers
         auto parse_headers = [&](const std::string& h) 
         {
-            std::string lh = to_lower(h);
             //Transfer-Encoding
-            if (lh.find("transfer-encoding:") != std::string::npos && lh.find("chunked") != std::string::npos) 
+            if (h.find("Transfer-Encoding:") != std::string::npos && h.find("chunked") != std::string::npos) 
             {
                 chunked = true;
             }
 
-            size_t p = lh.find("content-length:");
+            size_t p = h.find("Content-Length:");
             
             //skipping the spacebars
-            while (p < lh.size() && (lh[p] == ' ' || lh[p] == '\t')) ++p;
-            size_t end = lh.find("\r\n", p);
-            std::string n = lh.substr(p, end - p);
+            while (p < h.size() && (h[p] == ' ' || h[p] == '\t')) ++p;
+            size_t end = h.find("\r\n", p);
+            if (end == std::string::npos) 
+            {
+                end = h.find('\n', p);
+            }
+            if (end == std::string::npos) 
+            {
+                appendLog("Malformed header");
+                return;
+            }
+
+            std::string n = h.substr(p, end - p);
             try 
             {
                 //stoull is converter from string to unsigned int
@@ -429,7 +443,7 @@ std::string sendMessage(std::string request)
                         catch (...) 
                         {
                             #ifdef DEBUG
-                            std::cerr << "Chunk size parse error" << std::endl
+                            std::cerr << "Chunk size parse error" << std::endl;
                             #endif
                             appendLog("Chunk size parse error");
                             goto cleanup_error;
@@ -471,7 +485,7 @@ std::string sendMessage(std::string request)
                         if (chunk_stream[idx] != '\r' || chunk_stream[idx+1] != '\n') 
                         {
                             #ifdef DEBUG
-                            std::cerr << "Malformed chunk: missing CRLF after data" << std::endl
+                            std::cerr << "Malformed chunk: missing CRLF after data" << std::endl;
                             #endif
                             appendLog("Malformed chunk: missing CRLF after data");
                             goto cleanup_error;
@@ -583,7 +597,7 @@ std::string sendMessage(std::string request)
         return full_response;
     }
 
-cleanup_error:
+    cleanup_error:
     SSL_shutdown(ssl);
     SSL_free(ssl);
     close(client_socket);
@@ -663,3 +677,4 @@ void getLines()
     initializeLines(extensions);
 
 }
+
