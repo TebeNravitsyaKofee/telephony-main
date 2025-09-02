@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 {
     sslInit();
     //getLines();
-    startWebSocketClient();
+    startWebSocketServer(8058);
 
         
 

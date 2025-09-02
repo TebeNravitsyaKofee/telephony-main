@@ -3,6 +3,7 @@
 #include <netinet/in.h>
 #include <iostream>
 #include <openssl/ssl.h>
+#include <openssl/sha.h>
 #include <openssl/err.h>
 #include <openssl/rand.h>
 #include <netdb.h>
@@ -12,6 +13,7 @@
 #include <errno.h>
 #include <nlohmann/json.hpp>
 #include <vector>
+
 
 #include "settings.h"
 
@@ -682,6 +684,158 @@ void getLines()
 
 }
 
+
+std::string readWebSocketMessage(int client_socket) 
+{
+    // 8-bit integer
+    uint8_t header[2];
+    int rc = recv(client_socket, header, 2, 0);
+    if (rc != 2) return "";
+
+    // 1-bit - FIN
+    // 2-4 - RSV1-3
+    // 5-8 - OPCODE
+    bool fin = header[0] & 0x80;
+    uint8_t opcode = header[0] & 0x0F;
+
+    // 1-bit - MASK
+    // 2-8 - PAYLOAD LEN
+    // 126 means length is in next 2 bytes, 127 - 8 bytes
+    bool mask = header[1] & 0x80;
+    uint64_t payload_len = header[1] & 0x7F;
+
+    if (payload_len == 126) {
+        uint8_t ext[2]; 
+        recv(client_socket, ext, 2, 0);
+        payload_len = (ext[0] << 8) | ext[1];
+    } 
+    else if (payload_len == 127) {
+        uint8_t ext[8]; 
+        recv(client_socket, ext, 8, 0);
+        payload_len = 0;
+        for (int i=0; i<8; i++) {
+            payload_len = (payload_len << 8) | ext[i];
+        }
+    }
+
+    // читаем mask (если есть)
+    std::vector<uint8_t> masking_key(4);
+    if (mask) {
+        recv(client_socket, masking_key.data(), 4, 0);
+    }
+
+    // читаем полезные данные
+    std::vector<uint8_t> payload(payload_len);
+    size_t received = 0;
+    while (received < payload_len) {
+        int r = recv(client_socket, payload.data() + received, payload_len - received, 0);
+        if (r <= 0) break;
+        received += r;
+    }
+
+    // размаскируем (XOR)
+    if (mask) {
+        for (size_t i=0; i<payload_len; i++) {
+            payload[i] ^= masking_key[i % 4];
+        }
+    }
+
+    return std::string(payload.begin(), payload.end());
+}
+
+// создаём Sec-WebSocket-Accept
+std::string generateWebSocketAccept(const std::string& key) {
+    std::string guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+    std::string combined = key + guid;
+
+    unsigned char hash[20]; // SHA1 всегда 20 байт
+    SHA1(reinterpret_cast<const unsigned char*>(combined.c_str()), combined.size(), hash);
+
+    // Base64 encode
+    static const char* b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    std::string result;
+    int val = 0, valb = -6;
+    for (int i = 0; i < 20; i++) {
+        val = (val << 8) + hash[i];
+        valb += 8;
+        while (valb >= 0) {
+            result.push_back(b64chars[(val >> valb) & 0x3F]);
+            valb -= 6;
+        }
+    }
+    if (valb > -6) result.push_back(b64chars[((val << 8) >> (valb + 8)) & 0x3F]);
+    while (result.size() % 4) result.push_back('=');
+
+    return result;
+}
+
+// запуск сервера
+void startWebSocketServer(int port) 
+{
+    int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
+    fcntl(listen_sock, F_SETFL, O_NONBLOCK);
+
+    sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    addr.sin_addr.s_addr = INADDR_ANY;
+
+    bind(listen_sock, (struct sockaddr*)&addr, sizeof(addr));
+    listen(listen_sock, 10);
+
+    appendLog("WebSocket server listening on port " + std::to_string(port));
+
+    while (true) {
+        sockaddr_in client_addr{};
+        socklen_t client_len = sizeof(client_addr);
+        int client_sock = accept(listen_sock, (struct sockaddr*)&client_addr, &client_len);
+        if (client_sock < 0) { 
+            if (errno != EAGAIN && errno != EWOULDBLOCK) appendLog("accept error"); 
+            continue; 
+        }
+
+        // читаем заголовки
+        char buf[4096]; std::string headers;
+        while (headers.find("\r\n\r\n") == std::string::npos) {
+            int rc = recv(client_sock, buf, sizeof(buf), 0);
+            if (rc <= 0) break;
+            headers.append(buf, rc);
+        }
+
+        /*size_t key_pos = headers.find("Sec-WebSocket-Key:");
+        if (key_pos == std::string::npos) { 
+            close(client_sock); 
+            continue; 
+        }*/
+        /*size_t key_end = headers.find("\r\n", key_pos);
+        std::string key = headers.substr(key_pos + 18, key_end - (key_pos + 18));
+        key.erase(0, key.find_first_not_of(" \t"));*/
+
+        std::string accept_key = generateWebSocketAccept("key");
+        std::ostringstream response;
+        response << "HTTP/1.1 101 Switching Protocols\r\n"
+                 << "Upgrade: websocket\r\n"
+                 << "Connection: Upgrade\r\n"
+                 << "Sec-WebSocket-Accept: " << accept_key << "\r\n\r\n";
+
+        send(client_sock, response.str().data(), response.str().size(), 0);
+        appendLog("WebSocket handshake completed with client");
+
+        // цикл приёма сообщений
+        while (true) {
+            std::string msg = readWebSocketMessage(client_sock);
+            if (msg.empty()) break;
+            appendLog("Received WS message: " + msg);
+        }
+
+        close(client_sock);
+    }
+}
+
+//<---------------------------------------------------------------->
+//SSL Websocket server down below, cant quite figure it out for now
+
+/*
 //generating key for websocket
 std::string generateWebSocketKey() 
 {
@@ -692,67 +846,7 @@ std::string generateWebSocketKey()
     return oss.str();
 }
 
-bool sendWebSocketHandshake(SSL* ssl)
-{
-    std::string ws_key = generateWebSocketKey();
 
-    char req[1024];
-    snprintf(req, sizeof(req),
-    "GET https://app.mango-office.ru/vpbx/config/users/request HTTP/1.1\r\n"
-    "Host: %s\r\n"
-    "Upgrade: websocket\r\n"
-    "Connection: Upgrade\r\n"
-    "Sec-WebSocket-Key: %s\r\n"
-    "Sec-WebSocket-Version: 13\r\n\r\n",
-    hostname, ws_key.c_str());
-
-    size_t sent = 0;
-    int total = strlen(req);
-    while (sent < total) 
-    {
-        int rc = SSL_write(ssl, req + sent, static_cast<int>(total - sent));
-        if (rc > 0) 
-        {
-            sent += rc;
-            continue;
-        }
-
-        int err = SSL_get_error(ssl, rc);
-        if (err == SSL_ERROR_WANT_WRITE) 
-        {
-            if (!write(SSL_get_fd(ssl))) 
-            {
-                appendLog("SSL_write WANT_WRITE timeout");
-                return false;
-            }
-        } 
-        else if (err == SSL_ERROR_WANT_READ) 
-        {
-            if (!read(SSL_get_fd(ssl))) 
-            {
-                appendLog("SSL_write WANT_READ timeout");
-                return false;
-            }
-        } 
-        else if (err == SSL_ERROR_ZERO_RETURN) 
-        {
-            appendLog("SSL connection closed by peer during write");
-            return false;
-        } 
-        else if (err == SSL_ERROR_SYSCALL) 
-        {
-            appendLog("SSL_write syscall error");
-            return false;
-        } 
-        else // SSL_ERROR_SSL or unknown
-        {
-            appendLog("SSL_write error: " + std::string(ERR_error_string(ERR_get_error(), nullptr)));
-            return false;
-        }
-    }
-    return true;
-    
-}
 
 std::string readWebSocketMessage(SSL* ssl, int client_socket) 
 {
@@ -822,6 +916,158 @@ std::string readWebSocketMessage(SSL* ssl, int client_socket)
     }
 
     return std::string(payload.begin(), payload.end());
+}
+
+std::string generateWebSocketAccept(const std::string& key) {
+    std::string guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+    std::string combined = key + guid;
+
+    unsigned char hash[20]; // SHA1 всегда 20 байт
+    SHA1(reinterpret_cast<const unsigned char*>(combined.c_str()), combined.size(), hash);
+
+    // Base64 encode
+    static const char* b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    std::string result;
+    int val = 0, valb = -6;
+    for (int i = 0; i < 20; i++) {
+        val = (val << 8) + hash[i];
+        valb += 8;
+        while (valb >= 0) {
+            result.push_back(b64chars[(val >> valb) & 0x3F]);
+            valb -= 6;
+        }
+    }
+    if (valb > -6) result.push_back(b64chars[((val << 8) >> (valb + 8)) & 0x3F]);
+    while (result.size() % 4) result.push_back('=');
+
+    return result;
+}
+
+void startWebSocketServer(int port) 
+{
+    int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
+    fcntl(listen_sock, F_SETFL, O_NONBLOCK);
+
+    sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    addr.sin_addr.s_addr = INADDR_ANY;
+
+    bind(listen_sock, (struct sockaddr*)&addr, sizeof(addr));
+    listen(listen_sock, 10);
+
+    appendLog("WebSocket server listening on port " + std::to_string(port));
+
+    while (true) {
+        sockaddr_in client_addr{};
+        socklen_t client_len = sizeof(client_addr);
+        int client_sock = accept(listen_sock, (struct sockaddr*)&client_addr, &client_len);
+        if (client_sock < 0) { if (errno != EAGAIN && errno != EWOULDBLOCK) appendLog("accept error"); continue; }
+
+        SSL* ssl = SSL_new(server_ctx);
+        SSL_set_fd(ssl, client_sock);
+        SSL_set_accept_state(ssl);
+
+        // Handshake
+        char buf[4096]; std::string headers;
+        while (headers.find("\r\n\r\n") == std::string::npos) {
+            int rc = SSL_read(ssl, buf, sizeof(buf));
+            if (rc <= 0) break;
+            headers.append(buf, rc);
+        }
+
+        size_t key_pos = headers.find("Sec-WebSocket-Key:");
+        if (key_pos == std::string::npos) { SSL_shutdown(ssl); SSL_free(ssl); close(client_sock); continue; }
+        size_t key_end = headers.find("\r\n", key_pos);
+        std::string key = headers.substr(key_pos + 18, key_end - (key_pos + 18));
+        key.erase(0, key.find_first_not_of(" \t"));
+
+        std::string accept_key = generateWebSocketAccept(key);
+        std::ostringstream response;
+        response << "HTTP/1.1 101 Switching Protocols\r\n"
+                 << "Upgrade: websocket\r\n"
+                 << "Connection: Upgrade\r\n"
+                 << "Sec-WebSocket-Accept: " << accept_key << "\r\n\r\n";
+
+        SSL_write(ssl, response.str().data(), response.str().size());
+        appendLog("WebSocket handshake completed with client");
+
+        // Цикл приема сообщений
+        while (true) {
+            std::string msg = readWebSocketMessage(ssl, client_sock);
+            if (msg.empty()) break;
+            appendLog("Received WS message: " + msg);
+        }
+
+        SSL_shutdown(ssl);
+        SSL_free(ssl);
+        close(client_sock);
+    }
+}
+*/
+
+//websocket client down below, not needed for now
+/*
+bool sendWebSocketHandshake(SSL* ssl)
+{
+    std::string ws_key = generateWebSocketKey();
+
+    char req[1024];
+    snprintf(req, sizeof(req),
+    "GET https://app.mango-office.ru HTTP/1.1\r\n"
+    "Host: %s\r\n"
+    "Upgrade: websocket\r\n"
+    "Connection: Upgrade\r\n"
+    "Sec-WebSocket-Key: %s\r\n"
+    "Sec-WebSocket-Version: 13\r\n\r\n",
+    hostname, ws_key.c_str());
+
+    size_t sent = 0;
+    int total = strlen(req);
+    while (sent < total) 
+    {
+        int rc = SSL_write(ssl, req + sent, static_cast<int>(total - sent));
+        if (rc > 0) 
+        {
+            sent += rc;
+            continue;
+        }
+
+        int err = SSL_get_error(ssl, rc);
+        if (err == SSL_ERROR_WANT_WRITE) 
+        {
+            if (!write(SSL_get_fd(ssl))) 
+            {
+                appendLog("SSL_write WANT_WRITE timeout");
+                return false;
+            }
+        } 
+        else if (err == SSL_ERROR_WANT_READ) 
+        {
+            if (!read(SSL_get_fd(ssl))) 
+            {
+                appendLog("SSL_write WANT_READ timeout");
+                return false;
+            }
+        } 
+        else if (err == SSL_ERROR_ZERO_RETURN) 
+        {
+            appendLog("SSL connection closed by peer during write");
+            return false;
+        } 
+        else if (err == SSL_ERROR_SYSCALL) 
+        {
+            appendLog("SSL_write syscall error");
+            return false;
+        } 
+        else // SSL_ERROR_SSL or unknown
+        {
+            appendLog("SSL_write error: " + std::string(ERR_error_string(ERR_get_error(), nullptr)));
+            return false;
+        }
+    }
+    return true;
+    
 }
 
 void startWebSocketClient() 
@@ -996,3 +1242,5 @@ void startWebSocketClient()
     close(client_socket);
     freeaddrinfo(res);
 }
+
+*/
