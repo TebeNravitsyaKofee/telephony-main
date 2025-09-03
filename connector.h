@@ -6,7 +6,7 @@
 
 void sslInit();
 int getLines();
-void startWebSocketServer(int port);
+void startHttpServer(int port);
 
 
 #endif

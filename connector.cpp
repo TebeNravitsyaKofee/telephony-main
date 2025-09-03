@@ -685,150 +685,140 @@ void getLines()
 }
 
 
-std::string readWebSocketMessage(int client_socket) 
-{
-    // 8-bit integer
-    uint8_t header[2];
-    int rc = recv(client_socket, header, 2, 0);
-    if (rc != 2) return "";
-
-    // 1-bit - FIN
-    // 2-4 - RSV1-3
-    // 5-8 - OPCODE
-    bool fin = header[0] & 0x80;
-    uint8_t opcode = header[0] & 0x0F;
-
-    // 1-bit - MASK
-    // 2-8 - PAYLOAD LEN
-    // 126 means length is in next 2 bytes, 127 - 8 bytes
-    bool mask = header[1] & 0x80;
-    uint64_t payload_len = header[1] & 0x7F;
-
-    if (payload_len == 126) {
-        uint8_t ext[2]; 
-        recv(client_socket, ext, 2, 0);
-        payload_len = (ext[0] << 8) | ext[1];
-    } 
-    else if (payload_len == 127) {
-        uint8_t ext[8]; 
-        recv(client_socket, ext, 8, 0);
-        payload_len = 0;
-        for (int i=0; i<8; i++) {
-            payload_len = (payload_len << 8) | ext[i];
-        }
-    }
-
-    // читаем mask (если есть)
-    std::vector<uint8_t> masking_key(4);
-    if (mask) {
-        recv(client_socket, masking_key.data(), 4, 0);
-    }
-
-    // читаем полезные данные
-    std::vector<uint8_t> payload(payload_len);
+// читаем тело запроса полностью
+std::string readHttpBody(int client_socket, size_t content_length) {
+    std::string body;
+    body.resize(content_length);
     size_t received = 0;
-    while (received < payload_len) {
-        int r = recv(client_socket, payload.data() + received, payload_len - received, 0);
+
+    while (received < content_length) {
+        int r = recv(client_socket, body.data() + received, content_length - received, 0);
         if (r <= 0) break;
         received += r;
     }
-
-    // размаскируем (XOR)
-    if (mask) {
-        for (size_t i=0; i<payload_len; i++) {
-            payload[i] ^= masking_key[i % 4];
-        }
-    }
-
-    return std::string(payload.begin(), payload.end());
+    return body;
 }
 
-// создаём Sec-WebSocket-Accept
-std::string generateWebSocketAccept(const std::string& key) {
-    std::string guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-    std::string combined = key + guid;
-
-    unsigned char hash[20]; // SHA1 всегда 20 байт
-    SHA1(reinterpret_cast<const unsigned char*>(combined.c_str()), combined.size(), hash);
-
-    // Base64 encode
-    static const char* b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    std::string result;
-    int val = 0, valb = -6;
-    for (int i = 0; i < 20; i++) {
-        val = (val << 8) + hash[i];
-        valb += 8;
-        while (valb >= 0) {
-            result.push_back(b64chars[(val >> valb) & 0x3F]);
-            valb -= 6;
-        }
-    }
-    if (valb > -6) result.push_back(b64chars[((val << 8) >> (valb + 8)) & 0x3F]);
-    while (result.size() % 4) result.push_back('=');
-
-    return result;
-}
-
-// запуск сервера
-void startWebSocketServer(int port) 
+//async server
+void startHttpServer(int port) 
 {
     int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
     fcntl(listen_sock, F_SETFL, O_NONBLOCK);
 
     sockaddr_in addr{};
     addr.sin_family = AF_INET;
+    //htons = host-to-network-short
     addr.sin_port = htons(port);
     addr.sin_addr.s_addr = INADDR_ANY;
 
     bind(listen_sock, (struct sockaddr*)&addr, sizeof(addr));
     listen(listen_sock, 10);
 
-    appendLog("WebSocket server listening on port " + std::to_string(port));
+    appendLog("HTTP server listening on port " + std::to_string(port));
 
-    while (true) {
+    std::vector<int> clients;
+
+    //main loop
+    while (true) 
+    {
         sockaddr_in client_addr{};
         socklen_t client_len = sizeof(client_addr);
         int client_sock = accept(listen_sock, (struct sockaddr*)&client_addr, &client_len);
-        if (client_sock < 0) { 
-            if (errno != EAGAIN && errno != EWOULDBLOCK) appendLog("accept error"); 
-            continue; 
+        if (client_sock >= 0) 
+        {
+            fcntl(client_sock, F_SETFL, O_NONBLOCK);
+            clients.push_back(client_sock);
+            appendLog("Accepted new client: " + std::to_string(client_sock));
+        }
+        
+        //creating and zeroing fd set
+        fd_set read_fds;
+        FD_ZERO(&read_fds);
+
+        //adding server socked to fd set
+        FD_SET(listen_sock, &read_fds);
+        int max_fd = listen_sock;
+
+        //adding client sockets
+        for (int c : clients) 
+        {
+            FD_SET(c, &read_fds);
+            if (c > max_fd) 
+            {
+                max_fd = c;
+            }
         }
 
-        // читаем заголовки
-        char buf[4096]; std::string headers;
-        while (headers.find("\r\n\r\n") == std::string::npos) {
-            int rc = recv(client_sock, buf, sizeof(buf), 0);
-            if (rc <= 0) break;
-            headers.append(buf, rc);
+        timeval tv{0, 50000};
+        int ready = select(max_fd + 1, &read_fds, nullptr, nullptr, &tv);
+
+        if (ready > 0) 
+        {
+            std::vector<int> closed_clients;
+            for (int c : clients) 
+            {
+                //if socket is ready to be read
+                if (FD_ISSET(c, &read_fds)) 
+                {
+                    char buf[4096];
+                    std::string headers;
+                    int rc = recv(c, buf, sizeof(buf), 0);
+                    //0 = client closed connection
+                    //-1 = error
+                    if (rc <= 0) 
+                    {
+                        closed_clients.push_back(c);
+                        continue;
+                    }
+                    headers.append(buf, rc);
+
+                    //parsing headers
+                    size_t pos = headers.find("\r\n\r\n");
+                    if (pos != std::string::npos) 
+                    {
+                        #ifdef DEBUG
+                            appendLog("Received headers from client " + std::to_string(c) + ":");
+                            appendLog(header_block);
+                            std::cout << "Received headers from client " + std::to_string(c) + ":" << header_block << std::endl;
+                        #endif
+                        std::string header_block = headers.substr(0, pos);
+
+                        size_t content_length = 0;
+                        std::string lower_header = header_block;
+                        std::transform(lower_header.begin(), lower_header.end(), lower_header.begin(), ::tolower);
+                        size_t cl_pos = lower_header.find("content-length:");
+                        if (cl_pos != std::string::npos) 
+                        {
+                            size_t cl_end = lower_header.find("\r\n", cl_pos);
+                            std::string cl_str = header_block.substr(cl_pos + 15, cl_end - (cl_pos + 15));
+                            content_length = std::stoul(cl_str);
+                        }
+                        
+                        //parsing body
+                        size_t header_end = headers.find("\r\n\r\n");
+                        if (header_end != std::string::npos) 
+                        {
+
+                            std::string body = headers.substr(header_end + 4);
+
+                            appendLog("Received body from client " + std::to_string(c) + ":");
+                            appendLog(body);
+                        }
+                        std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nOK";
+                        send(c, response.data(), response.size(), 0);
+
+                        closed_clients.push_back(c);
+                    }
+                }
+            }
+
+            for (int c : closed_clients) 
+            {
+                close(c);
+                //move all closed clients in clients to end and erase them
+                clients.erase(std::remove(clients.begin(), clients.end(), c), clients.end());
+            }
         }
-
-        /*size_t key_pos = headers.find("Sec-WebSocket-Key:");
-        if (key_pos == std::string::npos) { 
-            close(client_sock); 
-            continue; 
-        }*/
-        /*size_t key_end = headers.find("\r\n", key_pos);
-        std::string key = headers.substr(key_pos + 18, key_end - (key_pos + 18));
-        key.erase(0, key.find_first_not_of(" \t"));*/
-
-        std::string accept_key = generateWebSocketAccept("key");
-        std::ostringstream response;
-        response << "HTTP/1.1 101 Switching Protocols\r\n"
-                 << "Upgrade: websocket\r\n"
-                 << "Connection: Upgrade\r\n"
-                 << "Sec-WebSocket-Accept: " << accept_key << "\r\n\r\n";
-
-        send(client_sock, response.str().data(), response.str().size(), 0);
-        appendLog("WebSocket handshake completed with client");
-
-        // цикл приёма сообщений
-        while (true) {
-            std::string msg = readWebSocketMessage(client_sock);
-            if (msg.empty()) break;
-            appendLog("Received WS message: " + msg);
-        }
-
-        close(client_sock);
     }
 }
 
