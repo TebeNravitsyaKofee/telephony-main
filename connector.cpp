@@ -13,7 +13,8 @@
 #include <errno.h>
 #include <nlohmann/json.hpp>
 #include <vector>
-
+#include <variant>
+#include <optional>
 
 #include "settings.h"
 
@@ -699,6 +700,228 @@ std::string readHttpBody(int client_socket, size_t content_length) {
     return body;
 }
 
+//decoding body, cause it is url-encoded
+std::string urlDecode(const std::string &str) 
+{
+    std::ostringstream decoded;
+    for (size_t i = 0; i < str.size(); ++i) 
+    {
+        if (str[i] == '%' && i + 2 < str.size()) 
+        {
+            int val;
+            std::istringstream iss(str.substr(i + 1, 2));
+            if (iss >> std::hex >> val) 
+            {
+                decoded << static_cast<char>(val);
+                i += 2;
+            }
+        } 
+        else if (str[i] == '+') 
+        {
+            decoded << ' ';
+        } 
+        else 
+        {
+            decoded << str[i];
+        }
+    }
+    return decoded.str();
+}
+
+//data structures that store /call events
+
+struct AuthEvent 
+{
+    std::string entry_id;
+    int product_id;
+    int user_id;
+    int64_t timestamp;
+    std::string recording_id;
+};
+
+struct CallStateEvent 
+{
+    std::string entry_id;
+    std::string call_id;
+    int64_t timestamp;
+    int seq;
+    std::string call_state; //Appeared, Connected, Disconnected
+    std::string location;
+
+    std::string from_extension;
+    std::string from_number;
+    std::string from_line_number;
+
+    std::string to_number;
+
+    std::optional<int> disconnect_reason; //только для Disconnected
+    std::optional<int> dct_type; //Appeared, Connected, Disconnected
+    std::string sip_call_id;
+};
+
+struct RecordingEvent {
+    std::string recording_id;
+    std::string recording_state; // Started, Completed, Stopped
+    int seq;
+    std::string entry_id;
+    std::string call_id;
+    std::string extension;
+    int64_t timestamp;
+    std::string recipient;
+
+    std::optional<int> completion_code;
+};
+
+struct CallSummary 
+{
+    std::string entry_id;
+    int call_direction; //1 - incoming, 2 - outgoing
+    std::string from_extension;
+    std::string from_number;
+    std::string to_number;
+    std::string line_number;
+
+    int64_t create_time;
+    int64_t forward_time;
+    int64_t talk_time;
+    int64_t end_time;
+
+    int entry_result;
+    int disconnect_reason;
+    std::string sip_call_id;
+};
+
+//map for storing active calls
+std::map<std::string, CallStateEvent> activeCalls;
+
+//function that parses calls (only CallStateEvent) to map and controls call state flow
+void storeCallState(const CallStateEvent& ev) 
+{
+    if (ev.call_state == "Appeared") 
+    {
+        activeCalls[ev.call_id] = ev;
+    }
+    else if (ev.call_state == "Connected") 
+    {
+        auto it = activeCalls.find(ev.call_id);
+        if (it != activeCalls.end()) 
+        {
+            it->second.call_state = "Connected";
+            it->second.timestamp  = ev.timestamp;
+            it->second.seq        = ev.seq;
+        }
+        //in some cases second call state can come earlier than first
+        //if call not found i just add it in for now, gotta rework that later
+        else 
+        {
+            activeCalls[ev.call_id] = ev;
+        }
+    }
+    else if (ev.call_state == "Disconnected") 
+    {
+        auto it = activeCalls.find(ev.call_id);
+        //here i will search for call_summary and add it to posgresql
+        if (it != activeCalls.end()) 
+        {
+            #ifdef DEBUG
+            std::cout << "Звонок завершён: " << ev.call_id 
+                      << " seq=" << ev.seq 
+                      << " timestamp=" << ev.timestamp << "\n";
+            #endif
+
+            activeCalls.erase(it);
+        }
+    }
+}
+
+using CallEvent = std::variant<AuthEvent, CallStateEvent, RecordingEvent, CallSummary>;
+
+//this map stores every /call event before it being redirected, not needed in current state
+//std::map<std::string, CallEvent> events;
+
+//this function distributes events to data structures
+CallEvent parseEvent(const std::string& jsonStr) {
+    auto j = nlohmann::json::parse(jsonStr);
+
+    if (j.contains("call_state")) 
+    {
+        CallStateEvent ev;
+        ev.entry_id = j.value("entry_id", "");
+        ev.call_id = j.value("call_id", "");
+        ev.timestamp = j.value("timestamp", 0);
+        ev.seq = j.value("seq", 0);
+        ev.call_state = j.value("call_state", "");
+        ev.location = j.value("location", "");
+        if (j.contains("from")) 
+        {
+            ev.from_extension = j["from"].value("extension", "");
+            ev.from_number = j["from"].value("number", "");
+            ev.from_line_number = j["from"].value("line_number", "");
+        }
+        if (j.contains("to")) 
+        {
+            ev.to_number = j["to"].value("number", "");
+        }
+        if (j.contains("disconnect_reason"))
+            ev.disconnect_reason = j["disconnect_reason"].get<int>();
+        if (j.contains("dct"))
+            ev.dct_type = j["dct"].value("type", 0);
+        ev.sip_call_id = j.value("sip_call_id", "");
+        return ev;
+    }
+    else if (j.contains("recording_state")) 
+    {
+        RecordingEvent ev;
+        ev.recording_id = j.value("recording_id", "");
+        ev.recording_state = j.value("recording_state", "");
+        ev.seq = j.value("seq", 0);
+        ev.entry_id = j.value("entry_id", "");
+        ev.call_id = j.value("call_id", "");
+        ev.extension = j.value("extension", "");
+        ev.timestamp = j.value("timestamp", 0);
+        ev.recipient = j.value("recipient", "");
+        if (j.contains("completion_code"))
+            ev.completion_code = j["completion_code"].get<int>();
+        return ev;
+    }
+    else if (j.contains("call_direction")) 
+    {
+        CallSummary ev;
+        ev.entry_id = j.value("entry_id", "");
+        ev.call_direction = j.value("call_direction", 0);
+        if (j.contains("from")) 
+        {
+            ev.from_extension = j["from"].value("extension", "");
+            ev.from_number = j["from"].value("number", "");
+        }
+        if (j.contains("to")) 
+        {
+            ev.to_number = j["to"].value("number", "");
+        }
+        ev.line_number = j.value("line_number", "");
+        ev.create_time = j.value("create_time", 0);
+        ev.forward_time = j.value("forward_time", 0);
+        ev.talk_time = j.value("talk_time", 0);
+        ev.end_time = j.value("end_time", 0);
+        ev.entry_result = j.value("entry_result", 0);
+        ev.disconnect_reason = j.value("disconnect_reason", 0);
+        ev.sip_call_id = j.value("sip_call_id", "");
+        return ev;
+    }
+    else if (j.contains("product_id")) 
+    {
+        AuthEvent ev;
+        ev.entry_id = j.value("entry_id", "");
+        ev.product_id = j.value("product_id", 0);
+        ev.user_id = j.value("user_id", 0);
+        ev.timestamp = j.value("timestamp", 0);
+        ev.recording_id = j.value("recording_id", "");
+        return ev;
+    }
+
+    throw std::runtime_error("Unknown event type");
+}
+
 //async server
 void startHttpServer(int port) 
 {
@@ -776,12 +999,13 @@ void startHttpServer(int port)
                     size_t pos = headers.find("\r\n\r\n");
                     if (pos != std::string::npos) 
                     {
-                        #ifdef DEBUG
-                            appendLog("Received headers from client " + std::to_string(c) + ":");
-                            appendLog(header_block);
-                            std::cout << "Received headers from client " + std::to_string(c) + ":" << header_block << std::endl;
-                        #endif
+                        
                         std::string header_block = headers.substr(0, pos);
+                        #ifdef DEBUG
+                            //appendLog("Received headers from client " + std::to_string(c) + ":");
+                            //appendLog(header_block);
+                            //std::cout << "Received headers from client " + std::to_string(c) + ":" << header_block << std::endl;
+                        #endif
 
                         size_t content_length = 0;
                         std::string lower_header = header_block;
@@ -800,9 +1024,56 @@ void startHttpServer(int port)
                         {
 
                             std::string body = headers.substr(header_end + 4);
+                            //decoding body
+                            std::string body_decoded = urlDecode(body);
 
                             appendLog("Received body from client " + std::to_string(c) + ":");
-                            appendLog(body);
+                            appendLog(body_decoded);
+
+                            //recieving raw json from body
+                            size_t pos = body_decoded.find("json=");
+                            if (pos == std::string::npos)
+                            {
+                                std::cerr << "No JSON found during event recieving" << std::endl;
+                            }
+                            std::string jsonPart = body_decoded.substr(pos + 5); 
+
+                            CallEvent call_state = parseEvent(jsonPart);
+
+                            if (std::holds_alternative<CallStateEvent>(call_state)) 
+                            {
+                                auto ev = std::get<CallStateEvent>(call_state);
+                                appendLog("CallStateEvent: " + ev.call_state + " for call_id=" + ev.call_id);
+                                storeCallState(ev);
+                                #ifdef DEBUG
+                                {
+                                    if (activeCalls.empty()) 
+                                    {
+                                        std::cout << "Нет активных звонков\n";
+                                    } 
+                                    else 
+                                    {
+                                        for (auto& [id, call] : activeCalls) 
+                                        {
+                                            std::cout << "Активный звонок: " << id 
+                                                    << " состояние: " << call.call_state << "\n";
+                                        }
+                                    }
+                                }
+                                #endif
+                            }
+                            else if (std::holds_alternative<RecordingEvent>(call_state)) 
+                            {
+                                auto ev = std::get<RecordingEvent>(call_state);
+                                appendLog("RecordingEvent: " + ev.recording_state + " for call_id=" + ev.call_id);
+                            }
+                            else if (std::holds_alternative<CallSummary>(call_state)) 
+                            {
+                                auto ev = std::get<CallSummary>(call_state);
+                                appendLog("CallSummary: " + ev.entry_id + " direction=" + std::to_string(ev.call_direction));
+                            }
+                            
+                            
                         }
                         std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nOK";
                         send(c, response.data(), response.size(), 0);
@@ -822,8 +1093,16 @@ void startHttpServer(int port)
     }
 }
 
+
+
+
+
+
+
+
 //<---------------------------------------------------------------->
 //SSL Websocket server down below, cant quite figure it out for now
+//websocket is not needed in mango api
 
 /*
 //generating key for websocket
