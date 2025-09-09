@@ -27,7 +27,9 @@ int main(int argc, char *argv[])
 {
     sslInit();
     //getLines();
+    displayCalls();
     startHttpServer(8058);
+    
 
         
 

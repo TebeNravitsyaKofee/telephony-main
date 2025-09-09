@@ -17,6 +17,7 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "preLaunchTask": "C/C++: g++ build Debug"
+            
         },
         {
             "name": "Запуск Release",
