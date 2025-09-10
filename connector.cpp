@@ -23,9 +23,9 @@
 #include <sys/wait.h>
 #include <cstring>
 #include <functional>
+#include <atomic>
 
 #include "settings.h"
-
 
 
 using json = nlohmann::json;
@@ -818,37 +818,6 @@ private:
         for (auto &fn : listeners) fn();
     }
 
-    class ValueProxy 
-    {
-        ObservableMap& parent;
-        K key;
-    public:
-        ValueProxy(ObservableMap& p, K k) : parent(p), key(std::move(k)) {}
-
-        // Присваивание с уведомлением
-        ValueProxy& operator=(const V& value) 
-        {
-            parent.data[key] = value;
-            parent.notify();
-            return *this;
-        }
-
-        // Поддержка перемещения
-        ValueProxy& operator=(V&& value) 
-        {
-            parent.data[key] = std::move(value);
-            parent.notify();
-            return *this;
-        }
-
-        // Чтение
-        operator V&() { return parent.data[key]; }
-        operator const V&() const { return parent.data.at(key); }
-
-        // Доступ к методам
-        V* operator->() { return &parent.data[key]; }
-    };
-
 public:
     //subscribing for notifying
     void subscribe(Listener fn) 
@@ -894,18 +863,16 @@ public:
         }
     }
 
-     // operator[] возвращает ValueProxy только для lvalue ObservableMap
-    ValueProxy operator[](const K& key) & 
+    //access like in std::map
+    V& operator[](const K& key) 
     {
-        return ValueProxy(*this, key);
+        notify(); 
+        return data[key];
     }
-
-    // Запрещаем использование на временных объектах
-    ValueProxy operator[](const K& key) && = delete;
 
     V& at(const K& key) 
     {
-        return data.at(key);
+    return data.at(key);
     }
     const V& at(const K& key) const 
     {
@@ -939,25 +906,20 @@ void storeCallState(const CallStateEvent& ev)
 {
     if (ev.call_state == "Appeared") 
     {
-        activeCalls[ev.call_id] = ev;
+        activeCalls.insertOrUpdate(ev.call_id,ev);
     }
     else if (ev.call_state == "Connected") 
     {
         auto it = activeCalls.find(ev.call_id);
         if (it != activeCalls.end()) 
         {
-            it->second.call_state = "Connected";
-            it->second.timestamp  = ev.timestamp;
-            it->second.seq        = ev.seq;
+            activeCalls.insertOrUpdate(ev.call_id,ev);
         }
         //in some cases second call state can come earlier than first
         //if call not found i just add it in for now, gotta rework that later
         else 
         {
-            activeCalls[ev.call_id] = ev;
-            activeCalls.erase(ev.call_id);
             activeCalls.insertOrUpdate(ev.call_id,ev);
-
         }
     }
     else if (ev.call_state == "Disconnected") 
@@ -1062,13 +1024,21 @@ CallEvent parseEvent(const std::string& jsonStr) {
         ev.recording_id = j.value("recording_id", "");
         return ev;
     }
+    else if (j.contains("key")) 
+    {
+        return {};
+    }
 
     throw std::runtime_error("Unknown event type");
 }
 
+
+
 //async server
 void startHttpServer(int port) 
 {
+
+
     int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
     fcntl(listen_sock, F_SETFL, O_NONBLOCK);
 
@@ -1189,8 +1159,9 @@ void startHttpServer(int port)
                                 auto ev = std::get<CallStateEvent>(call_state);
                                 appendLog("CallStateEvent: " + ev.call_state + " for call_id=" + ev.call_id);
                                 storeCallState(ev);
+                                //debugging active calls
                                 #ifdef DEBUG
-                                {
+                                {/*
                                     if (activeCalls.empty()) 
                                     {
                                         std::cout << "Нет активных звонков\n";
@@ -1203,6 +1174,7 @@ void startHttpServer(int port)
                                                     << " состояние: " << call.call_state << "\n";
                                         }
                                     }
+                                */
                                 }
                                 #endif
                             }
@@ -1233,6 +1205,7 @@ void startHttpServer(int port)
             }
         }
     }
+    
 }
 
 //method looks for installed terminals, made for a bit of versatility
@@ -1326,7 +1299,7 @@ void displayCalls()
     static std::ofstream out(fifo);
     if (!out.is_open()) 
     {
-        std::string error = "Не удалось запустить Переходим к следующему.\n";
+        std::string error = "Не удалось открыть FIFO на запись.\n";
         appendLog(error);
         #ifdef DEBUG
         {
@@ -1343,19 +1316,17 @@ void displayCalls()
         std::string ret;
         for(auto const& [key,val] : activeCalls)
         {
+            std::cout << val.call_state << std::endl;
             CallStateEvent call = val;
             buf = val.from_number + " " + val.call_state + " " + val.location + "\n";
             ret.append(buf);
             
 
         };
+        //this code clears terminal
+        out << "\033[2J\033[H";
         out << ret << std::flush;
     });
-
-    
-    
-    
-    
     
     /*
         ev.entry_id = j.value("entry_id", "");
@@ -1384,21 +1355,11 @@ void displayCalls()
 
 }
 
-class Event {
-    std::vector<std::function<void(int)>> listeners;
-public:
-    void subscribe(std::function<void(int)> fn) {
-        listeners.push_back(fn);
-    }
-    void notify(int value) {
-        for (auto &fn : listeners) fn(value);
-    }
-};
 
-void bababa()
-{
 
-}
+
+
+
 
 
 
