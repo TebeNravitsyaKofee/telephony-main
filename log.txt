@@ -1,0 +1,2484 @@
+
+Sun Sep  7 23:10:56 2025
+  HTTP server listening on port 8058
+
+Sun Sep  7 23:11:28 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:11:28 2025
+  Received body from client 4:
+
+Sun Sep  7 23:11:28 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f2c49b9c91d7e83a4edb117d0e080f7e211398c6c6e77417d5694939894a4da6&json={"entry_id":"MjQ2MTcyNjQzNTM=","call_id":"MToxMDExODU1Njo1NDQ6Mzk4MDE5ODU0","timestamp":1757275884,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"48b6232000ed49248294fd3033cc42f7."}
+
+Sun Sep  7 23:11:28 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NDQ6Mzk4MDE5ODU0
+
+Sun Sep  7 23:11:31 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:11:31 2025
+  Received body from client 4:
+
+Sun Sep  7 23:11:31 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=1f3f64176ae69ff31c25532e439130e77ee9a448324f07abe7f9e997e58e2fcf&json={"entry_id":"MjQ2MTcyNjQzNTM=","call_id":"MToxMDExODU1Njo1NDQ6Mzk4MDE5ODU0","timestamp":1757275891,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"48b6232000ed49248294fd3033cc42f7."}
+
+Sun Sep  7 23:11:31 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NDQ6Mzk4MDE5ODU0
+
+Sun Sep  7 23:11:31 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:11:31 2025
+  Received body from client 4:
+
+Sun Sep  7 23:11:31 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=40c7913290d0aa7802bb141551fd314a70504163bc3a805fd1fae0bdb7d118bf&json={"recording_id":"MToxMDExODU1NjoyNDYxNzI2NDM1Mzow","recording_state":"Started","seq":1,"entry_id":"MjQ2MTcyNjQzNTM=","call_id":"MToxMDExODU1Njo1NDQ6Mzk4MDE5ODU0","extension":"202","timestamp":1757275891,"recipient":"Cloud"}
+
+Sun Sep  7 23:11:31 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1NDQ6Mzk4MDE5ODU0
+
+Sun Sep  7 23:11:34 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:11:34 2025
+  Received body from client 4:
+
+Sun Sep  7 23:11:34 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=d9e82f3b45f9fcef61f936fd732e4095fa282fc170e4425b097df9302eceef76&json={"entry_id":"MjQ2MTcyNjQzNTM=","call_id":"MToxMDExODU1Njo1NDQ6Mzk4MDE5ODU0","timestamp":1757275894,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"48b6232000ed49248294fd3033cc42f7."}
+
+Sun Sep  7 23:11:34 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NDQ6Mzk4MDE5ODU0
+
+Sun Sep  7 23:11:34 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:11:34 2025
+  Received body from client 4:
+
+Sun Sep  7 23:11:34 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=21788172fcd8e7b35fb22695ed89c3f457363e55b03c4978258d91110ec29945&json={"recording_id":"MToxMDExODU1NjoyNDYxNzI2NDM1Mzow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MTcyNjQzNTM=","call_id":"MToxMDExODU1Njo1NDQ6Mzk4MDE5ODU0","extension":"202","timestamp":1757275894,"completion_code":4002,"recipient":"Cloud"}
+
+Sun Sep  7 23:11:34 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1NDQ6Mzk4MDE5ODU0
+
+Sun Sep  7 23:11:34 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:11:34 2025
+  Received body from client 4:
+
+Sun Sep  7 23:11:34 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f1257c3fb9ba0cd49db3cb201a028620d755ca8d07bbea18781dca8897843733&json={"entry_id":"MjQ2MTcyNjQzNTM=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757275884,"forward_time":1757275884,"talk_time":1757275891,"end_time":1757275894,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"48b6232000ed49248294fd3033cc42f7."}
+
+Sun Sep  7 23:11:34 2025
+  CallSummary: MjQ2MTcyNjQzNTM= direction=2
+
+Sun Sep  7 23:16:11 2025
+  HTTP server listening on port 8058
+
+Sun Sep  7 23:16:26 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:16:26 2025
+  Received body from client 4:
+
+Sun Sep  7 23:16:26 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=efdd6f8a17df88390e9875574c5fc235873f92b47292f9b81e6a69cd5168df43&json={"entry_id":"MjQ2MTcyNjYyNTg=","call_id":"MToxMDExODU1Njo1NzU6MTI1Nzc3NDc0","timestamp":1757276178,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"d2d3d3e798b54331b205f73c473dc69f."}
+
+Sun Sep  7 23:16:26 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NzU6MTI1Nzc3NDc0
+
+Sun Sep  7 23:16:33 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:16:33 2025
+  Received body from client 4:
+
+Sun Sep  7 23:16:33 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=37d1e5ad11d81561b1a326d88be70afc4979938c12414dc3657e7431bb246001&json={"entry_id":"MjQ2MTcyNjYyNTg=","call_id":"MToxMDExODU1Njo1NzU6MTI1Nzc3NDc0","timestamp":1757276193,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"d2d3d3e798b54331b205f73c473dc69f."}
+
+Sun Sep  7 23:16:33 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NzU6MTI1Nzc3NDc0
+
+Sun Sep  7 23:16:33 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:16:33 2025
+  Received body from client 4:
+
+Sun Sep  7 23:16:33 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=5fde90fd031d136244cdcfd3cce59edb9a648b4725facd0e456cf0070565bbe2&json={"recording_id":"MToxMDExODU1NjoyNDYxNzI2NjI1ODow","recording_state":"Started","seq":1,"entry_id":"MjQ2MTcyNjYyNTg=","call_id":"MToxMDExODU1Njo1NzU6MTI1Nzc3NDc0","extension":"202","timestamp":1757276193,"recipient":"Cloud"}
+
+Sun Sep  7 23:16:33 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1NzU6MTI1Nzc3NDc0
+
+Sun Sep  7 23:16:34 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:16:34 2025
+  Received body from client 4:
+
+Sun Sep  7 23:16:34 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e695469bf49669c4f4bc20b8e161a689b5822b9d7bcd6b2e6b74713a890a7774&json={"entry_id":"MjQ2MTcyNjYyNTg=","call_id":"MToxMDExODU1Njo1NzU6MTI1Nzc3NDc0","timestamp":1757276194,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"d2d3d3e798b54331b205f73c473dc69f."}
+
+Sun Sep  7 23:16:34 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NzU6MTI1Nzc3NDc0
+
+Sun Sep  7 23:17:05 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:17:05 2025
+  Received body from client 4:
+
+Sun Sep  7 23:17:05 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=a235b0477f18e2622001e1f3f8bbbd2ac66d6bae3e017904d2271206e7982441&json={"recording_id":"MToxMDExODU1NjoyNDYxNzI2NjI1ODow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MTcyNjYyNTg=","call_id":"MToxMDExODU1Njo1NzU6MTI1Nzc3NDc0","extension":"202","timestamp":1757276225,"completion_code":1000,"recipient":"Cloud"}
+
+Sun Sep  7 23:17:05 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1NzU6MTI1Nzc3NDc0
+
+Sun Sep  7 23:17:05 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:17:05 2025
+  Received body from client 4:
+
+Sun Sep  7 23:17:05 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=6583809903aced697c5a409904f0195f32ef162a02cff4633e732f6cd52a9e2c&json={"entry_id":"MjQ2MTcyNjYyNTg=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757276178,"forward_time":1757276178,"talk_time":1757276193,"end_time":1757276225,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"d2d3d3e798b54331b205f73c473dc69f."}
+
+Sun Sep  7 23:17:05 2025
+  CallSummary: MjQ2MTcyNjYyNTg= direction=2
+
+Sun Sep  7 23:17:06 2025
+  Accepted new client: 4
+
+Sun Sep  7 23:17:06 2025
+  Received body from client 4:
+
+Sun Sep  7 23:17:06 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=c8af637e691a5ba0848721d12a02ca74cc3ea9a1b334bb21a90e1c384b3fd07e&json={"entry_id":"MjQ2MTcyNjYyNTg=","product_id":400181673,"user_id":401701328,"timestamp":1757276226,"recording_id":"MToxMDExODU1NjoyNDYxNzI2NjI1ODow"}
+
+Mon Sep  8 13:03:11 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 00:13:48 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:47:52 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:51:47 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:51:58 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:54:37 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:55:00 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:56:07 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:56:59 2025
+  Accepted new client: 5
+
+Tue Sep  9 11:56:59 2025
+  Received body from client 5:
+
+Tue Sep  9 11:56:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=c12005be7ed5bcc08080b14320997363f6c36837a70404d5f40b08db6e606acd&json={"entry_id":"MjQ2MzE2NTg2MzU=","call_id":"MToxMDExODU1NjoxNjE6NzkwMTk5NTc0","timestamp":1757408215,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"828659deed6643cc9b1faca396cf287f."}
+
+Tue Sep  9 11:56:59 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1NjoxNjE6NzkwMTk5NTc0
+
+Tue Sep  9 11:57:05 2025
+  Accepted new client: 5
+
+Tue Sep  9 11:57:05 2025
+  Received body from client 5:
+
+Tue Sep  9 11:57:05 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e893fbd54377eb7428d240dac72e6079612f0607b2d3ba06700f87bc357390c0&json={"entry_id":"MjQ2MzE2NTg2MzU=","call_id":"MToxMDExODU1NjoxNjE6NzkwMTk5NTc0","timestamp":1757408225,"seq":2,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"828659deed6643cc9b1faca396cf287f."}
+
+Tue Sep  9 11:57:05 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1NjoxNjE6NzkwMTk5NTc0
+
+Tue Sep  9 11:57:05 2025
+  Accepted new client: 5
+
+Tue Sep  9 11:57:05 2025
+  Received body from client 5:
+
+Tue Sep  9 11:57:05 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=3a5c632210aee7da77d8852ed633ee04d6b9f14d3e97b3fd725ff0ef88fac9f5&json={"entry_id":"MjQ2MzE2NTg2MzU=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757408215,"forward_time":1757408215,"talk_time":0,"end_time":1757408225,"entry_result":0,"disconnect_reason":1120,"sip_call_id":"828659deed6643cc9b1faca396cf287f."}
+
+Tue Sep  9 11:57:05 2025
+  CallSummary: MjQ2MzE2NTg2MzU= direction=2
+
+Tue Sep  9 11:57:37 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:58:14 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:58:22 2025
+  Accepted new client: 5
+
+Tue Sep  9 11:58:22 2025
+  Received body from client 5:
+
+Tue Sep  9 11:58:22 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e1dcc094070e5c144befcbe566e5f6b37471bbe91d938324b5f4f6fedd356903&json={"key":"bd8c8fcf44d3a0e035bce7a3c6330beb"}
+
+Tue Sep  9 11:58:50 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:59:07 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 11:59:16 2025
+  Accepted new client: 5
+
+Tue Sep  9 11:59:16 2025
+  Received body from client 5:
+
+Tue Sep  9 11:59:16 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=1103495784366c6735b956c3cc879b9b6717e142cf21efb42c1ef5e968de8e06&json={"entry_id":"MjQ2MzE2OTY3MDM=","call_id":"MToxMDExODU1Njo1NTM6Mzc3OTUxMzk3","timestamp":1757408353,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"d02b5be1d3dc44958dacdddcf85ac6df."}
+
+Tue Sep  9 11:59:16 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NTM6Mzc3OTUxMzk3
+
+Tue Sep  9 11:59:37 2025
+  Accepted new client: 5
+
+Tue Sep  9 11:59:37 2025
+  Received body from client 5:
+
+Tue Sep  9 11:59:37 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=024c87a38fe222ff94c431ffdeb1418a7ad54353104e9acb245afc890d63dddb&json={"entry_id":"MjQ2MzE2OTY3MDM=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757408353,"forward_time":1757408353,"talk_time":0,"end_time":1757408364,"entry_result":0,"disconnect_reason":1120,"sip_call_id":"d02b5be1d3dc44958dacdddcf85ac6df."}
+
+Tue Sep  9 11:59:37 2025
+  CallSummary: MjQ2MzE2OTY3MDM= direction=2
+
+Tue Sep  9 11:59:37 2025
+  Accepted new client: 5
+
+Tue Sep  9 11:59:37 2025
+  Received body from client 5:
+
+Tue Sep  9 11:59:37 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=3f18734c7daf35a29dec9217326bddc408e44792780d7156cd3d039184f0d962&json={"entry_id":"MjQ2MzE2OTY3MDM=","call_id":"MToxMDExODU1Njo1NTM6Mzc3OTUxMzk3","timestamp":1757408364,"seq":2,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"d02b5be1d3dc44958dacdddcf85ac6df."}
+
+Tue Sep  9 11:59:37 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NTM6Mzc3OTUxMzk3
+
+Tue Sep  9 12:11:58 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 12:12:06 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:12:06 2025
+  Received body from client 5:
+
+Tue Sep  9 12:12:06 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=182ed036fed8e683397fab44375652ac53fb52b1d5ff314c07222db174854a57&json={"entry_id":"MjQ2MzE5MTE0Nzg=","call_id":"MToxMDExODU1Njo1ODE6MTEzNzQ0MzEz","timestamp":1757409121,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"58821f3ef8424b2e88104fc02a4c5f76."}
+
+Tue Sep  9 12:12:06 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1ODE6MTEzNzQ0MzEz
+
+Tue Sep  9 12:12:21 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:12:21 2025
+  Received body from client 5:
+
+Tue Sep  9 12:12:21 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=634f173ca8d8ca6148a2788b46dce844722796eb2deadbb05769504d667bb463&json={"entry_id":"MjQ2MzE5MTE0Nzg=","call_id":"MToxMDExODU1Njo1ODE6MTEzNzQ0MzEz","timestamp":1757409129,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"58821f3ef8424b2e88104fc02a4c5f76."}
+
+Tue Sep  9 12:12:21 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1ODE6MTEzNzQ0MzEz
+
+Tue Sep  9 12:12:21 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:12:21 2025
+  Received body from client 5:
+
+Tue Sep  9 12:12:21 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=6fd8787246f13f6248708017ac08e38c5b3c943f8ca658fcd484dfcc4abf7c08&json={"recording_id":"MToxMDExODU1NjoyNDYzMTkxMTQ3ODow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzE5MTE0Nzg=","call_id":"MToxMDExODU1Njo1ODE6MTEzNzQ0MzEz","extension":"202","timestamp":1757409129,"recipient":"Cloud"}
+
+Tue Sep  9 12:12:21 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1ODE6MTEzNzQ0MzEz
+
+Tue Sep  9 12:12:21 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:12:21 2025
+  Received body from client 5:
+
+Tue Sep  9 12:12:21 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=214fffc6e182a52abb843e05cc089e57eeb2725c1557f391f1de60000abbb84e&json={"entry_id":"MjQ2MzE5MTE0Nzg=","call_id":"MToxMDExODU1Njo1ODE6MTEzNzQ0MzEz","timestamp":1757409134,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"58821f3ef8424b2e88104fc02a4c5f76."}
+
+Tue Sep  9 12:12:21 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1ODE6MTEzNzQ0MzEz
+
+Tue Sep  9 12:12:24 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:12:24 2025
+  Received body from client 5:
+
+Tue Sep  9 12:12:24 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=519cb1d88dceb6ab1d4498114a326183e4511af0e44534be00f0c66862504025&json={"recording_id":"MToxMDExODU1NjoyNDYzMTkxMTQ3ODow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzE5MTE0Nzg=","call_id":"MToxMDExODU1Njo1ODE6MTEzNzQ0MzEz","extension":"202","timestamp":1757409134,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 12:12:24 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1ODE6MTEzNzQ0MzEz
+
+Tue Sep  9 12:12:24 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:12:24 2025
+  Received body from client 5:
+
+Tue Sep  9 12:12:24 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=1c0efa21b87d635af76d465b9663ba32ca2b4da47624e0982967ae25c072c025&json={"entry_id":"MjQ2MzE5MTE0Nzg=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757409121,"forward_time":1757409121,"talk_time":1757409129,"end_time":1757409134,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"58821f3ef8424b2e88104fc02a4c5f76."}
+
+Tue Sep  9 12:12:24 2025
+  CallSummary: MjQ2MzE5MTE0Nzg= direction=2
+
+Tue Sep  9 12:12:24 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:12:24 2025
+  Received body from client 5:
+
+Tue Sep  9 12:12:24 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=46cdb8f4b4d5c6d1e251def09162d3e97c841985b194e814208e33f6ebb0a06a&json={"entry_id":"MjQ2MzE5MTE0Nzg=","product_id":400181673,"user_id":401701328,"timestamp":1757409134,"recording_id":"MToxMDExODU1NjoyNDYzMTkxMTQ3ODow"}
+
+Tue Sep  9 12:13:10 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 12:13:23 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:13:23 2025
+  Received body from client 5:
+
+Tue Sep  9 12:13:23 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=d8818a3849205fd28622e3c7b73efdfbb5c22b93222dbe51599aea4ba200093f&json={"entry_id":"MjQ2MzE5MzMzNDA=","call_id":"MToxMDExODU1NjozMjE6MTQyNDExMDQzMw==","timestamp":1757409196,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"140d156d2c6d4b9d8c29dd246fb2d782."}
+
+Tue Sep  9 12:13:23 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1NjozMjE6MTQyNDExMDQzMw==
+
+Tue Sep  9 12:13:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:13:32 2025
+  Received body from client 5:
+
+Tue Sep  9 12:13:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=681b13271ed7d1bf419411fc62464154dc0948e12a5dc3c6a22df6fda732f889&json={"recording_id":"MToxMDExODU1NjoyNDYzMTkzMzM0MDow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzE5MzMzNDA=","call_id":"MToxMDExODU1NjozMjE6MTQyNDExMDQzMw==","extension":"202","timestamp":1757409212,"recipient":"Cloud"}
+
+Tue Sep  9 12:13:32 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1NjozMjE6MTQyNDExMDQzMw==
+
+Tue Sep  9 12:13:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:13:32 2025
+  Received body from client 5:
+
+Tue Sep  9 12:13:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=d94d256b2bef74f17e4b101715271401a4ca9f24400ec876327b41f74bf7deba&json={"entry_id":"MjQ2MzE5MzMzNDA=","call_id":"MToxMDExODU1NjozMjE6MTQyNDExMDQzMw==","timestamp":1757409212,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"140d156d2c6d4b9d8c29dd246fb2d782."}
+
+Tue Sep  9 12:13:32 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1NjozMjE6MTQyNDExMDQzMw==
+
+Tue Sep  9 12:13:37 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:13:37 2025
+  Received body from client 5:
+
+Tue Sep  9 12:13:37 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=683c5b89f30f7f3f2e0055e2272d8bdf564d1ad046acc3c52dc0462a6af9bfae&json={"entry_id":"MjQ2MzE5MzMzNDA=","call_id":"MToxMDExODU1NjozMjE6MTQyNDExMDQzMw==","timestamp":1757409217,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"140d156d2c6d4b9d8c29dd246fb2d782."}
+
+Tue Sep  9 12:13:37 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1NjozMjE6MTQyNDExMDQzMw==
+
+Tue Sep  9 12:13:37 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:13:37 2025
+  Received body from client 5:
+
+Tue Sep  9 12:13:37 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=541a0e320ee703a96d240094e77157f1b0f1b8acf63f252340b1e0916d444101&json={"recording_id":"MToxMDExODU1NjoyNDYzMTkzMzM0MDow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzE5MzMzNDA=","call_id":"MToxMDExODU1NjozMjE6MTQyNDExMDQzMw==","extension":"202","timestamp":1757409217,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 12:13:37 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1NjozMjE6MTQyNDExMDQzMw==
+
+Tue Sep  9 12:13:37 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:13:37 2025
+  Received body from client 5:
+
+Tue Sep  9 12:13:37 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=eff0dca92b0d21dd602fc73a1b2fae15ba1edd76911434b87971093049021dec&json={"entry_id":"MjQ2MzE5MzMzNDA=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757409196,"forward_time":1757409196,"talk_time":1757409212,"end_time":1757409217,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"140d156d2c6d4b9d8c29dd246fb2d782."}
+
+Tue Sep  9 12:13:37 2025
+  CallSummary: MjQ2MzE5MzMzNDA= direction=2
+
+Tue Sep  9 12:13:37 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:13:37 2025
+  Received body from client 5:
+
+Tue Sep  9 12:13:37 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=4d5ee0ec35439a8bebb15365f0fb197cd9b6c25b7fa6eafe582905d39f094257&json={"entry_id":"MjQ2MzE5MzMzNDA=","product_id":400181673,"user_id":401701328,"timestamp":1757409217,"recording_id":"MToxMDExODU1NjoyNDYzMTkzMzM0MDow"}
+
+Tue Sep  9 12:13:59 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:13:59 2025
+  Received body from client 5:
+
+Tue Sep  9 12:13:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=4d92fe5226d979d6faed06b344ca18ab86c9b2c5240f9e9cc288ad704dffa336&json={"entry_id":"MjQ2MzE5NDQ3NTY=","call_id":"MToxMDExODU1Njo1NTM6Mzc3OTYwMjI1","timestamp":1757409234,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"54cb183fb27e4462bfc9e36acfb07f07."}
+
+Tue Sep  9 12:13:59 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NTM6Mzc3OTYwMjI1
+
+Tue Sep  9 12:14:11 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:14:11 2025
+  Received body from client 5:
+
+Tue Sep  9 12:14:11 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=ac25df7a8bfbdd551643103d696e57d606bd562b1003c357a00aa9281f638f9b&json={"key":"8a23d38873b0c225574b22be51942a86"}
+
+Tue Sep  9 12:14:40 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 12:15:14 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 12:15:21 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:15:21 2025
+  Received body from client 5:
+
+Tue Sep  9 12:15:21 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=17a4ce559fae912518988d381787c9f3a8933440b7f85e13ef5e8889a0ca1aa0&json={"entry_id":"MjQ2MzE5NjkxOTQ=","call_id":"MToxMDExODU1Njo1NTM6Mzc3OTYxMTAy","timestamp":1757409317,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"5e437f7e23a94509b2d8d5f6a9c571c6."}
+
+Tue Sep  9 12:15:21 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NTM6Mzc3OTYxMTAy
+
+Tue Sep  9 12:15:29 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:15:29 2025
+  Received body from client 5:
+
+Tue Sep  9 12:15:29 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=c4e90f8a58deffce47ed15df92960de06f7256f9517a83b9fdc442f2d7931eb8&json={"entry_id":"MjQ2MzE5NjkxOTQ=","call_id":"MToxMDExODU1Njo1NTM6Mzc3OTYxMTAy","timestamp":1757409329,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"5e437f7e23a94509b2d8d5f6a9c571c6."}
+
+Tue Sep  9 12:15:29 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NTM6Mzc3OTYxMTAy
+
+Tue Sep  9 12:15:29 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:15:29 2025
+  Received body from client 5:
+
+Tue Sep  9 12:15:29 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=2299bc4cdadd84a3ad1e499e58922454c3e7ec5c06884e6f000ff47c2efd92e9&json={"recording_id":"MToxMDExODU1NjoyNDYzMTk2OTE5NDow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzE5NjkxOTQ=","call_id":"MToxMDExODU1Njo1NTM6Mzc3OTYxMTAy","extension":"202","timestamp":1757409329,"recipient":"Cloud"}
+
+Tue Sep  9 12:15:29 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1NTM6Mzc3OTYxMTAy
+
+Tue Sep  9 12:15:38 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:15:38 2025
+  Received body from client 5:
+
+Tue Sep  9 12:15:38 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=68479cd6a6303f98641162e4ee1d85c79e4567fd108ba1d0809651b333ec479b&json={"entry_id":"MjQ2MzE5NjkxOTQ=","call_id":"MToxMDExODU1Njo1NTM6Mzc3OTYxMTAy","timestamp":1757409338,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"5e437f7e23a94509b2d8d5f6a9c571c6."}
+
+Tue Sep  9 12:15:38 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NTM6Mzc3OTYxMTAy
+
+Tue Sep  9 12:16:31 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:16:31 2025
+  Received body from client 5:
+
+Tue Sep  9 12:16:31 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=9040107dc585fee44625f9a3c656dd409e5bee5511c050df6b50d89d5837753e&json={"recording_id":"MToxMDExODU1NjoyNDYzMTk2OTE5NDow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzE5NjkxOTQ=","call_id":"MToxMDExODU1Njo1NTM6Mzc3OTYxMTAy","extension":"202","timestamp":1757409338,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 12:16:31 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1NTM6Mzc3OTYxMTAy
+
+Tue Sep  9 12:16:31 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:16:31 2025
+  Received body from client 5:
+
+Tue Sep  9 12:16:31 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=9b3d4dedc1238d732ccb55ceee68f88139eacb72a9d573174bf32d1a0119ffe8&json={"entry_id":"MjQ2MzE5NjkxOTQ=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757409317,"forward_time":1757409317,"talk_time":1757409329,"end_time":1757409338,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"5e437f7e23a94509b2d8d5f6a9c571c6."}
+
+Tue Sep  9 12:16:31 2025
+  CallSummary: MjQ2MzE5NjkxOTQ= direction=2
+
+Tue Sep  9 12:16:31 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:16:31 2025
+  Received body from client 5:
+
+Tue Sep  9 12:16:31 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=09cef5365333aa29909a1a87295bbf340a7bc18bed6b63bd2088280f19bb30b7&json={"entry_id":"MjQ2MzE5NjkxOTQ=","product_id":400181673,"user_id":401701328,"timestamp":1757409338,"recording_id":"MToxMDExODU1NjoyNDYzMTk2OTE5NDow"}
+
+Tue Sep  9 12:16:31 2025
+  Accepted new client: 5
+
+Tue Sep  9 12:16:31 2025
+  Received body from client 5:
+
+Tue Sep  9 12:16:31 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=ac25df7a8bfbdd551643103d696e57d606bd562b1003c357a00aa9281f638f9b&json={"key":"8a23d38873b0c225574b22be51942a86"}
+
+Tue Sep  9 13:30:41 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 13:33:02 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 13:33:21 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:33:21 2025
+  Received body from client 5:
+
+Tue Sep  9 13:33:21 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=ecd98544b20966d97c4b0c2172f73945cf4c9b450358384da03df58832ce5353&json={"entry_id":"MjQ2MzMyNjU0OTI=","call_id":"MToxMDExODU1Njo1Nzg6MTE2MDI3MDM2","timestamp":1757413997,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"1125a00273794a32a6e323531fdc8997."}
+
+Tue Sep  9 13:33:21 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1Nzg6MTE2MDI3MDM2
+
+Tue Sep  9 13:33:34 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:33:34 2025
+  Received body from client 5:
+
+Tue Sep  9 13:33:34 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=4f0edf461db1c681b7b56503dd5f3167dd7bb7a47f8f80a2a2f50055f2ab9bc2&json={"entry_id":"MjQ2MzMyNjU0OTI=","call_id":"MToxMDExODU1Njo1Nzg6MTE2MDI3MDM2","timestamp":1757414014,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"1125a00273794a32a6e323531fdc8997."}
+
+Tue Sep  9 13:33:34 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1Nzg6MTE2MDI3MDM2
+
+Tue Sep  9 13:33:34 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:33:34 2025
+  Received body from client 5:
+
+Tue Sep  9 13:33:34 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=564ef894d7965471e9dac18545dedc771c0621054333a3197e39a970964190eb&json={"recording_id":"MToxMDExODU1NjoyNDYzMzI2NTQ5Mjow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzMyNjU0OTI=","call_id":"MToxMDExODU1Njo1Nzg6MTE2MDI3MDM2","extension":"202","timestamp":1757414014,"recipient":"Cloud"}
+
+Tue Sep  9 13:33:34 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1Nzg6MTE2MDI3MDM2
+
+Tue Sep  9 13:33:44 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:33:44 2025
+  Received body from client 5:
+
+Tue Sep  9 13:33:44 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=2fb45e06fea0a3f12f6194d2c23d07e64fc5237892f62a29439654ce05651044&json={"entry_id":"MjQ2MzMyNjU0OTI=","call_id":"MToxMDExODU1Njo1Nzg6MTE2MDI3MDM2","timestamp":1757414024,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"1125a00273794a32a6e323531fdc8997."}
+
+Tue Sep  9 13:33:44 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1Nzg6MTE2MDI3MDM2
+
+Tue Sep  9 13:33:48 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:33:48 2025
+  Received body from client 5:
+
+Tue Sep  9 13:33:48 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f55f7c22f47386cf6d74554f175edbb577fbed65a97b3e387c6a6b6797c2b270&json={"recording_id":"MToxMDExODU1NjoyNDYzMzI2NTQ5Mjow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzMyNjU0OTI=","call_id":"MToxMDExODU1Njo1Nzg6MTE2MDI3MDM2","extension":"202","timestamp":1757414024,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 13:33:48 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1Nzg6MTE2MDI3MDM2
+
+Tue Sep  9 13:33:48 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:33:48 2025
+  Received body from client 5:
+
+Tue Sep  9 13:33:48 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=cdaeb36798031d4c023e3ac2cc8c5d0316808b3a9814b37b574c49327aace88b&json={"entry_id":"MjQ2MzMyNjU0OTI=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757413997,"forward_time":1757413997,"talk_time":1757414014,"end_time":1757414024,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"1125a00273794a32a6e323531fdc8997."}
+
+Tue Sep  9 13:33:48 2025
+  CallSummary: MjQ2MzMyNjU0OTI= direction=2
+
+Tue Sep  9 13:33:48 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:33:48 2025
+  Received body from client 5:
+
+Tue Sep  9 13:33:48 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f0070ffac4b59dbc5fa777b8fc0cda0417b9f8036aa031fc28daef5585bef2ac&json={"entry_id":"MjQ2MzMyNjU0OTI=","product_id":400181673,"user_id":401701328,"timestamp":1757414025,"recording_id":"MToxMDExODU1NjoyNDYzMzI2NTQ5Mjow"}
+
+Tue Sep  9 13:38:03 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 13:39:11 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:39:11 2025
+  Received body from client 5:
+
+Tue Sep  9 13:39:11 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=b2387be13cc62190722f2c81616ba1b01e13ba04c6e6b73f563f2b39a323eede&json={"entry_id":"MjQ2MzMzNTg0NDg=","call_id":"MToxMDExODU1Njo1Nzc6MTIwNzk2Mjk2","timestamp":1757414346,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"fc7aeefd85904a41acecdce3a0c22539."}
+
+Tue Sep  9 13:39:11 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1Nzc6MTIwNzk2Mjk2
+
+Tue Sep  9 13:39:14 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:39:14 2025
+  Received body from client 5:
+
+Tue Sep  9 13:39:14 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=bf221250e1328ee4a253e0287bf17c4535ab129bef4a8adc937fe48183b972bd&json={"entry_id":"MjQ2MzMzNTg0NDg=","call_id":"MToxMDExODU1Njo1Nzc6MTIwNzk2Mjk2","timestamp":1757414354,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"fc7aeefd85904a41acecdce3a0c22539."}
+
+Tue Sep  9 13:39:14 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1Nzc6MTIwNzk2Mjk2
+
+Tue Sep  9 13:39:14 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:39:14 2025
+  Received body from client 5:
+
+Tue Sep  9 13:39:14 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=761e498baa2d8e6ff5096a00978682601b057c72871ea3eeb3fd399728d3676d&json={"recording_id":"MToxMDExODU1NjoyNDYzMzM1ODQ0ODow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzMzNTg0NDg=","call_id":"MToxMDExODU1Njo1Nzc6MTIwNzk2Mjk2","extension":"202","timestamp":1757414354,"recipient":"Cloud"}
+
+Tue Sep  9 13:39:14 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1Nzc6MTIwNzk2Mjk2
+
+Tue Sep  9 13:39:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:39:32 2025
+  Received body from client 5:
+
+Tue Sep  9 13:39:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=308e5d3091adbe70050f41cf9ddaf4fd40fd8347ac4ef5d9ba3f60ede796f20c&json={"entry_id":"MjQ2MzMzNTg0NDg=","call_id":"MToxMDExODU1Njo1Nzc6MTIwNzk2Mjk2","timestamp":1757414372,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"fc7aeefd85904a41acecdce3a0c22539."}
+
+Tue Sep  9 13:39:32 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1Nzc6MTIwNzk2Mjk2
+
+Tue Sep  9 13:39:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:39:32 2025
+  Received body from client 5:
+
+Tue Sep  9 13:39:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=bcfbdb8ce502bf21f65665718a906298d6c57dea97344bdceb30df24c3d81304&json={"recording_id":"MToxMDExODU1NjoyNDYzMzM1ODQ0ODow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzMzNTg0NDg=","call_id":"MToxMDExODU1Njo1Nzc6MTIwNzk2Mjk2","extension":"202","timestamp":1757414372,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 13:39:32 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1Nzc6MTIwNzk2Mjk2
+
+Tue Sep  9 13:39:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:39:32 2025
+  Received body from client 5:
+
+Tue Sep  9 13:39:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=5b110af4555216c5869dfb03b9fd46980cf5bf55250719d47dfa7bb2e0d2dd8e&json={"entry_id":"MjQ2MzMzNTg0NDg=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757414346,"forward_time":1757414346,"talk_time":1757414354,"end_time":1757414372,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"fc7aeefd85904a41acecdce3a0c22539."}
+
+Tue Sep  9 13:39:32 2025
+  CallSummary: MjQ2MzMzNTg0NDg= direction=2
+
+Tue Sep  9 13:39:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 13:39:32 2025
+  Received body from client 5:
+
+Tue Sep  9 13:39:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e18d51e6795631c096886539f161afe57844ded67f327048e80d6aceb452db9f&json={"entry_id":"MjQ2MzMzNTg0NDg=","product_id":400181673,"user_id":401701328,"timestamp":1757414372,"recording_id":"MToxMDExODU1NjoyNDYzMzM1ODQ0ODow"}
+
+Tue Sep  9 14:08:03 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:09:29 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:09:29 2025
+  Received body from client 5:
+
+Tue Sep  9 14:09:29 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=38e9ca2184e227dee6a26334cb5cc7ff01b89fa29db1b8442da94d32c37e92d8&json={"entry_id":"MjQ2MzM4NDY0MzQ=","call_id":"MToxMDExODU1Njo1Nzc6MTIwODE1MjM0","timestamp":1757416165,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"5c6e2efb56be465faa752be7c5ab2593."}
+
+Tue Sep  9 14:09:29 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1Nzc6MTIwODE1MjM0
+
+Tue Sep  9 14:09:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:09:32 2025
+  Received body from client 5:
+
+Tue Sep  9 14:09:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=da8049f8fa5135100edccad242c057af6fa5d698c1aeacb0bc4ef6815a5e08d5&json={"recording_id":"MToxMDExODU1NjoyNDYzMzg0NjQzNDow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzM4NDY0MzQ=","call_id":"MToxMDExODU1Njo1Nzc6MTIwODE1MjM0","extension":"202","timestamp":1757416172,"recipient":"Cloud"}
+
+Tue Sep  9 14:09:32 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1Nzc6MTIwODE1MjM0
+
+Tue Sep  9 14:09:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:09:32 2025
+  Received body from client 5:
+
+Tue Sep  9 14:09:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=b9974330302f43e7695da6bc477824abec44fee57f2f3bed95231e0dc0ee8fdc&json={"entry_id":"MjQ2MzM4NDY0MzQ=","call_id":"MToxMDExODU1Njo1Nzc6MTIwODE1MjM0","timestamp":1757416172,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"5c6e2efb56be465faa752be7c5ab2593."}
+
+Tue Sep  9 14:09:32 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1Nzc6MTIwODE1MjM0
+
+Tue Sep  9 14:09:40 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:09:40 2025
+  Received body from client 5:
+
+Tue Sep  9 14:09:40 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=d7902545c239f7680c688b62adc71deb88a177d0e03415b2cdeacd822e2d54ef&json={"entry_id":"MjQ2MzM4NDY0MzQ=","call_id":"MToxMDExODU1Njo1Nzc6MTIwODE1MjM0","timestamp":1757416180,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"5c6e2efb56be465faa752be7c5ab2593."}
+
+Tue Sep  9 14:09:40 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1Nzc6MTIwODE1MjM0
+
+Tue Sep  9 14:09:40 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:09:40 2025
+  Received body from client 5:
+
+Tue Sep  9 14:09:40 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=dcd348d6ead9898213f9b600d9cf42ba42b70fb1660ca6e5dff241f14689d44b&json={"recording_id":"MToxMDExODU1NjoyNDYzMzg0NjQzNDow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzM4NDY0MzQ=","call_id":"MToxMDExODU1Njo1Nzc6MTIwODE1MjM0","extension":"202","timestamp":1757416180,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 14:09:40 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1Nzc6MTIwODE1MjM0
+
+Tue Sep  9 14:09:40 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:09:40 2025
+  Received body from client 5:
+
+Tue Sep  9 14:09:40 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=4fadd9f1c785383199c0a957057de9fafe3404c0ec758b660487511c0f3cc94d&json={"entry_id":"MjQ2MzM4NDY0MzQ=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757416164,"forward_time":1757416164,"talk_time":1757416172,"end_time":1757416180,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"5c6e2efb56be465faa752be7c5ab2593."}
+
+Tue Sep  9 14:09:40 2025
+  CallSummary: MjQ2MzM4NDY0MzQ= direction=2
+
+Tue Sep  9 14:09:41 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:09:41 2025
+  Received body from client 5:
+
+Tue Sep  9 14:09:41 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=a0279de7b5fd5f63043f64407d832789abe81c30f6f9d7e7d17d9a722d7a0f4f&json={"entry_id":"MjQ2MzM4NDY0MzQ=","product_id":400181673,"user_id":401701328,"timestamp":1757416181,"recording_id":"MToxMDExODU1NjoyNDYzMzg0NjQzNDow"}
+
+Tue Sep  9 14:17:46 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:18:55 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:18:55 2025
+  Received body from client 5:
+
+Tue Sep  9 14:18:55 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f10db0196f973467ce08e509b8b37f43b28b3d1e123b4d1b1260fa09dded4805&json={"entry_id":"MjQ2MzQwMDE0NTU=","call_id":"MToxMDExODU1Njo1NzE6MTI5MjEyODIw","timestamp":1757416731,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"12fc9dfc233c46c2865f4c9a1bc09680."}
+
+Tue Sep  9 14:18:55 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NzE6MTI5MjEyODIw
+
+Tue Sep  9 14:18:58 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:18:58 2025
+  Received body from client 5:
+
+Tue Sep  9 14:18:58 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=4028c5ed05b8fff8372cb539055ff2a5766884a2c2758a6a26c2e66981b8f4ff&json={"recording_id":"MToxMDExODU1NjoyNDYzNDAwMTQ1NTow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzQwMDE0NTU=","call_id":"MToxMDExODU1Njo1NzE6MTI5MjEyODIw","extension":"202","timestamp":1757416738,"recipient":"Cloud"}
+
+Tue Sep  9 14:18:58 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1NzE6MTI5MjEyODIw
+
+Tue Sep  9 14:18:58 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:18:58 2025
+  Received body from client 5:
+
+Tue Sep  9 14:18:58 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=629625f22b77fdbda3dd1522f405bfad5f9b3343cdd03129553abbd9526d00fe&json={"entry_id":"MjQ2MzQwMDE0NTU=","call_id":"MToxMDExODU1Njo1NzE6MTI5MjEyODIw","timestamp":1757416738,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"12fc9dfc233c46c2865f4c9a1bc09680."}
+
+Tue Sep  9 14:18:58 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NzE6MTI5MjEyODIw
+
+Tue Sep  9 14:19:06 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:19:06 2025
+  Received body from client 5:
+
+Tue Sep  9 14:19:06 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=47a06bbfeee442607bc506c003d9e1518af9338d2ac582527ac3c23a3b4f20ba&json={"entry_id":"MjQ2MzQwMDE0NTU=","call_id":"MToxMDExODU1Njo1NzE6MTI5MjEyODIw","timestamp":1757416745,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"12fc9dfc233c46c2865f4c9a1bc09680."}
+
+Tue Sep  9 14:19:06 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NzE6MTI5MjEyODIw
+
+Tue Sep  9 14:19:06 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:19:06 2025
+  Received body from client 5:
+
+Tue Sep  9 14:19:06 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=493c3281d0decd0c7b40eacf0a29cb3ed132578848c5ad7cce0cfdecef0fb23f&json={"recording_id":"MToxMDExODU1NjoyNDYzNDAwMTQ1NTow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzQwMDE0NTU=","call_id":"MToxMDExODU1Njo1NzE6MTI5MjEyODIw","extension":"202","timestamp":1757416746,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 14:19:06 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1NzE6MTI5MjEyODIw
+
+Tue Sep  9 14:19:06 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:19:06 2025
+  Received body from client 5:
+
+Tue Sep  9 14:19:06 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=c6d766a884a13734780b5eb29095ba6b99567168ca49c903038aeb08e879f840&json={"entry_id":"MjQ2MzQwMDE0NTU=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757416731,"forward_time":1757416731,"talk_time":1757416738,"end_time":1757416745,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"12fc9dfc233c46c2865f4c9a1bc09680."}
+
+Tue Sep  9 14:19:06 2025
+  CallSummary: MjQ2MzQwMDE0NTU= direction=2
+
+Tue Sep  9 14:19:07 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:19:07 2025
+  Received body from client 5:
+
+Tue Sep  9 14:19:07 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=10378dbec7019eb7c851dbfb1edf982c498689309b5e38be400219c93ea03552&json={"entry_id":"MjQ2MzQwMDE0NTU=","product_id":400181673,"user_id":401701328,"timestamp":1757416747,"recording_id":"MToxMDExODU1NjoyNDYzNDAwMTQ1NTow"}
+
+Tue Sep  9 14:20:20 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:20:30 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:20:30 2025
+  Received body from client 5:
+
+Tue Sep  9 14:20:30 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=c35906279371b13a8d2f87a309744923f6b01c1590a374fe864ed98dc2fd7f2b&json={"entry_id":"MjQ2MzQwMjgwMzk=","call_id":"MToxMDExODU1Njo1NjU6MTkzNTA1Nzc3","timestamp":1757416826,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"2d2e85adc63c442d960ff1d361df2153."}
+
+Tue Sep  9 14:20:30 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NjU6MTkzNTA1Nzc3
+
+Tue Sep  9 14:20:34 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:20:34 2025
+  Received body from client 5:
+
+Tue Sep  9 14:20:34 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=0493876b64e286c88a7b783ac81e86f28b9a2cc022ad302a23747453b22d3ab9&json={"recording_id":"MToxMDExODU1NjoyNDYzNDAyODAzOTow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzQwMjgwMzk=","call_id":"MToxMDExODU1Njo1NjU6MTkzNTA1Nzc3","extension":"202","timestamp":1757416833,"recipient":"Cloud"}
+
+Tue Sep  9 14:20:34 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1NjU6MTkzNTA1Nzc3
+
+Tue Sep  9 14:20:34 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:20:34 2025
+  Received body from client 5:
+
+Tue Sep  9 14:20:34 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=57041d5a627c2a8c9ea8c1bafd19ada2cd56494f870fd67b4e6855307de781b6&json={"entry_id":"MjQ2MzQwMjgwMzk=","call_id":"MToxMDExODU1Njo1NjU6MTkzNTA1Nzc3","timestamp":1757416833,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"2d2e85adc63c442d960ff1d361df2153."}
+
+Tue Sep  9 14:20:34 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NjU6MTkzNTA1Nzc3
+
+Tue Sep  9 14:20:39 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:20:39 2025
+  Received body from client 5:
+
+Tue Sep  9 14:20:39 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=094054caa70f9899830fdca1e23bd3c2da4d70fd84c75c23e9ba4f0fec3c55f5&json={"entry_id":"MjQ2MzQwMjgwMzk=","call_id":"MToxMDExODU1Njo1NjU6MTkzNTA1Nzc3","timestamp":1757416839,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"2d2e85adc63c442d960ff1d361df2153."}
+
+Tue Sep  9 14:20:39 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NjU6MTkzNTA1Nzc3
+
+Tue Sep  9 14:20:39 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:20:39 2025
+  Received body from client 5:
+
+Tue Sep  9 14:20:39 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=b3fac4e537edfeff9588e1de76f43f90e6346aedbc13f24e84d7f2b99d5c30a3&json={"recording_id":"MToxMDExODU1NjoyNDYzNDAyODAzOTow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzQwMjgwMzk=","call_id":"MToxMDExODU1Njo1NjU6MTkzNTA1Nzc3","extension":"202","timestamp":1757416839,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 14:20:39 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1NjU6MTkzNTA1Nzc3
+
+Tue Sep  9 14:20:39 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:20:39 2025
+  Received body from client 5:
+
+Tue Sep  9 14:20:39 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=cfadb81a75b4c99c1f2f5ef1278798a65943c24baa4ebc94758b6d4b4e3f3704&json={"entry_id":"MjQ2MzQwMjgwMzk=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757416826,"forward_time":1757416826,"talk_time":1757416833,"end_time":1757416839,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"2d2e85adc63c442d960ff1d361df2153."}
+
+Tue Sep  9 14:20:39 2025
+  CallSummary: MjQ2MzQwMjgwMzk= direction=2
+
+Tue Sep  9 14:20:40 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:20:40 2025
+  Received body from client 5:
+
+Tue Sep  9 14:20:40 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=6450614a6872c2ee649a6f93763b8b15de2b3bcb28c1ecc5b5b703601c0b0b01&json={"entry_id":"MjQ2MzQwMjgwMzk=","product_id":400181673,"user_id":401701328,"timestamp":1757416840,"recording_id":"MToxMDExODU1NjoyNDYzNDAyODAzOTow"}
+
+Tue Sep  9 14:22:05 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:22:14 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:22:14 2025
+  Received body from client 5:
+
+Tue Sep  9 14:22:14 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=0c689fc879b398b468b9b03a8342d307bd05e24fc6fdad32692a78b97aa698aa&json={"entry_id":"MjQ2MzQwNTY1OTU=","call_id":"MToxMDExODU1Njo1Njc6MTk0MjgzNjk5","timestamp":1757416929,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"43e4add4e5ab4247bccc2c36d111bb11."}
+
+Tue Sep  9 14:22:14 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1Njc6MTk0MjgzNjk5
+
+Tue Sep  9 14:22:17 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:22:17 2025
+  Received body from client 5:
+
+Tue Sep  9 14:22:17 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=528c79fa56089de1d23e7943386a5e0ad56bcfa17da7b5e0d4c04d5050b1b178&json={"entry_id":"MjQ2MzQwNTY1OTU=","call_id":"MToxMDExODU1Njo1Njc6MTk0MjgzNjk5","timestamp":1757416937,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"43e4add4e5ab4247bccc2c36d111bb11."}
+
+Tue Sep  9 14:22:17 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1Njc6MTk0MjgzNjk5
+
+Tue Sep  9 14:22:17 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:22:17 2025
+  Received body from client 5:
+
+Tue Sep  9 14:22:17 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=94b43ff8058b3b9509df0484e3f5c630dfd44e7d6873709ccec812ac20392cb2&json={"recording_id":"MToxMDExODU1NjoyNDYzNDA1NjU5NTow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzQwNTY1OTU=","call_id":"MToxMDExODU1Njo1Njc6MTk0MjgzNjk5","extension":"202","timestamp":1757416937,"recipient":"Cloud"}
+
+Tue Sep  9 14:22:17 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1Njc6MTk0MjgzNjk5
+
+Tue Sep  9 14:22:21 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:22:21 2025
+  Received body from client 5:
+
+Tue Sep  9 14:22:21 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=a0d76e8e6a5013002acb929211dafc67e835d5ad680c4d4e02822b49a991d0bc&json={"entry_id":"MjQ2MzQwNTY1OTU=","call_id":"MToxMDExODU1Njo1Njc6MTk0MjgzNjk5","timestamp":1757416941,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"43e4add4e5ab4247bccc2c36d111bb11."}
+
+Tue Sep  9 14:22:21 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1Njc6MTk0MjgzNjk5
+
+Tue Sep  9 14:22:21 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:22:21 2025
+  Received body from client 5:
+
+Tue Sep  9 14:22:21 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=b7126a930f26f62514922a1542450fc8fe5656dfc78d571665683717c701cade&json={"recording_id":"MToxMDExODU1NjoyNDYzNDA1NjU5NTow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzQwNTY1OTU=","call_id":"MToxMDExODU1Njo1Njc6MTk0MjgzNjk5","extension":"202","timestamp":1757416941,"completion_code":4002,"recipient":"Cloud"}
+
+Tue Sep  9 14:22:21 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1Njc6MTk0MjgzNjk5
+
+Tue Sep  9 14:22:21 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:22:21 2025
+  Received body from client 5:
+
+Tue Sep  9 14:22:21 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f7bd8707655e798baaefafdd98cb05cd59b683b43c9f1e94a7d25cce9f6c405f&json={"entry_id":"MjQ2MzQwNTY1OTU=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757416929,"forward_time":1757416929,"talk_time":1757416937,"end_time":1757416941,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"43e4add4e5ab4247bccc2c36d111bb11."}
+
+Tue Sep  9 14:22:21 2025
+  CallSummary: MjQ2MzQwNTY1OTU= direction=2
+
+Tue Sep  9 14:25:39 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:26:15 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:26:15 2025
+  Received body from client 5:
+
+Tue Sep  9 14:26:15 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e1f2311c1109904866a505e3a98c07d77ffbf9d0f32d04f7043865ca02845237&json={"key":"782da56f1e964bdeee10ec6c1ff91df0"}
+
+Tue Sep  9 14:26:38 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:26:47 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:26:47 2025
+  Received body from client 5:
+
+Tue Sep  9 14:26:47 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e1f2311c1109904866a505e3a98c07d77ffbf9d0f32d04f7043865ca02845237&json={"key":"782da56f1e964bdeee10ec6c1ff91df0"}
+
+Tue Sep  9 14:27:51 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:27:55 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:27:55 2025
+  Received body from client 5:
+
+Tue Sep  9 14:27:55 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=1ad6e786f66e4e8c3a95c01ca0b28b3dfe654d2c4155bdf591d54405c9b61a71&json={"entry_id":"MjQ2MzQxNTE2Njc=","call_id":"MToxMDExODU1NjozMjI6MTM2Nzk2NjczOA==","timestamp":1757417272,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"97e70b61c4f04644982d4eee5e620760."}
+
+Tue Sep  9 14:27:55 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1NjozMjI6MTM2Nzk2NjczOA==
+
+Tue Sep  9 14:27:58 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:27:58 2025
+  Received body from client 5:
+
+Tue Sep  9 14:27:58 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=794eee331c3fecb6d9191df19bb9d0c9fb4f15cc07c0c473cfdead3d4ce64004&json={"entry_id":"MjQ2MzQxNTE2Njc=","call_id":"MToxMDExODU1NjozMjI6MTM2Nzk2NjczOA==","timestamp":1757417278,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"97e70b61c4f04644982d4eee5e620760."}
+
+Tue Sep  9 14:27:58 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1NjozMjI6MTM2Nzk2NjczOA==
+
+Tue Sep  9 14:27:58 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:27:58 2025
+  Received body from client 5:
+
+Tue Sep  9 14:27:58 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=43974332097fd8160d387c9eebefeb8b709d9e2271d59af1504d823df9b766ab&json={"recording_id":"MToxMDExODU1NjoyNDYzNDE1MTY2Nzow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzQxNTE2Njc=","call_id":"MToxMDExODU1NjozMjI6MTM2Nzk2NjczOA==","extension":"202","timestamp":1757417278,"recipient":"Cloud"}
+
+Tue Sep  9 14:27:58 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1NjozMjI6MTM2Nzk2NjczOA==
+
+Tue Sep  9 14:28:03 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:28:03 2025
+  Received body from client 5:
+
+Tue Sep  9 14:28:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e1d6008ea9df9fddf7882488014c519b0f9cf62fea4448d14e194a5d3ada2c9a&json={"entry_id":"MjQ2MzQxNTE2Njc=","call_id":"MToxMDExODU1NjozMjI6MTM2Nzk2NjczOA==","timestamp":1757417283,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"97e70b61c4f04644982d4eee5e620760."}
+
+Tue Sep  9 14:28:03 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1NjozMjI6MTM2Nzk2NjczOA==
+
+Tue Sep  9 14:28:03 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:28:03 2025
+  Received body from client 5:
+
+Tue Sep  9 14:28:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=3b58937a95b627094c7558e379b2976ceb30b3543472b05409d6fc45a7f0fce5&json={"recording_id":"MToxMDExODU1NjoyNDYzNDE1MTY2Nzow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzQxNTE2Njc=","call_id":"MToxMDExODU1NjozMjI6MTM2Nzk2NjczOA==","extension":"202","timestamp":1757417283,"completion_code":4002,"recipient":"Cloud"}
+
+Tue Sep  9 14:28:03 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1NjozMjI6MTM2Nzk2NjczOA==
+
+Tue Sep  9 14:28:03 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:28:03 2025
+  Received body from client 5:
+
+Tue Sep  9 14:28:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=0aa66fdc6a66532a29bceab9e138dcc7e5b76fc0a64da76ccf7fb073fa7058a4&json={"entry_id":"MjQ2MzQxNTE2Njc=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757417272,"forward_time":1757417272,"talk_time":1757417278,"end_time":1757417283,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"97e70b61c4f04644982d4eee5e620760."}
+
+Tue Sep  9 14:28:03 2025
+  CallSummary: MjQ2MzQxNTE2Njc= direction=2
+
+Tue Sep  9 14:44:43 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:45:29 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:46:20 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:46:20 2025
+  Received body from client 5:
+
+Tue Sep  9 14:46:20 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=a5ac5ebcbb2bbb3eb3958b016034ee18ad86556ae3d64c9d6360ba2fb6789f25&json={"key":"9e0d80967ef54ac0f16d970b74545fcb"}
+
+Tue Sep  9 14:49:10 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:49:47 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:50:55 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:51:21 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:51:21 2025
+  Received body from client 5:
+
+Tue Sep  9 14:51:21 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=a5ac5ebcbb2bbb3eb3958b016034ee18ad86556ae3d64c9d6360ba2fb6789f25&json={"key":"9e0d80967ef54ac0f16d970b74545fcb"}
+
+Tue Sep  9 14:52:31 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:52:53 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 14:52:59 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:52:59 2025
+  Received body from client 5:
+
+Tue Sep  9 14:52:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=6a5880001d821b9fb2a33336709bcdd89149a9a030e2e1089522b1254188078f&json={"entry_id":"MjQ2MzQ1NjI4NDM=","call_id":"MToxMDExODU1Njo1ODE6MTEzODMzNzE1","timestamp":1757418776,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"2507700864cb48c892d3965634f29711."}
+
+Tue Sep  9 14:52:59 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1ODE6MTEzODMzNzE1
+
+Tue Sep  9 14:53:02 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:53:02 2025
+  Received body from client 5:
+
+Tue Sep  9 14:53:02 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=ca761ffb3602fe3069adc0218dee441265dd6dd7b1320aa7e61299f3e88f7c1b&json={"entry_id":"MjQ2MzQ1NjI4NDM=","call_id":"MToxMDExODU1Njo1ODE6MTEzODMzNzE1","timestamp":1757418782,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"2507700864cb48c892d3965634f29711."}
+
+Tue Sep  9 14:53:02 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1ODE6MTEzODMzNzE1
+
+Tue Sep  9 14:53:02 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:53:02 2025
+  Received body from client 5:
+
+Tue Sep  9 14:53:02 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=2be988851c630bd8b35e39e7530be975ced7dea3d27c2fbbc33948fefaaf0e99&json={"recording_id":"MToxMDExODU1NjoyNDYzNDU2Mjg0Mzow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzQ1NjI4NDM=","call_id":"MToxMDExODU1Njo1ODE6MTEzODMzNzE1","extension":"202","timestamp":1757418782,"recipient":"Cloud"}
+
+Tue Sep  9 14:53:02 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1ODE6MTEzODMzNzE1
+
+Tue Sep  9 14:53:12 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:53:12 2025
+  Received body from client 5:
+
+Tue Sep  9 14:53:12 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=64b7728f688db2b5afa0105cf5bfe8a1d6f21e7af02f37057ec06a477f4aaa75&json={"entry_id":"MjQ2MzQ1NjI4NDM=","call_id":"MToxMDExODU1Njo1ODE6MTEzODMzNzE1","timestamp":1757418792,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"2507700864cb48c892d3965634f29711."}
+
+Tue Sep  9 14:53:12 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1ODE6MTEzODMzNzE1
+
+Tue Sep  9 14:53:12 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:53:12 2025
+  Received body from client 5:
+
+Tue Sep  9 14:53:12 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=2ac61e427ddce27ed2b92ce2e8609b8b32c1afb4e33deee97193f1762224799c&json={"recording_id":"MToxMDExODU1NjoyNDYzNDU2Mjg0Mzow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzQ1NjI4NDM=","call_id":"MToxMDExODU1Njo1ODE6MTEzODMzNzE1","extension":"202","timestamp":1757418792,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 14:53:12 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1ODE6MTEzODMzNzE1
+
+Tue Sep  9 14:53:12 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:53:12 2025
+  Received body from client 5:
+
+Tue Sep  9 14:53:12 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=6f468beea7fd191f84be48b2ed8190069373c2c1b9a6faa4bafe5e163b389778&json={"entry_id":"MjQ2MzQ1NjI4NDM=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757418776,"forward_time":1757418776,"talk_time":1757418782,"end_time":1757418792,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"2507700864cb48c892d3965634f29711."}
+
+Tue Sep  9 14:53:12 2025
+  CallSummary: MjQ2MzQ1NjI4NDM= direction=2
+
+Tue Sep  9 14:53:12 2025
+  Accepted new client: 5
+
+Tue Sep  9 14:53:12 2025
+  Received body from client 5:
+
+Tue Sep  9 14:53:12 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=feeae24e58d353fcc2c417cd009ef5152efa1aeb6b794883d7573d2b33cf5f96&json={"entry_id":"MjQ2MzQ1NjI4NDM=","product_id":400181673,"user_id":401701328,"timestamp":1757418792,"recording_id":"MToxMDExODU1NjoyNDYzNDU2Mjg0Mzow"}
+
+Tue Sep  9 15:03:54 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:06:50 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:06:59 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:06:59 2025
+  Received body from client 4:
+
+Tue Sep  9 15:06:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=5c0c7b2b296f428972608bab0afadbc075a19b8ab4b055a7232152f9c9965cd4&json={"entry_id":"MjQ2MzQ3ODgwNjE=","call_id":"MToxMDExODU1NjozMjE6MTQyNDIxODEyNg==","timestamp":1757419614,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"bf5ac0181cac4b98b4bf8d9b44487331."}
+
+Tue Sep  9 15:06:59 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1NjozMjE6MTQyNDIxODEyNg==
+
+Tue Sep  9 15:07:04 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:07:04 2025
+  Received body from client 4:
+
+Tue Sep  9 15:07:04 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=9183261067af9893aede9b0c9b930f94ff94e8353c22672f597adcaef9f7d4cb&json={"entry_id":"MjQ2MzQ3ODgwNjE=","call_id":"MToxMDExODU1NjozMjE6MTQyNDIxODEyNg==","timestamp":1757419624,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"bf5ac0181cac4b98b4bf8d9b44487331."}
+
+Tue Sep  9 15:07:04 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1NjozMjE6MTQyNDIxODEyNg==
+
+Tue Sep  9 15:07:04 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:07:04 2025
+  Received body from client 4:
+
+Tue Sep  9 15:07:04 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=540850e38ff32ad63cc7d4f7bc038f8134f348f5bd7d882c8e860f73ba82943c&json={"recording_id":"MToxMDExODU1NjoyNDYzNDc4ODA2MTow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzQ3ODgwNjE=","call_id":"MToxMDExODU1NjozMjE6MTQyNDIxODEyNg==","extension":"202","timestamp":1757419624,"recipient":"Cloud"}
+
+Tue Sep  9 15:07:04 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1NjozMjE6MTQyNDIxODEyNg==
+
+Tue Sep  9 15:07:08 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:07:08 2025
+  Received body from client 4:
+
+Tue Sep  9 15:07:08 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=220aeae08906d13c85eb14e4772e4d3d6dc8237511ab6361bae0227651f5fd91&json={"entry_id":"MjQ2MzQ3ODgwNjE=","call_id":"MToxMDExODU1NjozMjE6MTQyNDIxODEyNg==","timestamp":1757419628,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"bf5ac0181cac4b98b4bf8d9b44487331."}
+
+Tue Sep  9 15:07:08 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1NjozMjE6MTQyNDIxODEyNg==
+
+Tue Sep  9 15:07:08 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:07:08 2025
+  Received body from client 4:
+
+Tue Sep  9 15:07:08 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=d7bb8a16ba946d76172a67c17eb434c41f579ea25db0885bf016a9dfc6a5e3a3&json={"recording_id":"MToxMDExODU1NjoyNDYzNDc4ODA2MTow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzQ3ODgwNjE=","call_id":"MToxMDExODU1NjozMjE6MTQyNDIxODEyNg==","extension":"202","timestamp":1757419628,"completion_code":4002,"recipient":"Cloud"}
+
+Tue Sep  9 15:07:08 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1NjozMjE6MTQyNDIxODEyNg==
+
+Tue Sep  9 15:07:08 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:07:08 2025
+  Received body from client 4:
+
+Tue Sep  9 15:07:08 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=023e0a2e7bc8572ed2311ca9e0dec2bc5c975fa9e13a8c5213be07085d76f9a8&json={"entry_id":"MjQ2MzQ3ODgwNjE=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757419614,"forward_time":1757419614,"talk_time":1757419624,"end_time":1757419628,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"bf5ac0181cac4b98b4bf8d9b44487331."}
+
+Tue Sep  9 15:07:08 2025
+  CallSummary: MjQ2MzQ3ODgwNjE= direction=2
+
+Tue Sep  9 15:08:13 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:08:21 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:08:21 2025
+  Received body from client 4:
+
+Tue Sep  9 15:08:21 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=6e7df20f44eab6d5ad8614b17cc1807684dd22d38db38249fd9a37e549cd22c9&json={"entry_id":"MjQ2MzQ4MDk3Nzk=","call_id":"MToxMDExODU1NjoxMjE6MTAyMDg3NDQ5Ng==","timestamp":1757419696,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"cc4b32b2a5de4ad8bebaa5635ecd6eea."}
+
+Tue Sep  9 15:08:21 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1NjoxMjE6MTAyMDg3NDQ5Ng==
+
+Tue Sep  9 15:08:24 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:08:24 2025
+  Received body from client 4:
+
+Tue Sep  9 15:08:24 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=84eab9709477c791c1b11e32044b2419e89fed7f2bc4a1ce8783d832e2b6526c&json={"recording_id":"MToxMDExODU1NjoyNDYzNDgwOTc3OTow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzQ4MDk3Nzk=","call_id":"MToxMDExODU1NjoxMjE6MTAyMDg3NDQ5Ng==","extension":"202","timestamp":1757419704,"recipient":"Cloud"}
+
+Tue Sep  9 15:08:24 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1NjoxMjE6MTAyMDg3NDQ5Ng==
+
+Tue Sep  9 15:08:24 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:08:24 2025
+  Received body from client 4:
+
+Tue Sep  9 15:08:24 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=810bd64cfb31987f54595052cd8d8931dec253e60aa7b06163414b97cad3dc30&json={"entry_id":"MjQ2MzQ4MDk3Nzk=","call_id":"MToxMDExODU1NjoxMjE6MTAyMDg3NDQ5Ng==","timestamp":1757419704,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"cc4b32b2a5de4ad8bebaa5635ecd6eea."}
+
+Tue Sep  9 15:08:24 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1NjoxMjE6MTAyMDg3NDQ5Ng==
+
+Tue Sep  9 15:08:29 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:08:29 2025
+  Received body from client 4:
+
+Tue Sep  9 15:08:29 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e142f163526767150a89bca91e9ef055c39235d2e975650f5f363838a64a95f3&json={"entry_id":"MjQ2MzQ4MDk3Nzk=","call_id":"MToxMDExODU1NjoxMjE6MTAyMDg3NDQ5Ng==","timestamp":1757419709,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"cc4b32b2a5de4ad8bebaa5635ecd6eea."}
+
+Tue Sep  9 15:08:29 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1NjoxMjE6MTAyMDg3NDQ5Ng==
+
+Tue Sep  9 15:08:29 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:08:29 2025
+  Received body from client 4:
+
+Tue Sep  9 15:08:29 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=ef8ef81e409ecda2c66cef46dc4056faee08b1f4abf3d93366ce213db3191531&json={"recording_id":"MToxMDExODU1NjoyNDYzNDgwOTc3OTow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzQ4MDk3Nzk=","call_id":"MToxMDExODU1NjoxMjE6MTAyMDg3NDQ5Ng==","extension":"202","timestamp":1757419709,"completion_code":4002,"recipient":"Cloud"}
+
+Tue Sep  9 15:08:29 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1NjoxMjE6MTAyMDg3NDQ5Ng==
+
+Tue Sep  9 15:08:29 2025
+  Accepted new client: 4
+
+Tue Sep  9 15:08:29 2025
+  Received body from client 4:
+
+Tue Sep  9 15:08:29 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=536c464ac5bd9ad8fb7c7b79b60e5b360ef3bb67642d3b02013c0b55af78369e&json={"entry_id":"MjQ2MzQ4MDk3Nzk=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757419696,"forward_time":1757419696,"talk_time":1757419704,"end_time":1757419709,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"cc4b32b2a5de4ad8bebaa5635ecd6eea."}
+
+Tue Sep  9 15:08:29 2025
+  CallSummary: MjQ2MzQ4MDk3Nzk= direction=2
+
+Tue Sep  9 15:11:19 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:11:24 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:11:24 2025
+  Received body from client 5:
+
+Tue Sep  9 15:11:24 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=a970ea8a4aecddab9b78642ebeae59c08d05a87e7c9440b0a99d8fa31cfc5322&json={"key":"f14c4f4e70ba68d91be20548a65cffb2"}
+
+Tue Sep  9 15:11:51 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:11:57 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:11:57 2025
+  Received body from client 5:
+
+Tue Sep  9 15:11:57 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=c4f28c5637dd0c9f7daac653e59baa0f08a612e2ab52b9e44ab8a039d8fdb5d1&json={"entry_id":"MjQ2MzQ4NjUxMzI=","call_id":"MToxMDExODU1Njo1NTc6MzcyMTA1OTk1","timestamp":1757419913,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"ef72a6f6fcbe4d078d1654979244ec31."}
+
+Tue Sep  9 15:11:57 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NTc6MzcyMTA1OTk1
+
+Tue Sep  9 15:12:03 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:12:03 2025
+  Received body from client 5:
+
+Tue Sep  9 15:12:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=209edbc5e524f0baba5d45c8091932933d503f068b1030a001201f5a87fe0ddf&json={"entry_id":"MjQ2MzQ4NjUxMzI=","call_id":"MToxMDExODU1Njo1NTc6MzcyMTA1OTk1","timestamp":1757419923,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"ef72a6f6fcbe4d078d1654979244ec31."}
+
+Tue Sep  9 15:12:03 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NTc6MzcyMTA1OTk1
+
+Tue Sep  9 15:12:03 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:12:03 2025
+  Received body from client 5:
+
+Tue Sep  9 15:12:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=295da63362c0400c8d585a22ce08125f07ec217be71002909f27548783f23087&json={"recording_id":"MToxMDExODU1NjoyNDYzNDg2NTEzMjow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzQ4NjUxMzI=","call_id":"MToxMDExODU1Njo1NTc6MzcyMTA1OTk1","extension":"202","timestamp":1757419923,"recipient":"Cloud"}
+
+Tue Sep  9 15:12:03 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1NTc6MzcyMTA1OTk1
+
+Tue Sep  9 15:12:30 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:12:30 2025
+  Received body from client 5:
+
+Tue Sep  9 15:12:30 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=3d3bbabd6c46bf482ac7d9147f5b9926e4ef12404611f5b8ed845c66af395307&json={"entry_id":"MjQ2MzQ4NjUxMzI=","call_id":"MToxMDExODU1Njo1NTc6MzcyMTA1OTk1","timestamp":1757419949,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"ef72a6f6fcbe4d078d1654979244ec31."}
+
+Tue Sep  9 15:12:30 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NTc6MzcyMTA1OTk1
+
+Tue Sep  9 15:12:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:12:32 2025
+  Received body from client 5:
+
+Tue Sep  9 15:12:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=296a2c409a97c454d48d76fb1b4947480c18840b5b46095cdc8d47b68ddc0426&json={"recording_id":"MToxMDExODU1NjoyNDYzNDg2NTEzMjow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzQ4NjUxMzI=","call_id":"MToxMDExODU1Njo1NTc6MzcyMTA1OTk1","extension":"202","timestamp":1757419949,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 15:12:32 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1NTc6MzcyMTA1OTk1
+
+Tue Sep  9 15:12:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:12:32 2025
+  Received body from client 5:
+
+Tue Sep  9 15:12:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=6a701feefcd7ede03a2203835ae4755a78260b5ba60efe96f7a72edfeb4f04c5&json={"entry_id":"MjQ2MzQ4NjUxMzI=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757419912,"forward_time":1757419912,"talk_time":1757419923,"end_time":1757419949,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"ef72a6f6fcbe4d078d1654979244ec31."}
+
+Tue Sep  9 15:12:32 2025
+  CallSummary: MjQ2MzQ4NjUxMzI= direction=2
+
+Tue Sep  9 15:12:32 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:12:32 2025
+  Received body from client 5:
+
+Tue Sep  9 15:12:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=d6678ff104cf4cfbd7debba1782279e2f531ef1356d74f994ee35b135e68f6c2&json={"entry_id":"MjQ2MzQ4NjUxMzI=","product_id":400181673,"user_id":401701328,"timestamp":1757419950,"recording_id":"MToxMDExODU1NjoyNDYzNDg2NTEzMjow"}
+
+Tue Sep  9 15:15:53 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:16:25 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:16:25 2025
+  Received body from client 5:
+
+Tue Sep  9 15:16:25 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=a2d239efa2ef6f873f22d5ed93e805abb6da1b1c92f8555b02562e9813eb7d27&json={"key":"7b179f6d9c608f0a41afe67b2c58c13c"}
+
+Tue Sep  9 15:18:56 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:18:58 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:18:58 2025
+  Received body from client 5:
+
+Tue Sep  9 15:18:58 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=9e493a9e77f4ab71904bb7a3eb2a5559602bca0e77018d34e7f35e9d3f05c3ac&json={"entry_id":"MjQ2MzQ5NzI1NjI=","call_id":"MToxMDExODU1Njo1MDM6MTAzMTE5MDUyOA==","timestamp":1757420338,"seq":2,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"4c65d626c6824734b8e18a90d1a736d8."}
+
+Tue Sep  9 15:18:58 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1MDM6MTAzMTE5MDUyOA==
+
+Tue Sep  9 15:18:58 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:18:58 2025
+  Received body from client 5:
+
+Tue Sep  9 15:18:58 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=c032c28c0254f3c0a892d9bf67e732c1eb6f7f26b8842ba0d05485302db4bca6&json={"entry_id":"MjQ2MzQ5NzI1NjI=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757420328,"forward_time":1757420328,"talk_time":0,"end_time":1757420338,"entry_result":0,"disconnect_reason":1120,"sip_call_id":"4c65d626c6824734b8e18a90d1a736d8."}
+
+Tue Sep  9 15:18:58 2025
+  CallSummary: MjQ2MzQ5NzI1NjI= direction=2
+
+Tue Sep  9 15:19:25 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:20:02 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:20:12 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:20:12 2025
+  Received body from client 5:
+
+Tue Sep  9 15:20:12 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=51d081f5b6064fb1d1c2361835073222c2593f906a7d975498fb38a8033d2457&json={"entry_id":"MjQ2MzQ5OTI4MTk=","call_id":"MToxMDExODU1NjoyMjE6MTAyNDI2NjY3MQ==","timestamp":1757420408,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"6b8bbfddc4c14aa8aae0fe3164b72233."}
+
+Tue Sep  9 15:20:12 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1NjoyMjE6MTAyNDI2NjY3MQ==
+
+Tue Sep  9 15:20:17 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:20:17 2025
+  Received body from client 5:
+
+Tue Sep  9 15:20:17 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=84b4bca204449d6fa3b7e0d0f81ac5c89206f0b19853c66fe22eac1899b161bf&json={"recording_id":"MToxMDExODU1NjoyNDYzNDk5MjgxOTow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzQ5OTI4MTk=","call_id":"MToxMDExODU1NjoyMjE6MTAyNDI2NjY3MQ==","extension":"202","timestamp":1757420417,"recipient":"Cloud"}
+
+Tue Sep  9 15:20:17 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1NjoyMjE6MTAyNDI2NjY3MQ==
+
+Tue Sep  9 15:20:17 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:20:17 2025
+  Received body from client 5:
+
+Tue Sep  9 15:20:17 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=015a36549bd6de0f481d68362b7136e10bc23a2c64d196762f737f8a4b1072dc&json={"entry_id":"MjQ2MzQ5OTI4MTk=","call_id":"MToxMDExODU1NjoyMjE6MTAyNDI2NjY3MQ==","timestamp":1757420417,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"6b8bbfddc4c14aa8aae0fe3164b72233."}
+
+Tue Sep  9 15:20:17 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1NjoyMjE6MTAyNDI2NjY3MQ==
+
+Tue Sep  9 15:20:23 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:20:23 2025
+  Received body from client 5:
+
+Tue Sep  9 15:20:23 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=583cb0167653f0ff8a4d9f2c352c69a2df37b505b012606a934361fd9da67c98&json={"entry_id":"MjQ2MzQ5OTI4MTk=","call_id":"MToxMDExODU1NjoyMjE6MTAyNDI2NjY3MQ==","timestamp":1757420423,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"6b8bbfddc4c14aa8aae0fe3164b72233."}
+
+Tue Sep  9 15:20:23 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1NjoyMjE6MTAyNDI2NjY3MQ==
+
+Tue Sep  9 15:20:24 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:20:24 2025
+  Received body from client 5:
+
+Tue Sep  9 15:20:24 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=3e8e290471a0ad97635282d58ec0f0511b729ed2516d4695f3c502d7cfccc1fd&json={"recording_id":"MToxMDExODU1NjoyNDYzNDk5MjgxOTow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzQ5OTI4MTk=","call_id":"MToxMDExODU1NjoyMjE6MTAyNDI2NjY3MQ==","extension":"202","timestamp":1757420423,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 15:20:24 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1NjoyMjE6MTAyNDI2NjY3MQ==
+
+Tue Sep  9 15:20:24 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:20:24 2025
+  Received body from client 5:
+
+Tue Sep  9 15:20:24 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=8fc1fe46d1c596d63e3c931d0089bbee6152246418a5c2137fc2f8ce6f72e2d3&json={"entry_id":"MjQ2MzQ5OTI4MTk=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757420408,"forward_time":1757420408,"talk_time":1757420417,"end_time":1757420423,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"6b8bbfddc4c14aa8aae0fe3164b72233."}
+
+Tue Sep  9 15:20:24 2025
+  CallSummary: MjQ2MzQ5OTI4MTk= direction=2
+
+Tue Sep  9 15:20:24 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:20:24 2025
+  Received body from client 5:
+
+Tue Sep  9 15:20:24 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f9e83cab2fabe5b3f24bda107a66db1a87ab47f1aac77074fb8eba62052f5aff&json={"entry_id":"MjQ2MzQ5OTI4MTk=","product_id":400181673,"user_id":401701328,"timestamp":1757420424,"recording_id":"MToxMDExODU1NjoyNDYzNDk5MjgxOTow"}
+
+Tue Sep  9 15:22:44 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:22:51 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:22:51 2025
+  Received body from client 5:
+
+Tue Sep  9 15:22:51 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=c3eb0cbab5251e4148db6ddb0b11358cac64addf53a673fdc896ce8442af69b3&json={"entry_id":"MjQ2MzUwMzMwNTQ=","call_id":"MToxMDExODU1Njo1Nzk6MTI0MTA3NzU1","timestamp":1757420567,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"45cc0f9203464dd48aa36a47e11b7e69."}
+
+Tue Sep  9 15:22:51 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1Nzk6MTI0MTA3NzU1
+
+Tue Sep  9 15:22:55 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:22:55 2025
+  Received body from client 5:
+
+Tue Sep  9 15:22:55 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=057718e38a91c812c4a8633c5796265b8d31b25d197255b1e59798dbd87b7636&json={"recording_id":"MToxMDExODU1NjoyNDYzNTAzMzA1NDow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzUwMzMwNTQ=","call_id":"MToxMDExODU1Njo1Nzk6MTI0MTA3NzU1","extension":"202","timestamp":1757420575,"recipient":"Cloud"}
+
+Tue Sep  9 15:22:55 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1Nzk6MTI0MTA3NzU1
+
+Tue Sep  9 15:22:55 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:22:55 2025
+  Received body from client 5:
+
+Tue Sep  9 15:22:55 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=81672021eea64d5ada91a5fc4c5b0b4cfb36be4e40d1b508123ae5dce4741468&json={"entry_id":"MjQ2MzUwMzMwNTQ=","call_id":"MToxMDExODU1Njo1Nzk6MTI0MTA3NzU1","timestamp":1757420575,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"45cc0f9203464dd48aa36a47e11b7e69."}
+
+Tue Sep  9 15:22:55 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1Nzk6MTI0MTA3NzU1
+
+Tue Sep  9 15:23:03 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:23:03 2025
+  Received body from client 5:
+
+Tue Sep  9 15:23:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=0230a663f2440641938100b35f4f2ce54d953e2123533457c86b828556b58146&json={"entry_id":"MjQ2MzUwMzMwNTQ=","call_id":"MToxMDExODU1Njo1Nzk6MTI0MTA3NzU1","timestamp":1757420582,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"45cc0f9203464dd48aa36a47e11b7e69."}
+
+Tue Sep  9 15:23:03 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1Nzk6MTI0MTA3NzU1
+
+Tue Sep  9 15:23:03 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:23:03 2025
+  Received body from client 5:
+
+Tue Sep  9 15:23:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=b7aa38c5be6c1013fc7b20c9c09a85b4b3bcba322dcf8d458710ec15ea9a8ce3&json={"recording_id":"MToxMDExODU1NjoyNDYzNTAzMzA1NDow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzUwMzMwNTQ=","call_id":"MToxMDExODU1Njo1Nzk6MTI0MTA3NzU1","extension":"202","timestamp":1757420583,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 15:23:03 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1Nzk6MTI0MTA3NzU1
+
+Tue Sep  9 15:23:03 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:23:03 2025
+  Received body from client 5:
+
+Tue Sep  9 15:23:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=24cd4d4db94a375123a5a35fe639d84c0dd64a97fe94bbb1476df7c1544c78de&json={"entry_id":"MjQ2MzUwMzMwNTQ=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757420566,"forward_time":1757420566,"talk_time":1757420575,"end_time":1757420583,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"45cc0f9203464dd48aa36a47e11b7e69."}
+
+Tue Sep  9 15:23:03 2025
+  CallSummary: MjQ2MzUwMzMwNTQ= direction=2
+
+Tue Sep  9 15:23:05 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:23:05 2025
+  Received body from client 5:
+
+Tue Sep  9 15:23:05 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=d043850e30edd526530b1636f939eef7f9e57acf27c98b7c8dec7e4e568c6088&json={"entry_id":"MjQ2MzUwMzMwNTQ=","product_id":400181673,"user_id":401701328,"timestamp":1757420585,"recording_id":"MToxMDExODU1NjoyNDYzNTAzMzA1NDow"}
+
+Tue Sep  9 15:23:10 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:23:10 2025
+  Received body from client 5:
+
+Tue Sep  9 15:23:10 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=56459d1120dc68fa421994933088734b763b43a834f8e0d70ba80fd6f37509b8&json={"key":"2b4c57e7c83c9a58ef79c64c0bf824c6"}
+
+Tue Sep  9 15:34:42 2025
+  HTTP server listening on port 8058
+
+Tue Sep  9 15:34:50 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:34:50 2025
+  Received body from client 5:
+
+Tue Sep  9 15:34:50 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=17aa6273d7f7297280b444d07391f489d0b880db1020220e0a5f65ba3e431be3&json={"entry_id":"MjQ2MzUyMTgyOTY=","call_id":"MToxMDExODU1Njo1NTQ6Mzg4OTQ1MTUw","timestamp":1757421285,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"df631081da2e49649b70d2881768d8ad."}
+
+Tue Sep  9 15:34:50 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NTQ6Mzg4OTQ1MTUw
+
+Tue Sep  9 15:34:53 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:34:53 2025
+  Received body from client 5:
+
+Tue Sep  9 15:34:53 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f206810d90790bab691f0eb4f6c3346855da4e7cb9abfc50a658cba7eb9cdf51&json={"recording_id":"MToxMDExODU1NjoyNDYzNTIxODI5Njow","recording_state":"Started","seq":1,"entry_id":"MjQ2MzUyMTgyOTY=","call_id":"MToxMDExODU1Njo1NTQ6Mzg4OTQ1MTUw","extension":"202","timestamp":1757421293,"recipient":"Cloud"}
+
+Tue Sep  9 15:34:53 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1NTQ6Mzg4OTQ1MTUw
+
+Tue Sep  9 15:34:53 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:34:53 2025
+  Received body from client 5:
+
+Tue Sep  9 15:34:53 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=053e343fd145e34be41d989e6640ead494b285db044af4fe741c67602e17ce29&json={"entry_id":"MjQ2MzUyMTgyOTY=","call_id":"MToxMDExODU1Njo1NTQ6Mzg4OTQ1MTUw","timestamp":1757421293,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"df631081da2e49649b70d2881768d8ad."}
+
+Tue Sep  9 15:34:53 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NTQ6Mzg4OTQ1MTUw
+
+Tue Sep  9 15:35:00 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:35:00 2025
+  Received body from client 5:
+
+Tue Sep  9 15:35:00 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=b46eb16d53ec7dba5bbc34b3c30840e9328671eb3c48ed0cda64bb0dd8c7d385&json={"entry_id":"MjQ2MzUyMTgyOTY=","call_id":"MToxMDExODU1Njo1NTQ6Mzg4OTQ1MTUw","timestamp":1757421300,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"df631081da2e49649b70d2881768d8ad."}
+
+Tue Sep  9 15:35:00 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NTQ6Mzg4OTQ1MTUw
+
+Tue Sep  9 15:35:00 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:35:00 2025
+  Received body from client 5:
+
+Tue Sep  9 15:35:00 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=b1ef695383282a19143b54947c4930f01a4cd13f9f3cd7cd77f4890b7da820a1&json={"recording_id":"MToxMDExODU1NjoyNDYzNTIxODI5Njow","recording_state":"Completed","seq":2,"entry_id":"MjQ2MzUyMTgyOTY=","call_id":"MToxMDExODU1Njo1NTQ6Mzg4OTQ1MTUw","extension":"202","timestamp":1757421300,"completion_code":1000,"recipient":"Cloud"}
+
+Tue Sep  9 15:35:00 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1NTQ6Mzg4OTQ1MTUw
+
+Tue Sep  9 15:35:00 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:35:00 2025
+  Received body from client 5:
+
+Tue Sep  9 15:35:00 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=7d353483a6651c76a9c049ec07d4ffb5ae5cd352ac5116cc5907c81c44f3512b&json={"entry_id":"MjQ2MzUyMTgyOTY=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757421285,"forward_time":1757421285,"talk_time":1757421293,"end_time":1757421300,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"df631081da2e49649b70d2881768d8ad."}
+
+Tue Sep  9 15:35:00 2025
+  CallSummary: MjQ2MzUyMTgyOTY= direction=2
+
+Tue Sep  9 15:35:00 2025
+  Accepted new client: 5
+
+Tue Sep  9 15:35:00 2025
+  Received body from client 5:
+
+Tue Sep  9 15:35:00 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=615bb9fcbfbab9e0f25cee5a3045957a8a59f709be3c72c5a2cb47662129f5f6&json={"entry_id":"MjQ2MzUyMTgyOTY=","product_id":400181673,"user_id":401701328,"timestamp":1757421300,"recording_id":"MToxMDExODU1NjoyNDYzNTIxODI5Njow"}
+
+Wed Sep 10 00:16:35 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 00:16:43 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:16:43 2025
+  Received body from client 5:
+
+Wed Sep 10 00:16:43 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=0ec0b93d57abb651603421fc6cfc876aa145ae5b3bae7ba7fbef295f66350745&json={"entry_id":"MjQ2Mzc5MTk0OTA=","call_id":"MToxMDExODU1Njo1NTQ6Mzg5MDUzMjgw","timestamp":1757452595,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"48fdb379b9574063850fdf69f851ae08."}
+
+Wed Sep 10 00:16:43 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NTQ6Mzg5MDUzMjgw
+
+Wed Sep 10 00:16:53 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:16:53 2025
+  Received body from client 5:
+
+Wed Sep 10 00:16:53 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=40e741c9e3fd86cbb9cd3f1d4ee055eb688e91409eb3d6d8d0de59beb85d1cbc&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkxOTQ5MDow","recording_state":"Started","seq":1,"entry_id":"MjQ2Mzc5MTk0OTA=","call_id":"MToxMDExODU1Njo1NTQ6Mzg5MDUzMjgw","extension":"202","timestamp":1757452613,"recipient":"Cloud"}
+
+Wed Sep 10 00:16:53 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1NTQ6Mzg5MDUzMjgw
+
+Wed Sep 10 00:16:53 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:16:53 2025
+  Received body from client 5:
+
+Wed Sep 10 00:16:53 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e701a89f9e325554721d9034d9b95d8e7a4f0daa73125af53e89b3c554201d54&json={"entry_id":"MjQ2Mzc5MTk0OTA=","call_id":"MToxMDExODU1Njo1NTQ6Mzg5MDUzMjgw","timestamp":1757452613,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"48fdb379b9574063850fdf69f851ae08."}
+
+Wed Sep 10 00:16:53 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NTQ6Mzg5MDUzMjgw
+
+Wed Sep 10 00:17:02 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:17:02 2025
+  Received body from client 5:
+
+Wed Sep 10 00:17:02 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=9ea73010f76e8700d9a9dbc2bc235fa22ed7240994d81fb29b7239a79a51d79d&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkxOTQ5MDow","recording_state":"Completed","seq":2,"entry_id":"MjQ2Mzc5MTk0OTA=","call_id":"MToxMDExODU1Njo1NTQ6Mzg5MDUzMjgw","extension":"202","timestamp":1757452622,"completion_code":1000,"recipient":"Cloud"}
+
+Wed Sep 10 00:17:02 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1NTQ6Mzg5MDUzMjgw
+
+Wed Sep 10 00:17:02 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:17:02 2025
+  Received body from client 5:
+
+Wed Sep 10 00:17:02 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=c1d0011d819ec81c253fc8aca1ecfba2819ea26c86b4fdf13cd888110ceb5de1&json={"entry_id":"MjQ2Mzc5MTk0OTA=","call_id":"MToxMDExODU1Njo1NTQ6Mzg5MDUzMjgw","timestamp":1757452622,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1110,"dct":{"type":0},"sip_call_id":"48fdb379b9574063850fdf69f851ae08."}
+
+Wed Sep 10 00:17:02 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NTQ6Mzg5MDUzMjgw
+
+Wed Sep 10 00:17:02 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:17:02 2025
+  Received body from client 5:
+
+Wed Sep 10 00:17:02 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=3534501f710937ad81903a0619f74d0f0c9209bd5cfa7db3a6073a172fe762f6&json={"entry_id":"MjQ2Mzc5MTk0OTA=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757452595,"forward_time":1757452595,"talk_time":1757452613,"end_time":1757452622,"entry_result":1,"disconnect_reason":1110,"sip_call_id":"48fdb379b9574063850fdf69f851ae08."}
+
+Wed Sep 10 00:17:02 2025
+  CallSummary: MjQ2Mzc5MTk0OTA= direction=2
+
+Wed Sep 10 00:17:02 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:17:02 2025
+  Received body from client 5:
+
+Wed Sep 10 00:17:02 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=73efbacdcb6f8ad34b59a0ee7c95c6f6d20c670fd50595a88e8929a9808a91c1&json={"entry_id":"MjQ2Mzc5MTk0OTA=","product_id":400181673,"user_id":401701328,"timestamp":1757452622,"recording_id":"MToxMDExODU1NjoyNDYzNzkxOTQ5MDow"}
+
+Wed Sep 10 00:38:41 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 00:42:44 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 00:42:51 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:42:51 2025
+  Received body from client 5:
+
+Wed Sep 10 00:42:51 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=9cbfa11a09d93ff5b8997bf8ea53438a021c6a7eed25b031e1d4a6d776d2c66a&json={"entry_id":"MjQ2Mzc5MjU0MTc=","call_id":"MToxMDExODU1Njo1MDM6MTAzMTMxMDY4MQ==","timestamp":1757454167,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"d3fb0e34c4624fd7aa6d98ac40167cdf."}
+
+Wed Sep 10 00:42:51 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1MDM6MTAzMTMxMDY4MQ==
+
+Wed Sep 10 00:42:56 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:42:56 2025
+  Received body from client 5:
+
+Wed Sep 10 00:42:56 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=d99e94a002e7f7a0d0fa1e0bc38d7a4d9a1ec36ed27482dff4b2eb827cd93ccb&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkyNTQxNzow","recording_state":"Started","seq":1,"entry_id":"MjQ2Mzc5MjU0MTc=","call_id":"MToxMDExODU1Njo1MDM6MTAzMTMxMDY4MQ==","extension":"202","timestamp":1757454176,"recipient":"Cloud"}
+
+Wed Sep 10 00:42:56 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1MDM6MTAzMTMxMDY4MQ==
+
+Wed Sep 10 00:42:56 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:42:56 2025
+  Received body from client 5:
+
+Wed Sep 10 00:42:56 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=53c3e334cfde1d5cd81919a1fbee812d67edd198c75e383f1769733ca554c6d6&json={"entry_id":"MjQ2Mzc5MjU0MTc=","call_id":"MToxMDExODU1Njo1MDM6MTAzMTMxMDY4MQ==","timestamp":1757454176,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"d3fb0e34c4624fd7aa6d98ac40167cdf."}
+
+Wed Sep 10 00:42:56 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1MDM6MTAzMTMxMDY4MQ==
+
+Wed Sep 10 00:43:03 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:43:03 2025
+  Received body from client 5:
+
+Wed Sep 10 00:43:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=001b3be500a6266b2085d83143b3abe5cf04e5e49d48e864ee3f0ba298588a99&json={"entry_id":"MjQ2Mzc5MjU0MTc=","call_id":"MToxMDExODU1Njo1MDM6MTAzMTMxMDY4MQ==","timestamp":1757454183,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"d3fb0e34c4624fd7aa6d98ac40167cdf."}
+
+Wed Sep 10 00:43:03 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1MDM6MTAzMTMxMDY4MQ==
+
+Wed Sep 10 00:43:03 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:43:03 2025
+  Received body from client 5:
+
+Wed Sep 10 00:43:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=0e07282b1ad4e2f5d351ec51137794dedba1326f56fd500e623ee65a086eb19f&json={"entry_id":"MjQ2Mzc5MjU0MTc=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757454167,"forward_time":1757454167,"talk_time":1757454176,"end_time":1757454183,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"d3fb0e34c4624fd7aa6d98ac40167cdf."}
+
+Wed Sep 10 00:43:03 2025
+  CallSummary: MjQ2Mzc5MjU0MTc= direction=2
+
+Wed Sep 10 00:43:03 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:43:03 2025
+  Received body from client 5:
+
+Wed Sep 10 00:43:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e5d2013accd45465e8c86829e6d92f6bd6ba1b7a368794b386578f70ab80503f&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkyNTQxNzow","recording_state":"Completed","seq":2,"entry_id":"MjQ2Mzc5MjU0MTc=","call_id":"MToxMDExODU1Njo1MDM6MTAzMTMxMDY4MQ==","extension":"202","timestamp":1757454183,"completion_code":1000,"recipient":"Cloud"}
+
+Wed Sep 10 00:43:03 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1MDM6MTAzMTMxMDY4MQ==
+
+Wed Sep 10 00:43:03 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:43:03 2025
+  Received body from client 5:
+
+Wed Sep 10 00:43:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=68cf6426a0c57d62fbdefc2d25156659c12ce884afe65901389deb6b795d34e9&json={"entry_id":"MjQ2Mzc5MjU0MTc=","product_id":400181673,"user_id":401701328,"timestamp":1757454183,"recording_id":"MToxMDExODU1NjoyNDYzNzkyNTQxNzow"}
+
+Wed Sep 10 00:43:33 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 00:43:57 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 00:45:11 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 00:45:16 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:45:16 2025
+  Received body from client 5:
+
+Wed Sep 10 00:45:16 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e1eeecaa42ca290e889b0ea3f0a3febb7a69cf20a5488470c4f43213b6ee64b2&json={"entry_id":"MjQ2Mzc5MjU5NjM=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4MjUz","timestamp":1757454313,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"8a5894c131c04cdaa1b1092199ce2558."}
+
+Wed Sep 10 00:45:16 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4MjUz
+
+Wed Sep 10 00:45:19 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:45:19 2025
+  Received body from client 5:
+
+Wed Sep 10 00:45:19 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=a68e3b215f9196ede85bcb1dd0dd65a37991952646f5135c06a259a32545aa1e&json={"entry_id":"MjQ2Mzc5MjU5NjM=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4MjUz","timestamp":1757454319,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"8a5894c131c04cdaa1b1092199ce2558."}
+
+Wed Sep 10 00:45:19 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4MjUz
+
+Wed Sep 10 00:45:19 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:45:19 2025
+  Received body from client 5:
+
+Wed Sep 10 00:45:19 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=1cf3e8f29dac1fc27a4124d2ab82f82286fcc1915a08db167ff83ebdb90cebf1&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkyNTk2Mzow","recording_state":"Started","seq":1,"entry_id":"MjQ2Mzc5MjU5NjM=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4MjUz","extension":"202","timestamp":1757454319,"recipient":"Cloud"}
+
+Wed Sep 10 00:45:19 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4MjUz
+
+Wed Sep 10 00:45:25 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:45:25 2025
+  Received body from client 5:
+
+Wed Sep 10 00:45:25 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=d0f49140afaf997f4c381cf5e3f4c43ccf890f889a3decc4b4a80faf5d660f7e&json={"entry_id":"MjQ2Mzc5MjU5NjM=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4MjUz","timestamp":1757454325,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"8a5894c131c04cdaa1b1092199ce2558."}
+
+Wed Sep 10 00:45:25 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4MjUz
+
+Wed Sep 10 00:45:25 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:45:25 2025
+  Received body from client 5:
+
+Wed Sep 10 00:45:25 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=305bd846a359d97885adf759173be47981c2f912d66ccb4fe7e5d993b690e9c3&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkyNTk2Mzow","recording_state":"Completed","seq":2,"entry_id":"MjQ2Mzc5MjU5NjM=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4MjUz","extension":"202","timestamp":1757454325,"completion_code":1000,"recipient":"Cloud"}
+
+Wed Sep 10 00:45:25 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4MjUz
+
+Wed Sep 10 00:45:25 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:45:25 2025
+  Received body from client 5:
+
+Wed Sep 10 00:45:25 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=9440ef8e97b7b73d4178a31881596110fb13019faee2117e602898a003ad3c72&json={"entry_id":"MjQ2Mzc5MjU5NjM=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757454313,"forward_time":1757454313,"talk_time":1757454319,"end_time":1757454325,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"8a5894c131c04cdaa1b1092199ce2558."}
+
+Wed Sep 10 00:45:25 2025
+  CallSummary: MjQ2Mzc5MjU5NjM= direction=2
+
+Wed Sep 10 00:45:25 2025
+  Accepted new client: 5
+
+Wed Sep 10 00:45:25 2025
+  Received body from client 5:
+
+Wed Sep 10 00:45:25 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=006aa94d71eea5e9605456631a0d138cdce2f2e961ef40ade77179c23401011a&json={"entry_id":"MjQ2Mzc5MjU5NjM=","product_id":400181673,"user_id":401701328,"timestamp":1757454325,"recording_id":"MToxMDExODU1NjoyNDYzNzkyNTk2Mzow"}
+
+Wed Sep 10 01:41:21 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 01:41:32 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:32 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:32 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f88cbd3533461a4e5734afdbed1597debdbbafcfe4e220b076bff85ec619959b&json={"entry_id":"MjQ2Mzc5MzgwMzE=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5","timestamp":1757457687,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"a9586e62749c4ca2a979d96f183988ef."}
+
+Wed Sep 10 01:41:32 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5
+
+Wed Sep 10 01:41:34 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:34 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:34 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=ec73c6309557a57c39cc259886d084aeeea3dc5f6e05d2f9511bded07ac6a2e1&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkzODAzMTow","recording_state":"Started","seq":1,"entry_id":"MjQ2Mzc5MzgwMzE=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5","extension":"202","timestamp":1757457694,"recipient":"Cloud"}
+
+Wed Sep 10 01:41:34 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5
+
+Wed Sep 10 01:41:34 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:34 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:34 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=3f83086fc2951c32dfb1b78c20358bcef6a30b268a0533a09630bf3ba9b59304&json={"entry_id":"MjQ2Mzc5MzgwMzE=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5","timestamp":1757457694,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"a9586e62749c4ca2a979d96f183988ef."}
+
+Wed Sep 10 01:41:34 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5
+
+Wed Sep 10 01:41:42 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:42 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:42 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=e5bb7356fa179438f4589d29e140b1b6aed9b109b29bb31442231dd4f84a9dee&json={"entry_id":"MjQ2Mzc5MzgwMzE=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5","timestamp":1757457702,"seq":3,"call_state":"OnHold","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","hold_initiator":true,"line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"a9586e62749c4ca2a979d96f183988ef."}
+
+Wed Sep 10 01:41:42 2025
+  CallStateEvent: OnHold for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5
+
+Wed Sep 10 01:41:46 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:46 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:46 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=47ac4e6d07731460fa646b9b44e1a6a37338c3f031530f4dffe5fd87eeba4532&json={"entry_id":"MjQ2Mzc5MzgwOTg=","call_id":"MToxMDExODU1Njo1ODE6MTEzOTY5NzY1","timestamp":1757457706,"seq":1,"call_state":"Appeared","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"extension":"104","number":"sip:user3@vpbx400181673.mangosip.ru"},"dct":{"type":0},"sip_call_id":"7ae0cc57e1ab44f5b01d12394f413a43."}
+
+Wed Sep 10 01:41:46 2025
+  CallStateEvent: Appeared for call_id=MToxMDExODU1Njo1ODE6MTEzOTY5NzY1
+
+Wed Sep 10 01:41:51 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:51 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:51 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=9ee6f3073bf102d79852e3709d716f87e039dc12c2fc9677a1a4d3f973ac530c&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkzODA5ODow","recording_state":"Started","seq":1,"entry_id":"MjQ2Mzc5MzgwOTg=","call_id":"MToxMDExODU1Njo1ODE6MTEzOTY5NzY1","extension":"104","timestamp":1757457711,"recipient":"Cloud"}
+
+Wed Sep 10 01:41:51 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1ODE6MTEzOTY5NzY1
+
+Wed Sep 10 01:41:51 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:51 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:51 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f015a00f4a00d521a46faa1947221ec3f65b41f5dedb4690598d59b6df60e361&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkzODA5ODox","recording_state":"Started","seq":1,"entry_id":"MjQ2Mzc5MzgwOTg=","call_id":"MToxMDExODU1Njo1ODE6MTEzOTY5NzY1","extension":"202","timestamp":1757457711,"recipient":"Cloud"}
+
+Wed Sep 10 01:41:51 2025
+  RecordingEvent: Started for call_id=MToxMDExODU1Njo1ODE6MTEzOTY5NzY1
+
+Wed Sep 10 01:41:51 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:51 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:51 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=3c7f222c3c47a727683ff62b1c4fe171c58afc76e024e2009b55026af13d81b3&json={"entry_id":"MjQ2Mzc5MzgwOTg=","call_id":"MToxMDExODU1Njo1ODE6MTEzOTY5NzY1","timestamp":1757457711,"seq":2,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"extension":"104","number":"sip:user3@vpbx400181673.mangosip.ru"},"dct":{"type":0},"sip_call_id":"7ae0cc57e1ab44f5b01d12394f413a43."}
+
+Wed Sep 10 01:41:51 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1ODE6MTEzOTY5NzY1
+
+Wed Sep 10 01:41:59 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:59 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=6f52ed77634f8e14f5cb41e934f47471b4f6642a9bdef6850947c20dcef69235&json={"entry_id":"MjQ2Mzc5MzgwMzE=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5","timestamp":1757457719,"seq":4,"call_state":"Connected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"dct":{"type":0},"sip_call_id":"a9586e62749c4ca2a979d96f183988ef."}
+
+Wed Sep 10 01:41:59 2025
+  CallStateEvent: Connected for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5
+
+Wed Sep 10 01:41:59 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:59 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=d3cf9c3cbad9bb738d6784acf1c04cd46b90f45530791c734f8e5000c99c717e&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkzODA5ODox","recording_state":"Completed","seq":2,"entry_id":"MjQ2Mzc5MzgwOTg=","call_id":"MToxMDExODU1Njo1ODE6MTEzOTY5NzY1","extension":"202","timestamp":1757457719,"completion_code":1000,"recipient":"Cloud"}
+
+Wed Sep 10 01:41:59 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1ODE6MTEzOTY5NzY1
+
+Wed Sep 10 01:41:59 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:59 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=de044ec57ed3693d10b26e39a3476120df96c7c50d801ebf1cc7aed0228a352e&json={"entry_id":"MjQ2Mzc5MzgwOTg=","call_id":"MToxMDExODU1Njo1ODE6MTEzOTY5NzY1","timestamp":1757457719,"seq":3,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"extension":"104","number":"sip:user3@vpbx400181673.mangosip.ru"},"disconnect_reason":1110,"dct":{"type":0},"sip_call_id":"7ae0cc57e1ab44f5b01d12394f413a43."}
+
+Wed Sep 10 01:41:59 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1ODE6MTEzOTY5NzY1
+
+Wed Sep 10 01:41:59 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:59 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=56108700933336fc0377f62b406e41040ee7e3e4478c0a654948622ddf96259e&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkzODA5ODow","recording_state":"Completed","seq":2,"entry_id":"MjQ2Mzc5MzgwOTg=","call_id":"MToxMDExODU1Njo1ODE6MTEzOTY5NzY1","extension":"104","timestamp":1757457719,"completion_code":1000,"recipient":"Cloud"}
+
+Wed Sep 10 01:41:59 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1ODE6MTEzOTY5NzY1
+
+Wed Sep 10 01:41:59 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:59 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=11deabf0668e7f44ce0ad061c649ca4eb1d18beb369ede83a664d9e8c90ef9fd&json={"entry_id":"MjQ2Mzc5MzgwOTg=","call_direction":0,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"extension":"104","number":"sip:user3@vpbx400181673.mangosip.ru"},"create_time":1757457706,"forward_time":1757457706,"talk_time":1757457711,"end_time":1757457719,"entry_result":1,"disconnect_reason":1110,"sip_call_id":"7ae0cc57e1ab44f5b01d12394f413a43."}
+
+Wed Sep 10 01:41:59 2025
+  CallSummary: MjQ2Mzc5MzgwOTg= direction=0
+
+Wed Sep 10 01:41:59 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:59 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=f9d5095b7f0ebc4eac44edb1b454f64365ff3b496b5c655d2b39b1b5ae8b739f&json={"entry_id":"MjQ2Mzc5MzgwOTg=","product_id":400181673,"user_id":401701328,"timestamp":1757457719,"recording_id":"MToxMDExODU1NjoyNDYzNzkzODA5ODox"}
+
+Wed Sep 10 01:41:59 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:41:59 2025
+  Received body from client 5:
+
+Wed Sep 10 01:41:59 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=16628e5b8a093efa3cf89a400e07955f9b72b16194ef3160344e45ac41a4fc1e&json={"entry_id":"MjQ2Mzc5MzgwOTg=","product_id":400181673,"user_id":401721575,"timestamp":1757457719,"recording_id":"MToxMDExODU1NjoyNDYzNzkzODA5ODow"}
+
+Wed Sep 10 01:42:03 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:42:03 2025
+  Received body from client 5:
+
+Wed Sep 10 01:42:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=67853186537f6c8c4fc4badbc606fad1b06440bc393d9564a5ef06f0cad23d42&json={"entry_id":"MjQ2Mzc5MzgwMzE=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5","timestamp":1757457723,"seq":5,"call_state":"Disconnected","location":"abonent","from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru","line_number":"74992887904"},"to":{"number":"79773468083"},"disconnect_reason":1120,"dct":{"type":0},"sip_call_id":"a9586e62749c4ca2a979d96f183988ef."}
+
+Wed Sep 10 01:42:03 2025
+  CallStateEvent: Disconnected for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5
+
+Wed Sep 10 01:42:03 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:42:03 2025
+  Received body from client 5:
+
+Wed Sep 10 01:42:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=cb5b4e0235fe522794aef13632ecb177d77e2609dac3691499b09d7cc12219fe&json={"recording_id":"MToxMDExODU1NjoyNDYzNzkzODAzMTow","recording_state":"Completed","seq":2,"entry_id":"MjQ2Mzc5MzgwMzE=","call_id":"MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5","extension":"202","timestamp":1757457723,"completion_code":1000,"recipient":"Cloud"}
+
+Wed Sep 10 01:42:03 2025
+  RecordingEvent: Completed for call_id=MToxMDExODU1Njo1NTI6Mzk4MDU4NjE5
+
+Wed Sep 10 01:42:03 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:42:03 2025
+  Received body from client 5:
+
+Wed Sep 10 01:42:03 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=9a2ca971bdd23980a796f1cb35c32e2fb2432713a7be96f6b24796a57f474254&json={"entry_id":"MjQ2Mzc5MzgwMzE=","call_direction":2,"from":{"extension":"202","number":"sip:user1@vpbx400181673.mangosip.ru"},"to":{"number":"79773468083"},"line_number":"74992887904","create_time":1757457687,"forward_time":1757457687,"talk_time":1757457694,"end_time":1757457723,"entry_result":1,"disconnect_reason":1120,"sip_call_id":"a9586e62749c4ca2a979d96f183988ef."}
+
+Wed Sep 10 01:42:03 2025
+  CallSummary: MjQ2Mzc5MzgwMzE= direction=2
+
+Wed Sep 10 01:42:04 2025
+  Accepted new client: 5
+
+Wed Sep 10 01:42:04 2025
+  Received body from client 5:
+
+Wed Sep 10 01:42:04 2025
+  vpbx_api_key=mgw2t05r6mmw1y0ez4pdzfy0d4plq3r4&sign=572a8d6ac801b68129e557597c4b6f8ce923b26261b3f34d57d9d2b87b10e545&json={"entry_id":"MjQ2Mzc5MzgwMzE=","product_id":400181673,"user_id":401701328,"timestamp":1757457724,"recording_id":"MToxMDExODU1NjoyNDYzNzkzODAzMTow"}
+
+Wed Sep 10 16:51:14 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 16:52:27 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 16:52:46 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 16:53:21 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 16:53:25 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 17:02:12 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 17:02:21 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 17:02:27 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:05:05 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:06:23 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:06:42 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:15:30 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:16:12 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:27:44 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:46:09 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:46:44 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:46:53 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:50:34 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:55:28 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:55:51 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:56:23 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:56:38 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:56:47 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:57:36 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:58:05 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:58:22 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 19:58:31 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:08:34 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:10:46 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:13:26 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:14:56 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:16:10 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:16:46 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:19:13 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:20:18 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:23:34 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:23:54 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:27:14 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:28:07 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:28:59 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:29:49 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:30:14 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:30:30 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:32:31 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:34:37 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:34:42 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:34:51 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:55:36 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:56:31 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:56:38 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:56:47 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 20:57:35 2025
+  HTTP server listening on port 8058
+
+Wed Sep 10 22:29:38 2025
+  HTTP server listening on port 8058
+
+Thu Sep 11 00:24:04 2025
+  Server is already running. Exiting...
+
+Thu Sep 11 00:26:44 2025
+  Server is already running. Exiting...
+
+Thu Sep 11 00:27:05 2025
+  HTTP server listening on port 8058
+
+Thu Sep 11 00:27:05 2025
+  HTTP server listening on port 8058

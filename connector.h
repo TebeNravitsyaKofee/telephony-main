@@ -7,6 +7,9 @@
 void sslInit();
 int getLines();
 void startHttpServer(int port);
+void displayCalls();
+
+
 
 
 #endif

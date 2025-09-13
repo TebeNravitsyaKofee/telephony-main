@@ -15,15 +15,24 @@
 #include <vector>
 #include <variant>
 #include <optional>
+#include <fstream>
+#include <thread>
+#include <chrono>
+#include <cstdlib>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <cstring>
+#include <functional>
+#include <atomic>
 
 #include "settings.h"
-
 
 
 using json = nlohmann::json;
 
 static SSL_CTX* client_ctx;
 static SSL_CTX* server_ctx;
+
 
 std::string hostname = "https://app.mango-office.ru/vpbx";
 const char* host = "app.mango-office.ru";
@@ -791,30 +800,126 @@ struct CallSummary
     std::string sip_call_id;
 };
 
+
+//custom observable map for in-real-time calltracking, emits signals when edited
+template<typename K, typename V>
+class ObservableMap 
+{
+    std::map<K, V> data;
+
+public:
+    using Listener = std::function<void()>;
+
+private:
+    std::vector<Listener> listeners;
+
+    void notify() 
+    {
+        for (auto &fn : listeners) fn();
+    }
+
+public:
+    //subscribing for notifying
+    void subscribe(Listener fn) 
+    {
+
+        listeners.push_back(fn);
+    }
+    
+    //standart methods for map
+    void insertOrUpdate(const K& key, const V& value) 
+    {
+        data[key] = value;
+        notify();
+    }
+
+    //erase for every possible way to use it
+    void erase(const K& key)
+    {
+        auto it = data.find(key);
+        if (it != data.end()) 
+        {
+            data.erase(it);
+            notify();
+        }
+    }
+    void erase(typename std::map<K, V>::iterator pos) 
+    {
+        data.erase(pos);
+        notify();
+    }
+    void erase(typename std::map<K, V>::const_iterator pos) 
+    {
+        data.erase(pos);
+        notify();
+    }
+
+    void erase(typename std::map<K, V>::iterator first, typename std::map<K, V>::iterator last) 
+    {
+        if (first != last) 
+        {
+            data.erase(first, last);
+            notify();
+        }
+    }
+
+    //access like in std::map
+    V& operator[](const K& key) 
+    {
+        notify(); 
+        return data[key];
+    }
+
+    V& at(const K& key) 
+    {
+    return data.at(key);
+    }
+    const V& at(const K& key) const 
+    {
+        return data.at(key);
+    }
+
+    std::size_t size() const { return data.size(); }
+    bool empty() const { return data.empty(); }
+
+    bool operator==(const ObservableMap& other) const 
+    {
+        return data == other.data;
+    }
+    bool operator!=(const ObservableMap& other) const 
+    {
+        return data != other.data;
+    }
+
+    auto find(const K& key) { return data.find(key); }
+    auto find(const K& key) const { return data.find(key); }
+
+    auto begin() const { return data.begin(); }
+    auto end() const { return data.end(); }
+};
+
 //map for storing active calls
-std::map<std::string, CallStateEvent> activeCalls;
+ObservableMap<std::string, CallStateEvent> activeCalls;
 
 //function that parses calls (only CallStateEvent) to map and controls call state flow
 void storeCallState(const CallStateEvent& ev) 
 {
     if (ev.call_state == "Appeared") 
     {
-        activeCalls[ev.call_id] = ev;
+        activeCalls.insertOrUpdate(ev.call_id,ev);
     }
     else if (ev.call_state == "Connected") 
     {
         auto it = activeCalls.find(ev.call_id);
         if (it != activeCalls.end()) 
         {
-            it->second.call_state = "Connected";
-            it->second.timestamp  = ev.timestamp;
-            it->second.seq        = ev.seq;
+            activeCalls.insertOrUpdate(ev.call_id,ev);
         }
         //in some cases second call state can come earlier than first
         //if call not found i just add it in for now, gotta rework that later
         else 
         {
-            activeCalls[ev.call_id] = ev;
+            activeCalls.insertOrUpdate(ev.call_id,ev);
         }
     }
     else if (ev.call_state == "Disconnected") 
@@ -835,6 +940,7 @@ void storeCallState(const CallStateEvent& ev)
 }
 
 using CallEvent = std::variant<AuthEvent, CallStateEvent, RecordingEvent, CallSummary>;
+static CallEvent call_state;
 
 //this map stores every /call event before it being redirected, not needed in current state
 //std::map<std::string, CallEvent> events;
@@ -918,13 +1024,21 @@ CallEvent parseEvent(const std::string& jsonStr) {
         ev.recording_id = j.value("recording_id", "");
         return ev;
     }
+    else if (j.contains("key")) 
+    {
+        return {};
+    }
 
     throw std::runtime_error("Unknown event type");
 }
 
+
+
 //async server
 void startHttpServer(int port) 
 {
+
+
     int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
     fcntl(listen_sock, F_SETFL, O_NONBLOCK);
 
@@ -1038,15 +1152,16 @@ void startHttpServer(int port)
                             }
                             std::string jsonPart = body_decoded.substr(pos + 5); 
 
-                            CallEvent call_state = parseEvent(jsonPart);
+                            call_state = parseEvent(jsonPart);
 
                             if (std::holds_alternative<CallStateEvent>(call_state)) 
                             {
                                 auto ev = std::get<CallStateEvent>(call_state);
                                 appendLog("CallStateEvent: " + ev.call_state + " for call_id=" + ev.call_id);
                                 storeCallState(ev);
+                                //debugging active calls
                                 #ifdef DEBUG
-                                {
+                                {/*
                                     if (activeCalls.empty()) 
                                     {
                                         std::cout << "Нет активных звонков\n";
@@ -1059,6 +1174,7 @@ void startHttpServer(int port)
                                                     << " состояние: " << call.call_state << "\n";
                                         }
                                     }
+                                */
                                 }
                                 #endif
                             }
@@ -1072,8 +1188,6 @@ void startHttpServer(int port)
                                 auto ev = std::get<CallSummary>(call_state);
                                 appendLog("CallSummary: " + ev.entry_id + " direction=" + std::to_string(ev.call_direction));
                             }
-                            
-                            
                         }
                         std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nOK";
                         send(c, response.data(), response.size(), 0);
@@ -1091,7 +1205,159 @@ void startHttpServer(int port)
             }
         }
     }
+    
 }
+
+//method looks for installed terminals, made for a bit of versatility
+bool isInstalled(const std::string &cmd) 
+{
+    std::string check = "which " + cmd + " > /dev/null 2>&1";
+    int ret = system(check.c_str());
+    return WIFEXITED(ret) && WEXITSTATUS(ret) == 0;
+}
+
+//runs terminal with a dedicated script, might be reused
+bool tryRunTerminal(const std::string &terminal, const std::string &scriptPath) 
+{
+    std::string cmd;
+    if (terminal == "gnome-terminal") 
+    {
+        cmd = terminal + " -- " + scriptPath;
+    } 
+    else if (terminal == "konsole") 
+    {
+        cmd = terminal + " -e " + scriptPath;
+    } 
+    else if (terminal == "xterm") 
+    {
+        cmd = terminal + " -e " + scriptPath;
+    } 
+    else if (terminal == "terminator") 
+    {
+        cmd = terminal + " -x " + scriptPath;
+    } 
+    else 
+    {
+        return false;
+    }
+    return system(cmd.c_str()) == 0;
+}
+
+void displayCalls() 
+{
+    
+    //creating pipe to deliver data inside newly opened terminal
+    const char* fifo = "/tmp/my_pipe";
+    mkfifo(fifo, 0666);
+
+    const char* scriptPath = "/tmp/show_table.sh";
+    std::ofstream script(scriptPath);
+    script << "#!/bin/bash\n"
+           << "while true; do\n"
+           << "    clear\n"
+           << "    cat /tmp/my_pipe\n"
+           << "    sleep 1\n"
+           << "done\n";
+    script.close();
+    //groups and others cannot write
+    chmod(scriptPath, 0755);
+
+    std::vector<std::string> terminals = {"gnome-terminal", "konsole", "xterm", "terminator"};
+
+    bool launched = false;
+    for (const auto &term : terminals) 
+    {
+        if (!isInstalled(term)) continue;
+
+        if (tryRunTerminal(term, scriptPath)) 
+        {
+            launched = true;
+            break;
+        } 
+        else 
+        {
+            std::string error = "Не удалось запустить " + term + ". Переходим к следующему.\n";
+            appendLog(error);
+            #ifdef DEBUG
+                std::cerr << "Не удалось запустить " << term << ". Переходим к следующему." << std::endl;
+            #endif
+        }
+    }
+
+    if (!launched) 
+    {
+        std::string error = "Не удалось запустить ни один терминал.\n";
+        appendLog(error);
+        #ifdef DEBUG
+            std::cerr << "Не удалось запустить ни один терминал." << std::endl;
+        #endif
+        return;
+    }
+
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    static std::ofstream out(fifo);
+    if (!out.is_open()) 
+    {
+        std::string error = "Не удалось открыть FIFO на запись.\n";
+        appendLog(error);
+        #ifdef DEBUG
+        {
+            std::cerr << "Не удалось открыть FIFO на запись" << std::endl;   
+        }
+        #endif
+        return;
+    }
+    static std::string buf;
+    //subbing to map changes, lambda refreshes the pipe
+    activeCalls.subscribe([&]() 
+    {
+        std::cout << "event" << std::endl;
+        std::string ret;
+        for(auto const& [key,val] : activeCalls)
+        {
+            std::cout << val.call_state << std::endl;
+            CallStateEvent call = val;
+            buf = val.from_number + " " + val.call_state + " " + val.location + "\n";
+            ret.append(buf);
+            
+
+        };
+        //this code clears terminal
+        out << "\033[2J\033[H";
+        out << ret << std::flush;
+    });
+    
+    /*
+        ev.entry_id = j.value("entry_id", "");
+        ev.call_id = j.value("call_id", "");
+        ev.timestamp = j.value("timestamp", 0);
+        ev.seq = j.value("seq", 0);
+        ev.call_state = j.value("call_state", "");
+        ev.location = j.value("location", "");
+        if (j.contains("from")) 
+        {
+            ev.from_extension = j["from"].value("extension", "");
+            ev.from_number = j["from"].value("number", "");
+            ev.from_line_number = j["from"].value("line_number", "");
+        }
+        if (j.contains("to")) 
+        {
+            ev.to_number = j["to"].value("number", "");
+        }
+        if (j.contains("disconnect_reason"))
+            ev.disconnect_reason = j["disconnect_reason"].get<int>();
+        if (j.contains("dct"))
+            ev.dct_type = j["dct"].value("type", 0);
+        ev.sip_call_id = j.value("sip_call_id", "");
+        return ev; */
+
+
+}
+
+
+
+
 
 
 
