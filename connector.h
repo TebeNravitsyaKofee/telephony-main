@@ -9,6 +9,13 @@ int getLines();
 void startHttpServer(int port);
 void displayCalls();
 
+const char* PID_FILE;
+
+bool isServerRunning();
+int startServer();
+int stopServer();
+
+
 
 
 

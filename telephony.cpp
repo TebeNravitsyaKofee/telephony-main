@@ -23,39 +23,7 @@ std::map<std::string,std::string> set
 */
 
     
-const char* _PID_FILE = "/tmp/app_release.pid";
 
-bool isServerRunning() 
-{
-    //checking if pid file exists
-    std::ifstream pidFile(_PID_FILE);
-    if (!pidFile.is_open()) return false;
-
-    pid_t pid;
-    pidFile >> pid;
-    pidFile.close();
-
-    //pid == 0 means that server is already running
-    if (kill(pid, 0) == 0) 
-    {
-        return true;
-    } 
-    return false;
-}
-
-//saving new pid file in case of it not existing
-void savePid() 
-{
-    std::ofstream pidFile(_PID_FILE);
-    pidFile << getpid();
-    pidFile.close();
-}
-
-//deleting pid file
-void removePid() 
-{
-    std::filesystem::remove(_PID_FILE);
-}
 
 
 
@@ -65,6 +33,9 @@ int main(int argc, char *argv[])
 {
     sslInit();
 
+    
+
+    // при завершении сервера удаляем PID файл
     
 
     std::vector<std::string> args(argv + 1, argv + argc);
@@ -181,9 +152,35 @@ int main(int argc, char *argv[])
             }  
         }
         else if (command == "calls")
+        {
+            displayCalls();
+        }
+        else if (command == "server")
+        {
+            if (subcommand == "status")
             {
-                displayCalls();
+                if(isServerRunning())
+                {
+                    std::cout << "Server running." << std::endl;
+                }
+                else
+                {
+                    std::cout << "Server shutdown." << std::endl;
+                }
             }
+            else if (subcommand == "start")
+            {
+                startServer();
+            }
+            else if (subcommand == "stop")
+            {
+                stopServer();
+            }
+            else
+            {
+                std::cout << "Unknown command." << std::endl;
+            }
+        }
         else 
         {
             std::cout << "Unknown argument: " << std::endl;
@@ -191,11 +188,7 @@ int main(int argc, char *argv[])
         args.clear();
     }
 
-    //infinite cycle for terminal
-    while (true)
-    {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+
     return 0;
 }
 

@@ -30,6 +30,8 @@
 
 using json = nlohmann::json;
 
+std::atomic<bool> server_running = true;
+
 static SSL_CTX* client_ctx;
 static SSL_CTX* server_ctx;
 
@@ -879,6 +881,8 @@ public:
         return data.at(key);
     }
 
+    auto clear() { return data.clear(); }
+
     std::size_t size() const { return data.size(); }
     bool empty() const { return data.empty(); }
 
@@ -1032,13 +1036,43 @@ CallEvent parseEvent(const std::string& jsonStr) {
     throw std::runtime_error("Unknown event type");
 }
 
+const char* _PID_FILE = "/tmp/app_release.pid";
 
+bool isServerRunning() 
+{
+    //checking if pid file exists
+    std::ifstream pidFile(_PID_FILE);
+    if (!pidFile.is_open()) return false;
+
+    pid_t pid;
+    pidFile >> pid;
+    pidFile.close();
+
+    //pid == 0 means that server is already running
+    if (kill(pid, 0) == 0) 
+    {
+        return true;
+    } 
+    return false;
+}
+
+//saving new pid file in case of it not existing
+void savePid() 
+{
+    std::ofstream pidFile(_PID_FILE);
+    pidFile << getpid();
+    pidFile.close();
+}
+
+//deleting pid file
+void removePid() 
+{
+    std::filesystem::remove(_PID_FILE);
+}
 
 //async server
 void startHttpServer(int port) 
 {
-
-
     int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
     fcntl(listen_sock, F_SETFL, O_NONBLOCK);
 
@@ -1056,7 +1090,7 @@ void startHttpServer(int port)
     std::vector<int> clients;
 
     //main loop
-    while (true) 
+    while (server_running) 
     {
         sockaddr_in client_addr{};
         socklen_t client_len = sizeof(client_addr);
@@ -1205,6 +1239,9 @@ void startHttpServer(int port)
             }
         }
     }
+    activeCalls.clear();
+    appendLog("Server shut down succesfully.\n");
+    std::cout << "Server shut down succesfully." << std::endl;
     
 }
 
@@ -1359,7 +1396,54 @@ void displayCalls()
 
 
 
+int startServer()
+{
+    if (isServerRunning()) {
+        std::cout << "Server already running. Exiting.\n";
+        return 0;
+    }
 
+    pid_t pid = fork();
+    if (pid < 0) return 1;
+
+    if (pid > 0) {
+        // родительский процесс — интерактивный клиент
+        std::cout << "Server launched (pid=" << pid << ")\n";
+        return 0; // родитель может завершиться или оставаться интерактивным
+    }
+
+    // дочерний процесс — сервер
+    setsid(); // отсоединяемся от терминала
+    savePid();
+
+    // сервер работает бесконечно
+    server_running = true;
+    startHttpServer(8058);
+    return 1;
+}
+
+int stopServer()
+{
+    std::cout << "Shutting down the server..." << std::endl; 
+    std::ifstream pidFile(_PID_FILE);
+    if (!pidFile.is_open()) {
+        std::cerr << "PID file not found. Server may not be running.\n";
+        return 1;
+    }
+
+    pid_t pid;
+    pidFile >> pid;
+    pidFile.close();
+
+    if (kill(pid, SIGTERM) == 0) {
+        std::cout << "Server stopped (pid=" << pid << ")\n";
+        removePid();
+        return 0;
+    } else {
+        perror("kill");
+        return 1;
+    }
+}
 
 
 
