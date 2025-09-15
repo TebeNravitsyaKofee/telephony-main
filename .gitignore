@@ -1,1 +1,6 @@
 connectionSettings.txt
+wsconnector.cpp
+key.pem
+cert.pem
+log.txt
+lines.txt
