@@ -31,6 +31,9 @@
 using json = nlohmann::json;
 
 std::atomic<bool> server_running = true;
+std::atomic<bool> pipe_thread_running{true};
+std::thread pipe_thread;
+int pipe_fd[2];
 
 static SSL_CTX* client_ctx;
 static SSL_CTX* server_ctx;
@@ -38,6 +41,10 @@ static SSL_CTX* server_ctx;
 
 std::string hostname = "https://app.mango-office.ru/vpbx";
 const char* host = "app.mango-office.ru";
+
+
+
+
 
 bool read(int fd)
 {
@@ -908,6 +915,9 @@ ObservableMap<std::string, CallStateEvent> activeCalls;
 //function that parses calls (only CallStateEvent) to map and controls call state flow
 void storeCallState(const CallStateEvent& ev) 
 {
+    std::cout << "DEBUG: call_state = '" << ev.call_state << "'" << std::endl;
+    std::cout << "DEBUG: call_id = '" << ev.call_id << "'" << std::endl;
+
     if (ev.call_state == "Appeared") 
     {
         activeCalls.insertOrUpdate(ev.call_id,ev);
@@ -1070,8 +1080,103 @@ void removePid()
     std::filesystem::remove(_PID_FILE);
 }
 
+//turns out pipes cant work with strings and optionals, this serialized data for it to go throuhg pipe correctly
+//CallStateEvent hat strings and optionals, while pipe can only send chars safely
+//this scruct makes sure data is serialized properly
+struct SerializableCallStateEvent 
+{
+    char type; //'U' - update, 'R' - remove
+    char call_id[65];
+    char entry_id[65];
+    char call_state[20];
+    char from_extension[20];
+    char from_number[20];
+    char from_line_number[20];
+    char to_number[20];
+    char sip_call_id[100];
+    int64_t timestamp;
+    int seq;
+    int disconnect_reason; //-1 if empty
+    int dct_type; //-1 if empty
+    
+    //constructor that prepares memory with memset
+    SerializableCallStateEvent() : type(' '), timestamp(0), seq(0), 
+                                  disconnect_reason(-1), dct_type(-1) 
+    {
+        memset(call_id, 0, sizeof(call_id));
+        memset(entry_id, 0, sizeof(entry_id));
+        memset(call_state, 0, sizeof(call_state));
+        memset(from_extension, 0, sizeof(from_extension));
+        memset(from_number, 0, sizeof(from_number));
+        memset(from_line_number, 0, sizeof(from_line_number));
+        memset(to_number, 0, sizeof(to_number));
+        memset(sip_call_id, 0, sizeof(sip_call_id));
+    }
+    
+    //converter from
+    static SerializableCallStateEvent fromCallStateEvent(const CallStateEvent& ev, char msg_type = 'U') 
+    {
+        SerializableCallStateEvent serial;
+        serial.type = msg_type;
+        
+        //copying strings with length check
+        copyString(serial.call_id, ev.call_id, sizeof(serial.call_id));
+        copyString(serial.entry_id, ev.entry_id, sizeof(serial.entry_id));
+        copyString(serial.call_state, ev.call_state, sizeof(serial.call_state));
+        copyString(serial.from_extension, ev.from_extension, sizeof(serial.from_extension));
+        copyString(serial.from_number, ev.from_number, sizeof(serial.from_number));
+        copyString(serial.from_line_number, ev.from_line_number, sizeof(serial.from_line_number));
+        copyString(serial.to_number, ev.to_number, sizeof(serial.to_number));
+        copyString(serial.sip_call_id, ev.sip_call_id, sizeof(serial.sip_call_id));
+        
+        serial.timestamp = ev.timestamp;
+        serial.seq = ev.seq;
+        
+        //optionals
+        serial.disconnect_reason = ev.disconnect_reason.value_or(-1);
+        serial.dct_type = ev.dct_type.value_or(-1);
+        
+        return serial;
+    }
+    
+    //converting to
+    CallStateEvent toCallStateEvent() const 
+    {
+        CallStateEvent ev;
+        ev.call_id = call_id;
+        ev.entry_id = entry_id;
+        ev.call_state = call_state;
+        ev.from_extension = from_extension;
+        ev.from_number = from_number;
+        ev.from_line_number = from_line_number;
+        ev.to_number = to_number;
+        ev.sip_call_id = sip_call_id;
+        ev.timestamp = timestamp;
+        ev.seq = seq;
+        
+        if (disconnect_reason != -1) 
+        {
+            ev.disconnect_reason = disconnect_reason;
+        }
+        if (dct_type != -1) 
+        {
+            ev.dct_type = dct_type;
+        }
+        
+        return ev;
+    }
+    
+private:
+    //this always sets last byte to null terminator
+    static void copyString(char* dest, const std::string& src, size_t dest_size) 
+    {
+        strncpy(dest, src.c_str(), dest_size - 1);
+        dest[dest_size - 1] = '\0';
+    }
+};
+
 //async server
-void startHttpServer(int port) 
+void startHttpServer(int port, int write_pipe_fd) 
 {
     int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
     fcntl(listen_sock, F_SETFL, O_NONBLOCK);
@@ -1088,6 +1193,20 @@ void startHttpServer(int port)
     appendLog("HTTP server listening on port " + std::to_string(port));
 
     std::vector<int> clients;
+
+    //might not be neccecary to put it here
+    struct PipeMessage 
+    {
+        char type; // 'U' - update, 'R' - remove, 'C' - clear
+        char call_id[65]; //+1 for null term
+        CallStateEvent event;
+        
+        // Конструктор для инициализации
+        PipeMessage() : type(' ') 
+        {
+            memset(call_id, 0, sizeof(call_id));
+        }
+    };
 
     //main loop
     while (server_running) 
@@ -1192,10 +1311,41 @@ void startHttpServer(int port)
                             {
                                 auto ev = std::get<CallStateEvent>(call_state);
                                 appendLog("CallStateEvent: " + ev.call_state + " for call_id=" + ev.call_id);
-                                storeCallState(ev);
+
+
+                                //creating pipe message
+                                PipeMessage msg;
+                                msg.type = 'U';
+
+                                //copying safely with null term at the end
+                                if (ev.call_id.size() < sizeof(msg.call_id) - 1) 
+                                {
+                                    strncpy(msg.call_id, ev.call_id.c_str(), sizeof(msg.call_id) - 1);
+                                    msg.call_id[sizeof(msg.call_id) - 1] = '\0';
+                                } 
+                                else 
+                                {
+                                    //cutting if too long
+                                    strncpy(msg.call_id, ev.call_id.c_str(), sizeof(msg.call_id) - 1);
+                                    msg.call_id[sizeof(msg.call_id) - 1] = '\0';
+                                    appendLog("CallID is too long to go through pipe!!!");
+                                }
+
+                                SerializableCallStateEvent serial = SerializableCallStateEvent::fromCallStateEvent(ev, 'U');
+                                #ifdef DEBUG
+                                std::cout << "SENDING: call_id = '" << serial.call_id 
+                                        << "', call_state = '" << serial.call_state << "'" << std::endl;
+                                #endif
+
+                                ssize_t bytes_written = write(write_pipe_fd, &serial, sizeof(serial));
+                                if (bytes_written != sizeof(serial))
+                                {
+                                    appendLog("Failed to send pipe message: " + std::string(strerror(errno)));
+                                }
+
                                 //debugging active calls
                                 #ifdef DEBUG
-                                {/*
+                                {
                                     if (activeCalls.empty()) 
                                     {
                                         std::cout << "Нет активных звонков\n";
@@ -1208,7 +1358,7 @@ void startHttpServer(int port)
                                                     << " состояние: " << call.call_state << "\n";
                                         }
                                     }
-                                */
+                                
                                 }
                                 #endif
                             }
@@ -1239,6 +1389,12 @@ void startHttpServer(int port)
             }
         }
     }
+    PipeMessage msg;
+    msg.type = 'C';
+    write(write_pipe_fd, &msg, sizeof(msg));
+    
+    close(write_pipe_fd);
+
     activeCalls.clear();
     appendLog("Server shut down succesfully.\n");
     std::cout << "Server shut down succesfully." << std::endl;
@@ -1392,41 +1548,145 @@ void displayCalls()
 
 }
 
+//struct for transfering data from server process to parent
+struct PipeMessage 
+{
+    char type; //'U' - update, 'R' - remove, 'C' - clear
+    char call_id[65]; //+1 for null term
+    CallStateEvent event;
+    
+    //consctructor is needed to initialise "clear" pipe message before filling it with data
+    PipeMessage() : type(' ') 
+    {
+        memset(call_id, 0, sizeof(call_id));
+    }
+};
 
 
+void processPipeMessage(const PipeMessage& msg) 
+{
+    #ifdef DEBUG
+    if (msg.call_id[0] == '\0') 
+    {
+        std::cout << "ERROR: Empty call_id in pipe message" << std::endl;
+        return;
+    }
+    
+    std::string call_id(msg.call_id);
+    
+    if (msg.event.call_state.empty()) {
+        std::cout << "ERROR: Empty call_state for call_id: " << call_id << std::endl;
+        return;
+    }
+    
+    std::cout << "PROCESSING: call_id = '" << call_id 
+              << "', call_state = '" << msg.event.call_state << "'" << std::endl;
+    #endif
+    
+    switch (msg.type) 
+    {
+        case 'U': //update
+            storeCallState(msg.event);
+            break;
+            
+        case 'R': //remove
+            activeCalls.erase(call_id);
+            break;
+            
+        case 'C': //clear all
+            activeCalls.clear();
+            break;
+            
+        default:
+            std::cout << "Unknown message type: '" << msg.type << "'" << std::endl;
+    }
+}
+
+void handlePipeMessagesThread() 
+{
+    SerializableCallStateEvent serial;
+    
+    while (pipe_thread_running) {
+        memset(&serial, 0, sizeof(serial));
+        
+        ssize_t bytes_read = read(pipe_fd[0], &serial, sizeof(serial));
+        
+        if (bytes_read == sizeof(serial)) {
+            std::cout << "RECEIVED: type = '" << serial.type 
+                      << "', call_id = '" << serial.call_id 
+                      << "', call_state = '" << serial.call_state << "'" << std::endl;
+            
+            if (serial.type == 'U' && serial.call_id[0] != '\0') {
+                CallStateEvent ev = serial.toCallStateEvent();
+                storeCallState(ev);
+            }
+        }else {
+            appendLog("Incomplete pipe message: " + std::to_string(bytes_read) + "/" + 
+                     std::to_string(sizeof(serial)) + " bytes");
+        }
+    }
+}
+
+void stopPipeThread() 
+{
+    pipe_thread_running = false;
+    if (pipe_thread.joinable()) {
+        pipe_thread.join();
+    }
+}
 
 
 int startServer()
 {
-    if (isServerRunning()) {
+    if (isServerRunning()) 
+    {
         std::cout << "Server already running. Exiting.\n";
         return 0;
+    }
+
+    //pipe for transfering call data from httpServer, has to be initialized before fork
+    if (pipe(pipe_fd) == -1) 
+    {
+        perror("pipe");
+        return 1;
     }
 
     pid_t pid = fork();
     if (pid < 0) return 1;
 
-    if (pid > 0) {
-        // родительский процесс — интерактивный клиент
+    if (pid > 0) 
+    {
+
+        close(pipe_fd[1]); 
         std::cout << "Server launched (pid=" << pid << ")\n";
-        return 0; // родитель может завершиться или оставаться интерактивным
+        
+        pipe_thread_running = true;
+        pipe_thread = std::thread(handlePipeMessagesThread);
+
+        return 0;
     }
 
-    // дочерний процесс — сервер
-    setsid(); // отсоединяемся от терминала
+    
+
+    close(pipe_fd[0]);
+
+    setsid(); //disconnecting from terminal
     savePid();
 
-    // сервер работает бесконечно
     server_running = true;
-    startHttpServer(8058);
+    startHttpServer(8058,pipe_fd[1]);
     return 1;
 }
 
 int stopServer()
 {
     std::cout << "Shutting down the server..." << std::endl; 
+
+    stopPipeThread();
+
     std::ifstream pidFile(_PID_FILE);
-    if (!pidFile.is_open()) {
+    if (!pidFile.is_open()) 
+    {
         std::cerr << "PID file not found. Server may not be running.\n";
         return 1;
     }
@@ -1435,431 +1695,16 @@ int stopServer()
     pidFile >> pid;
     pidFile.close();
 
-    if (kill(pid, SIGTERM) == 0) {
+    if (kill(pid, SIGTERM) == 0) 
+    {
         std::cout << "Server stopped (pid=" << pid << ")\n";
         removePid();
         return 0;
-    } else {
+    } 
+    else 
+    {
         perror("kill");
         return 1;
     }
 }
 
-
-
-
-
-
-//<---------------------------------------------------------------->
-//SSL Websocket server down below, cant quite figure it out for now
-//websocket is not needed in mango api
-
-/*
-//generating key for websocket
-std::string generateWebSocketKey() 
-{
-    unsigned char rand_bytes[16];
-    RAND_bytes(rand_bytes, sizeof(rand_bytes));
-    std::ostringstream oss;
-    for (auto b : rand_bytes) oss << std::hex << std::setw(2) << std::setfill('0') << (int)b;
-    return oss.str();
-}
-
-
-
-std::string readWebSocketMessage(SSL* ssl, int client_socket) 
-{
-    //8-bit integer
-    uint8_t header[2];
-    int rc = SSL_read(ssl, header, 2);
-    if (rc != 2) return "";
-
-    //1-bit - FIN
-    //2-4 - RCV1
-    //5-8 - OPCODE
-    bool fin = header[0] & 0x80;
-    uint8_t opcode = header[0] & 0x0F;
-
-    //1-bit - MASK
-    //2-8 - PAYLOAD LEN
-    //126 means length is in next 2 bytes, 127 - 8 bytes
-    bool mask = header[1] & 0x80;
-    uint64_t payload_len = header[1] & 0x7F;
-
-    if (payload_len == 126) 
-    {
-        uint8_t ext[2]; 
-        SSL_read(ssl, ext, 2);
-        payload_len = (ext[0] << 8) | ext[1];
-    } 
-    else if (payload_len == 127) 
-    {
-        uint8_t ext[8]; 
-        SSL_read(ssl, ext, 8);
-        payload_len = 0;
-        for (int i=0; i<8; i++) 
-        {
-            payload_len = (payload_len << 8) | ext[i];
-        }
-    }
-
-    //probably not needed, but i copied that anyways
-    //code down below gets the mask
-    std::vector<uint8_t> masking_key(4);
-    if (mask) 
-    {
-        SSL_read(ssl, masking_key.data(), 4);
-    }
-
-    std::vector<uint8_t> payload(payload_len);
-    size_t received = 0;
-
-    //getting the useful payload data
-    while (received < payload_len) 
-    {
-        int r = SSL_read(ssl, payload.data() + received, payload_len - received);
-        if (r <= 0) 
-        {
-            break;
-        }
-        received += r;
-    }
-
-    //de-masking data if it's masked, just xor every byte with mask
-    if (mask) 
-    {
-        for (size_t i=0; i<payload_len; i++) 
-        {
-            payload[i] ^= masking_key[i%4];
-        }
-    }
-
-    return std::string(payload.begin(), payload.end());
-}
-
-std::string generateWebSocketAccept(const std::string& key) {
-    std::string guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-    std::string combined = key + guid;
-
-    unsigned char hash[20]; // SHA1 всегда 20 байт
-    SHA1(reinterpret_cast<const unsigned char*>(combined.c_str()), combined.size(), hash);
-
-    // Base64 encode
-    static const char* b64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    std::string result;
-    int val = 0, valb = -6;
-    for (int i = 0; i < 20; i++) {
-        val = (val << 8) + hash[i];
-        valb += 8;
-        while (valb >= 0) {
-            result.push_back(b64chars[(val >> valb) & 0x3F]);
-            valb -= 6;
-        }
-    }
-    if (valb > -6) result.push_back(b64chars[((val << 8) >> (valb + 8)) & 0x3F]);
-    while (result.size() % 4) result.push_back('=');
-
-    return result;
-}
-
-void startWebSocketServer(int port) 
-{
-    int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
-    fcntl(listen_sock, F_SETFL, O_NONBLOCK);
-
-    sockaddr_in addr{};
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(port);
-    addr.sin_addr.s_addr = INADDR_ANY;
-
-    bind(listen_sock, (struct sockaddr*)&addr, sizeof(addr));
-    listen(listen_sock, 10);
-
-    appendLog("WebSocket server listening on port " + std::to_string(port));
-
-    while (true) {
-        sockaddr_in client_addr{};
-        socklen_t client_len = sizeof(client_addr);
-        int client_sock = accept(listen_sock, (struct sockaddr*)&client_addr, &client_len);
-        if (client_sock < 0) { if (errno != EAGAIN && errno != EWOULDBLOCK) appendLog("accept error"); continue; }
-
-        SSL* ssl = SSL_new(server_ctx);
-        SSL_set_fd(ssl, client_sock);
-        SSL_set_accept_state(ssl);
-
-        // Handshake
-        char buf[4096]; std::string headers;
-        while (headers.find("\r\n\r\n") == std::string::npos) {
-            int rc = SSL_read(ssl, buf, sizeof(buf));
-            if (rc <= 0) break;
-            headers.append(buf, rc);
-        }
-
-        size_t key_pos = headers.find("Sec-WebSocket-Key:");
-        if (key_pos == std::string::npos) { SSL_shutdown(ssl); SSL_free(ssl); close(client_sock); continue; }
-        size_t key_end = headers.find("\r\n", key_pos);
-        std::string key = headers.substr(key_pos + 18, key_end - (key_pos + 18));
-        key.erase(0, key.find_first_not_of(" \t"));
-
-        std::string accept_key = generateWebSocketAccept(key);
-        std::ostringstream response;
-        response << "HTTP/1.1 101 Switching Protocols\r\n"
-                 << "Upgrade: websocket\r\n"
-                 << "Connection: Upgrade\r\n"
-                 << "Sec-WebSocket-Accept: " << accept_key << "\r\n\r\n";
-
-        SSL_write(ssl, response.str().data(), response.str().size());
-        appendLog("WebSocket handshake completed with client");
-
-        // Цикл приема сообщений
-        while (true) {
-            std::string msg = readWebSocketMessage(ssl, client_sock);
-            if (msg.empty()) break;
-            appendLog("Received WS message: " + msg);
-        }
-
-        SSL_shutdown(ssl);
-        SSL_free(ssl);
-        close(client_sock);
-    }
-}
-*/
-
-//websocket client down below, not needed for now
-/*
-bool sendWebSocketHandshake(SSL* ssl)
-{
-    std::string ws_key = generateWebSocketKey();
-
-    char req[1024];
-    snprintf(req, sizeof(req),
-    "GET https://app.mango-office.ru HTTP/1.1\r\n"
-    "Host: %s\r\n"
-    "Upgrade: websocket\r\n"
-    "Connection: Upgrade\r\n"
-    "Sec-WebSocket-Key: %s\r\n"
-    "Sec-WebSocket-Version: 13\r\n\r\n",
-    hostname, ws_key.c_str());
-
-    size_t sent = 0;
-    int total = strlen(req);
-    while (sent < total) 
-    {
-        int rc = SSL_write(ssl, req + sent, static_cast<int>(total - sent));
-        if (rc > 0) 
-        {
-            sent += rc;
-            continue;
-        }
-
-        int err = SSL_get_error(ssl, rc);
-        if (err == SSL_ERROR_WANT_WRITE) 
-        {
-            if (!write(SSL_get_fd(ssl))) 
-            {
-                appendLog("SSL_write WANT_WRITE timeout");
-                return false;
-            }
-        } 
-        else if (err == SSL_ERROR_WANT_READ) 
-        {
-            if (!read(SSL_get_fd(ssl))) 
-            {
-                appendLog("SSL_write WANT_READ timeout");
-                return false;
-            }
-        } 
-        else if (err == SSL_ERROR_ZERO_RETURN) 
-        {
-            appendLog("SSL connection closed by peer during write");
-            return false;
-        } 
-        else if (err == SSL_ERROR_SYSCALL) 
-        {
-            appendLog("SSL_write syscall error");
-            return false;
-        } 
-        else // SSL_ERROR_SSL or unknown
-        {
-            appendLog("SSL_write error: " + std::string(ERR_error_string(ERR_get_error(), nullptr)));
-            return false;
-        }
-    }
-    return true;
-    
-}
-
-void startWebSocketClient() 
-{
-    addrinfo hints{}, *res = nullptr;
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-
-    int status = getaddrinfo(host, "443", &hints, &res);
-    if (status != 0) {
-        std::string error = "getaddrinfo error in ws connecton: " + std::string(gai_strerror(status));
-        appendLog(error);
-        #ifdef DEBUG
-        std::cerr << error << std::endl;
-        #endif
-    }
-
-    int client_socket = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-    if (client_socket < 0) 
-    {
-        std::string error = "socket() error: " + std::string(strerror(errno));
-        appendLog(error);
-        #ifdef DEBUG
-        std::cerr << error << std::endl;
-        #endif
-        freeaddrinfo(res);
-        return;
-    }
-
-    if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1) 
-    {
-        std::string error = "fcntl(O_NONBLOCK) failed: " + std::string(strerror(errno));
-        appendLog(error);
-        #ifdef DEBUG
-        std::cerr << error << std::endl;
-        #endif
-        close(client_socket);
-        freeaddrinfo(res);
-        return;
-    }
-
-    int con = connect(client_socket, res->ai_addr, res->ai_addrlen);
-    if (con < 0 && errno != EINPROGRESS) 
-    {
-        std::string error = "connect() error: " + std::string(strerror(errno));
-        appendLog(error);
-        #ifdef DEBUG
-        std::cerr << error << std::endl;
-        #endif
-        close(client_socket);
-        freeaddrinfo(res);
-        return;
-    }
-
-    if (!write(client_socket)) 
-    {
-        std::string error = "client socket is not ready after connect()";
-        appendLog(error);
-        #ifdef DEBUG
-        std::cerr << error << std::endl;
-        #endif
-        close(client_socket);
-        freeaddrinfo(res);
-        return;
-    }
-
-    int so_error = 0;
-    socklen_t len = sizeof(so_error);
-    if (getsockopt(client_socket, SOL_SOCKET, SO_ERROR, &so_error, &len) < 0 || so_error != 0) 
-    {
-        std::string error = "connect failed (SO_ERROR): " + std::string(strerror(so_error));
-        appendLog(error);
-        #ifdef DEBUG
-        std::cerr << error << std::endl;
-        #endif
-        close(client_socket);
-        freeaddrinfo(res);
-        return;
-    }
-
-    SSL* ssl = SSL_new(client_ctx);
-    if (!ssl) 
-    {
-        std::string error = "SSL_new failed: " + std::string(ERR_error_string(ERR_get_error(), nullptr));
-        appendLog(error);
-        #ifdef DEBUG
-        std::cerr << error << std::endl;
-        #endif
-        close(client_socket);
-        freeaddrinfo(res);
-        return;
-    }
-
-    SSL_set_tlsext_host_name(ssl, host);
-    SSL_set_fd(ssl, client_socket);
-    SSL_set_connect_state(ssl);
-
-    while (true) 
-    {
-        int rc = SSL_connect(ssl);
-        if (rc == 1) 
-        {
-            break;
-        }
-        int err = SSL_get_error(ssl, rc);
-        if (err == SSL_ERROR_WANT_READ) 
-        {
-            if (!read(client_socket)) 
-            { 
-                appendLog("Handshake timeout (read)"); 
-                goto cleanup_error; 
-            }
-        } 
-        else if (err == SSL_ERROR_WANT_WRITE) 
-        {
-            if (!write(client_socket)) 
-            { 
-                appendLog("Handshake timeout (write)"); 
-                goto cleanup_error; 
-            }
-        } 
-        else 
-        {
-            std::string error = "SSL_connect error: " + std::string(ERR_error_string(ERR_get_error(), nullptr));
-            appendLog(error);
-            #ifdef DEBUG
-            std::cerr << error << std::endl;
-            #endif
-            goto cleanup_error;
-        }
-    }
-
-    cleanup_error:
-    SSL_shutdown(ssl);
-    SSL_free(ssl);
-    close(client_socket);
-    freeaddrinfo(res);
-
-    std::string ws_key;
-    if (!sendWebSocketHandshake(ssl)) 
-    {
-        appendLog("Handshake failed");
-        return;
-    }
-
-    char buf[4096]; std::string headers;
-    while (headers.find("\r\n\r\n") == std::string::npos)
-    {
-        int rc = SSL_read(ssl, buf, sizeof(buf));
-        if (rc <= 0) 
-        {
-            break;
-        }
-        headers.append(buf, rc);
-    }
-
-    appendLog("WebSocket handshake successful");
-
-    //recieving cycle
-    while (true)
-    {
-        std::string msg = readWebSocketMessage(ssl, client_socket);
-        if (msg.empty()) 
-        {
-            break;
-        }
-        appendLog("Received WS message: " + msg);
-    }
-
-    SSL_shutdown(ssl);
-    SSL_free(ssl);
-    close(client_socket);
-    freeaddrinfo(res);
-}
-
-*/

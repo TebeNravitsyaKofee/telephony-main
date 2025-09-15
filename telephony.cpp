@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 {
     sslInit();
 
-    
+    startServer();    
 
     // при завершении сервера удаляем PID файл
     
