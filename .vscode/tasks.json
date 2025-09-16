@@ -10,6 +10,8 @@
                 "-O0",
                 "-DDEBUG",
                 "${workspaceFolder}/*.cpp",
+                "${workspaceFolder}/Parsers/*.cpp",
+                "${workspaceFolder}/Modules/*.cpp",
                 "-o",
                 "${workspaceFolder}/app_debug",
                 "-lssl",
