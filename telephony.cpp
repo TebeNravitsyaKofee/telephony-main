@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
             else if (readSettings()=="precon")
             {
                 int choice;
-                std::cout << "Partial reconfigure required, do it?" << "1 - Yes\n" << "2 - No\n";
+                std::cout << "Partial reconfigure required, do it?\n" << "1 - Yes\n" << "2 - No\n";
                 std::cin >> choice;
                 if(choice == 1)
                 {
@@ -112,7 +112,37 @@ int main(int argc, char *argv[])
             {
                 std::cout << "File reading error";
             }   
-        } 
+        }
+        else if (command == "sqlsettings")
+        {
+            if(readSQLSettings()=="good")
+            {
+                std::cout << "SQL hostname = " << getSQLhost() << std::endl;
+                std::cout << "SQL port = " << getSQLport() << std::endl;
+                std::cout << "SQL database name = " << getSQLdb() << std::endl;
+                std::cout << "SQL username = " << getSQLuser() << std::endl;
+                std::cout << "SQL password is encrypted :)" << std::endl;
+            }
+            else if (readSQLSettings()=="precon")
+            {
+                int choice;
+                std::cout << "Partial reconfigure required, do it?\n" << "1 - Yes\n" << "2 - No\n";
+                std::cin >> choice;
+                if(choice == 1)
+                {
+                    partialSQLReconfigure();
+                }
+            }
+            else if (readSettings()=="fileExistanceError")
+            {
+                std::cout << "File not found, reconfigure required";
+                reconfigureSQLSettings();
+            }
+            else if (readSettings()=="fileError")
+            {
+                std::cout << "File reading error";
+            }   
+        }
         else if (command == "recon") 
         {
             if (subcommand == "address")
@@ -131,7 +161,27 @@ int main(int argc, char *argv[])
             {
                 reconfigureKey();
             }
-        } 
+            else if (subcommand == "sqlhost")
+            {
+                reconfigureSQLhost();
+            }
+            else if (subcommand == "sqlport")
+            {
+                reconfigureSQLport();
+            }
+            else if (subcommand == "sqldb")
+            {
+                reconfigureSQLdb();
+            }
+            else if (subcommand == "sqluser")
+            {
+                reconfigureSQLuser();
+            }
+            else if (subcommand == "sqlpass")
+            {
+                reconfigureSQLpass();
+            }
+        }
         else if (command == "lines")
         {
             std::vector<std::string> line_args = args;

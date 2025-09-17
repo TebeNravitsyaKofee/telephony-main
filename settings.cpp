@@ -10,7 +10,7 @@
 static std::string addressAPI;
 static std::string unique;
 static std::string key;
-static std::string port;
+static std::string port, SQLhost, SQLport, SQLdb, SQLuser, SQLpass;
 static std::map<std::string,std::string> lines;
 
 std::map<std::string,std::string> settings
@@ -19,6 +19,15 @@ std::map<std::string,std::string> settings
     {"Unique=",""},
     {"Key=",""},
     {"Port=",""}
+};
+
+std::map<std::string,std::string> sql_settings
+{
+    {"SQLhost=",""},
+    {"SQLport=",""},
+    {"SQLdb=",""},
+    {"SQLuser=",""},
+    {"SQLpass=",""}
 };
 
 std::string getAddressAPI()
@@ -44,6 +53,37 @@ std::string getPort()
     readSettings();
     return port;
 }
+
+std::string getSQLhost()
+{
+    readSettings();
+    return SQLhost;
+}
+
+std::string getSQLport()
+{
+    readSettings();
+    return SQLport;
+}
+
+std::string getSQLdb()
+{
+    readSettings();
+    return SQLdb;
+}
+
+std::string getSQLuser()
+{
+    readSettings();
+    return SQLuser;
+}
+
+std::string getSQLpass()
+{
+    readSettings();
+    return SQLpass;
+}
+
 
 //use this to save cuurent map into a file
 void writeLinesFromMap(std::map<std::string,std::string> final_lines)
@@ -167,7 +207,6 @@ void processChunks(const std::vector<std::string>& tokens)
     {
         if (token == "on" || token == "off") 
         {
-            // Записываем накопленные числа в map
             for (int num : buffer) 
             {
                 result[num] = token;
@@ -231,11 +270,34 @@ void readSettingsLoop()
     }
 }
 
+void readSQLSettingsLoop()
+{
+    std::string line;
+    std::ifstream file;
+        file.open("/home/mainuser/projects/telephony/connectionSettings.txt");
+    while (std::getline(file, line))
+    {
+        size_t pos = line.find('=');
+        std::string key = line.substr(0,pos+1);
+        std::string value = line.substr(pos+1);
+        sql_settings[key] = value;
+    }
+}
+
 //метод для записи настроечного файла, перезаписывает файл в соответствии с мапой
 void writeSettingsLoop(std::map<std::string,std::string> settings)
 {
     std::ofstream file("/home/mainuser/projects/telephony/connectionSettings.txt");
     for (const auto& [key,value]:settings)
+    {
+        file<<key<<value<<"\n";
+    }
+}
+
+void writeSQLSettingsLoop(std::map<std::string,std::string> sql_settings)
+{
+    std::ofstream file("/home/mainuser/projects/telephony/connectionSettings.txt");
+    for (const auto& [key,value]:sql_settings)
     {
         file<<key<<value<<"\n";
     }
@@ -282,6 +344,56 @@ void reconfigurePort()
     writeSettingsLoop(settings);
 }
 
+void reconfigureSQLhost()
+{
+    readSQLSettingsLoop();
+    std::string value;
+    std::cout << "Write hostname for SQL connection: ";
+    std::cin >> value;
+    sql_settings ["SQLhost="] = value;
+    writeSQLSettingsLoop(sql_settings);
+}
+
+void reconfigureSQLport()
+{
+    readSQLSettingsLoop();
+    std::string value;
+    std::cout << "Write port for SQL connection: ";
+    std::cin >> value;
+    sql_settings ["SQLport="] = value;
+    writeSQLSettingsLoop(sql_settings);
+}
+
+void reconfigureSQLdb()
+{
+    readSQLSettingsLoop();
+    std::string value;
+    std::cout << "Write database name: ";
+    std::cin >> value;
+    sql_settings ["SQLdb="] = value;
+    writeSQLSettingsLoop(sql_settings);
+}
+
+void reconfigureSQLuser()
+{
+    readSQLSettingsLoop();
+    std::string value;
+    std::cout << "Write SQL username: ";
+    std::cin >> value;
+    sql_settings ["SQLuser="] = value;
+    writeSQLSettingsLoop(sql_settings);
+}
+
+void reconfigureSQLpass()
+{
+    readSQLSettingsLoop();
+    std::string value;
+    std::cout << "Write SQL password: ";
+    std::cin >> value;
+    sql_settings ["SQLpass="] = value;
+    writeSQLSettingsLoop(sql_settings);
+}
+
 void reconfigureSettings()
 {
     readSettingsLoop();
@@ -290,6 +402,17 @@ void reconfigureSettings()
     reconfigureKey();
     reconfigurePort();
     writeSettingsLoop(settings);
+}
+
+void reconfigureSQLSettings()
+{
+    readSQLSettingsLoop();
+    reconfigureSQLdb();
+    reconfigureSQLhost();
+    reconfigureSQLport();
+    reconfigureSQLuser();
+    reconfigureSQLpass();
+    writeSQLSettingsLoop(sql_settings);
 }
 
 void partialReconfigure()
@@ -325,6 +448,45 @@ void partialReconfigure()
     }
 }
 
+void partialSQLReconfigure()
+{
+    readSQLSettingsLoop();
+    for (const auto& [key,value]:sql_settings)
+    {
+        if (!value.empty()) continue;
+        if(key==("SQLhost="))
+        {
+            reconfigureSQLhost();
+            writeSQLSettingsLoop(sql_settings);
+            readSQLSettingsLoop();
+        }
+        else if(key==("SQLdb="))
+        {
+            reconfigureSQLdb();
+            writeSQLSettingsLoop(sql_settings);
+            readSQLSettingsLoop();
+        }
+        else if(key==("SQLport="))
+        {
+            reconfigureSQLport();
+            writeSQLSettingsLoop(sql_settings);
+            readSQLSettingsLoop();
+        }
+        else if(key==("SQLuser="))
+        {
+            reconfigureSQLuser();
+            writeSQLSettingsLoop(sql_settings);
+            readSQLSettingsLoop();
+        }
+        else if(key==("SQLpass="))
+        {
+            reconfigureSQLpass();
+            writeSQLSettingsLoop(sql_settings);
+            readSQLSettingsLoop();
+        }
+    }
+}
+
 std::string readSettings()
 {
     if (std::filesystem::exists("/home/mainuser/projects/telephony/connectionSettings.txt"))
@@ -334,14 +496,12 @@ std::string readSettings()
         if (file.is_open()) 
         {
             readSettingsLoop();
-            
-            for (const auto& [key,value]:settings)
+
+            for (const auto& key : {"Address=", "Unique=", "Key=", "Port="})
             {
-                if (!value.empty()) continue;
-                else 
+                if (settings[key].empty())
                 {
                     return "precon";
-                    break;
                 }
             }
 
@@ -349,6 +509,45 @@ std::string readSettings()
             unique = settings ["Unique="];
             key = settings ["Key="];
             port = settings ["Port="];
+            
+            file.close();
+            return "good";
+        } 
+        else 
+        {
+            std::cerr << "Error: Unable to open the file.\n";
+            return "fileError";
+        }
+    }  
+    else
+    {
+        return "fileExistanceError";
+    }
+}
+
+std::string readSQLSettings()
+{
+    if (std::filesystem::exists("/home/mainuser/projects/telephony/connectionSettings.txt"))
+    {
+        std::ifstream file;
+        file.open("/home/mainuser/projects/telephony/connectionSettings.txt");
+        if (file.is_open()) 
+        {
+            readSQLSettingsLoop();
+            
+            for (const auto& key : {"SQLdb=", "SQLhost=", "SQLport=", "SQLuser=", "SQLpass="})
+            {
+                if (sql_settings[key].empty())
+                {
+                    return "precon";
+                }
+            }
+
+            SQLdb = sql_settings ["SQLdb="];
+            SQLhost = sql_settings ["SQLhost="];
+            SQLport = sql_settings ["SQLport="];
+            SQLuser = sql_settings ["SQLuser="];
+            SQLpass = sql_settings ["SQLpass="];
             
             file.close();
             return "good";
