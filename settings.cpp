@@ -56,31 +56,31 @@ std::string getPort()
 
 std::string getSQLhost()
 {
-    readSettings();
+    readSQLSettings();
     return SQLhost;
 }
 
 std::string getSQLport()
 {
-    readSettings();
+    readSQLSettings();
     return SQLport;
 }
 
 std::string getSQLdb()
 {
-    readSettings();
+    readSQLSettings();
     return SQLdb;
 }
 
 std::string getSQLuser()
 {
-    readSettings();
+    readSQLSettings();
     return SQLuser;
 }
 
 std::string getSQLpass()
 {
-    readSettings();
+    readSQLSettings();
     return SQLpass;
 }
 
