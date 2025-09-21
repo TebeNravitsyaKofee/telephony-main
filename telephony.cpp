@@ -1,5 +1,6 @@
 #include "settings.h"
 #include "connector.h"
+#include "Modules/odbc_module.h"
 
 #include <algorithm>
 #include <vector>
@@ -32,11 +33,10 @@ std::map<std::string,std::string> set
 int main(int argc, char *argv[])
 {
     sslInit();
+    stopServer();
+    startServer();
 
-    startServer();    
 
-    // при завершении сервера удаляем PID файл
-    
 
     std::vector<std::string> args(argv + 1, argv + argc);
 
@@ -113,6 +113,7 @@ int main(int argc, char *argv[])
                 std::cout << "File reading error";
             }   
         }
+        /*
         else if (command == "sqlsettings")
         {
             if(readSQLSettings()=="good")
@@ -143,6 +144,7 @@ int main(int argc, char *argv[])
                 std::cout << "File reading error";
             }   
         }
+            */
         else if (command == "recon") 
         {
             if (subcommand == "address")
@@ -230,6 +232,87 @@ int main(int argc, char *argv[])
             {
                 std::cout << "Unknown command." << std::endl;
             }
+        }
+        else if (command == "sql")
+        {
+            if (subcommand == "settings")
+            {
+                int choice;
+                std::cout << "SQL hostname = " << getSQLhost() << std::endl;
+                std::cout << "SQL port = " << getSQLport() << std::endl;
+                std::cout << "SQL database name = " << getSQLdb() << std::endl;
+                std::cout << "SQL username = " << getSQLuser() << std::endl;
+                std::cout << "SQL password is encrypted :)" << std::endl;
+                std::cout << "Want to reconfigure?\nYes - 1\nNo - 2" << std::endl;   
+                std::cin >> choice;
+                if(choice == 1)
+                {
+                    std::cout << "Choose field no reconfigure:\n1. Host\n2. Port\n3. Username\n4. Password\n5. Database name\n 6. All" << std::endl;
+                    std::cin >> choice;
+                    switch (choice)
+                    {
+                        case 1: reconfigureSQLhost(); break;
+                        case 2: reconfigureSQLport(); break;
+                        case 3: reconfigureSQLuser(); break;
+                        case 4: reconfigureSQLpass(); break;
+                        case 5: reconfigureSQLdb(); break;
+                        case 6: reconfigureSQLSettings(); break;
+                        default: std::cout << "Invalid input" << std::endl; break;
+                    }
+                }
+            }
+            else if (subcommand == "connection")
+            {
+                PostgreSQLConnector connector;
+
+                bool c = connector.connectToServer();
+                bool cc = connector.connectToDB();
+                if (!c)
+                {
+                    std::cout << "Cannot connect to SQL server" << std::endl;
+                }
+                else if (!cc)
+                {
+                    std::cout << "Cannot connect to defined database" << std::endl;
+                }
+            }
+            else if (subcommand == "db")
+            {
+                PostgreSQLConnector connector;
+
+                bool c = connector.connectToServer();
+
+                if (c)
+                {
+                    if(!connector.databaseExists(getSQLdb()))
+                    {
+                        std::cout << "Database not found, want to create?\n1 - Yes\n2 - No" << std::endl;
+                        int choice;
+                        std::cin >> choice;
+                        if(choice == 1)
+                        {
+                            std::cout << "Enter database name" << std::endl;
+                            std::string dbname;
+                            std::cin >> dbname;
+                            if(connector.createDatabase(dbname))
+                            {
+                                reconfigureSQLdb(dbname);
+                            }
+                            else
+                            {
+                                std::cout << "Database not created, check connection with sql->connection" << std::endl;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    std::cout << "Cannot connect to SQL server, check connection with sql->connection" << std::endl;
+                }
+                
+                
+            }
+            
         }
         else 
         {

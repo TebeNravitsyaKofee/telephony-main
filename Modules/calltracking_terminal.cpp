@@ -360,7 +360,7 @@ void processPipeMessage(const PipeMessage& msg)
 }
 
 //turns out pipes cant work with strings and optionals, this serialized data for it to go throuhg pipe correctly
-//CallStateEvent hat strings and optionals, while pipe can only send chars safely
+//CallStateEvent has strings and optionals, while pipe can only send chars safely
 //this scruct makes sure data is serialized properly
 struct SerializableCallStateEvent 
 {

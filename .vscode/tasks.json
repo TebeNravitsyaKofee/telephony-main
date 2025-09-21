@@ -15,7 +15,8 @@
                 "-o",
                 "${workspaceFolder}/app_debug",
                 "-lssl",
-                "-lcrypto"
+                "-lcrypto",
+                "-lodbc"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

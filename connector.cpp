@@ -28,6 +28,7 @@
 #include "settings.h"
 #include "Parsers/call_state_parser.h"
 #include "Modules/calltracking_terminal.h"
+#include "Modules/odbc_module.h"
 
 
 using json = nlohmann::json;
@@ -788,6 +789,8 @@ void removePid()
 //async server
 void startHttpServer(int port, int write_pipe_fd) 
 {
+    PostgreSQLConnector connector;
+
     int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
     fcntl(listen_sock, F_SETFL, O_NONBLOCK);
 
@@ -981,6 +984,10 @@ void startHttpServer(int port, int write_pipe_fd)
                             {
                                 auto ev = std::get<CallSummary>(call_state);
                                 appendLog("CallSummary: " + ev.entry_id + " direction=" + std::to_string(ev.call_direction));
+                                if (connector.connectToDB()) 
+                                {
+                                    connector.insertCallSummary(ev);
+                                }
                             }
                         }
                         std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nOK";

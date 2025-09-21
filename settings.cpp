@@ -374,6 +374,13 @@ void reconfigureSQLdb()
     writeSQLSettingsLoop(sql_settings);
 }
 
+void reconfigureSQLdb(std::string dbname)
+{
+    readSQLSettingsLoop();
+    sql_settings ["SQLdb="] = dbname;
+    writeSQLSettingsLoop(sql_settings);
+}
+
 void reconfigureSQLuser()
 {
     readSQLSettingsLoop();

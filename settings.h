@@ -27,6 +27,7 @@ void reconfigureKey();
 void reconfigureSQLhost();
 void reconfigureSQLport();
 void reconfigureSQLdb();
+void reconfigureSQLdb(std::string dbname);
 void reconfigureSQLuser();
 void reconfigureSQLpass();
 void reconfigureSettings();
