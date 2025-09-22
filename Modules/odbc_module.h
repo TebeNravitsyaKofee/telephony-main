@@ -31,7 +31,6 @@ public:
     bool executeQuery(const std::string& query);
     void printResults();
     void showError(SQLSMALLINT handleType, SQLHANDLE handle, const std::string& message);
-    static void transactionExample(PostgreSQLConnector& connector);
     bool insertCallSummary(const CallSummary& callSummary);
 
 };

@@ -30,9 +30,13 @@ bool PostgreSQLConnector::connectToServer()
     //&henv - pointer to handle variable
     ret = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &henv);
     if (!SQL_SUCCEEDED(ret)) 
-    {
+    {   
+        appendLog("Allocating environment handler error\n");
+        #ifdef DEBUG
         std::cerr << "Allocating environment handler error" << std::endl;
         return false;
+        #endif
+        
     }
     
     //SQLSetEnvAttr - setup env agrs
@@ -41,7 +45,10 @@ bool PostgreSQLConnector::connectToServer()
     ret = SQLSetEnvAttr(henv, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, 0);
     if (!SQL_SUCCEEDED(ret)) 
     {
+        appendLog("Figuring ODBC version error\n");
+        #ifdef DEBUG
         std::cerr << "Figuring ODBC version error" << std::endl;
+        #endif
         SQLFreeHandle(SQL_HANDLE_ENV, henv);
         return false;
     }
@@ -52,7 +59,10 @@ bool PostgreSQLConnector::connectToServer()
     ret = SQLAllocHandle(SQL_HANDLE_DBC, henv, &hdbc);
     if (!SQL_SUCCEEDED(ret)) 
     {
+        appendLog("Allocating connection handler error\n");
+        #ifdef DEBUG
         std::cerr << "Allocating connection handler error" << std::endl;
+        #endif
         SQLFreeHandle(SQL_HANDLE_ENV, henv);
         return false;
     }
@@ -83,7 +93,10 @@ bool PostgreSQLConnector::connectToServer()
     }
 
     isConnected = true;
+    appendLog("Connection to PostgreSQL established succesfully!\n");
+    #ifdef DEBUG
     std::cout << "Connection to PostgreSQL established succesfully!" << std::endl;
+    #endif
     return true;
 }
 
@@ -101,7 +114,10 @@ bool PostgreSQLConnector::connectToDB()
     ret = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &henv);
     if (!SQL_SUCCEEDED(ret)) 
     {
+        appendLog("Allocating environment handler error\n");
+        #ifdef DEBUG
         std::cerr << "Allocating environment handler error" << std::endl;
+        #endif
         return false;
     }
     
@@ -111,7 +127,10 @@ bool PostgreSQLConnector::connectToDB()
     ret = SQLSetEnvAttr(henv, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, 0);
     if (!SQL_SUCCEEDED(ret)) 
     {
+        appendLog("Figuring ODBC version error\n");
+        #ifdef DEBUG
         std::cerr << "Figuring ODBC version error" << std::endl;
+        #endif
         SQLFreeHandle(SQL_HANDLE_ENV, henv);
         return false;
     }
@@ -122,7 +141,10 @@ bool PostgreSQLConnector::connectToDB()
     ret = SQLAllocHandle(SQL_HANDLE_DBC, henv, &hdbc);
     if (!SQL_SUCCEEDED(ret)) 
     {
+        appendLog("Allocating connection handler error\n");
+        #ifdef DEBUG
         std::cerr << "Allocating connection handler error" << std::endl;
+        #endif
         SQLFreeHandle(SQL_HANDLE_ENV, henv);
         return false;
     }
@@ -154,7 +176,10 @@ bool PostgreSQLConnector::connectToDB()
     }
 
     isConnected = true;
+    appendLog("Connection to DB established succesfully\n");
+    #ifdef DEBUG
     std::cout << "Connection to DB established succesfully" << std::endl;
+    #endif
     return true;
 }
 
@@ -162,7 +187,10 @@ bool PostgreSQLConnector::databaseExists(const std::string& dbName)
 {
     if (!isConnected) 
     {
+        appendLog("Cannot connect to server\n");
+        #ifdef DEBUG
         std::cerr << "Cannot connect to server" << std::endl;
+        #endif
         return false;
     }
 
@@ -200,7 +228,10 @@ bool PostgreSQLConnector::createDatabase(const std::string& dbName)
 {
     if (!isConnected) 
     {
+        appendLog("Cannot connect to server\n");
+        #ifdef DEBUG
         std::cerr << "Cannot connect to server" << std::endl;
+        #endif
         return false;
     }
 
@@ -222,7 +253,10 @@ bool PostgreSQLConnector::createDatabase(const std::string& dbName)
         return false;
     }
     SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
+    appendLog("Database '" + dbName + "' created succesfully!\n");
+    #ifdef DEBUG
     std::cout << "Database '" << dbName << "' created succesfully!" << std::endl;
+    #endif
 
     reconfigureSQLdb(dbName);
 
@@ -230,7 +264,10 @@ bool PostgreSQLConnector::createDatabase(const std::string& dbName)
     
     if (!connectToDB())
     {
+        appendLog("Failed to connect to new database\n");
+        #ifdef DEBUG
         std::cerr << "Failed to connect to new database" << std::endl;
+        #endif
         return false;
     }
 
@@ -275,7 +312,10 @@ bool PostgreSQLConnector::createDatabase(const std::string& dbName)
     }
 
     SQLFreeHandle(SQL_HANDLE_STMT, hstmt_table);
+    appendLog("Table for storing calls created successfully!\n");
+    #ifdef DEBUG
     std::cout << "Table for storing calls created successfully!" << std::endl;
+    #endif
 
     return true;
 }
@@ -407,161 +447,150 @@ void PostgreSQLConnector::showError(SQLSMALLINT handleType,
     
     if (SQL_SUCCEEDED(ret)) 
     {
+        appendLog("SQL State: " + std::string((char*)sqlState) + "\n");
+        appendLog("Native Error: " + std::to_string(nativeError) + "\n");
+        appendLog("Error Message: " + std::string((char*)errorMsg) + "\n");
+        #ifdef DEBUG
         std::cerr << "SQL State: " << sqlState << std::endl;
         std::cerr << "Native Error: " << nativeError << std::endl;
         std::cerr << "Error Message: " << errorMsg << std::endl;
-    }
-}
-
-void PostgreSQLConnector::transactionExample(PostgreSQLConnector& connector) 
-{
-    try 
-    {
-        if (!connector.beginTransaction()) 
-        {
-            throw std::runtime_error("Не удалось начать транзакцию");
-        }
-
-        std::string query1 = "INSERT INTO test_table (name, age) VALUES ('Транзакция Тест 1', 40)";
-        std::string query2 = "INSERT INTO test_table (name, age) VALUES ('Транзакция Тест 2', 35)";
-        
-        if (!connector.executeQuery(query1)) 
-        {
-            connector.rollbackTransaction();
-            throw std::runtime_error("Ошибка в первом запросе");
-        }
-
-        if (!connector.executeQuery(query2)) 
-        {
-            connector.rollbackTransaction();
-            throw std::runtime_error("Ошибка во втором запросе");
-        }
-
-        if (!connector.commitTransaction()) 
-        {
-            throw std::runtime_error("Ошибка коммита транзакции");
-        }
-
-        std::cout << "Транзакция выполнена успешно!" << std::endl;
-
-    } 
-    catch (const std::exception& e) 
-    {
-        std::cerr << "Ошибка в транзакции: " << e.what() << std::endl;
+        #endif
     }
 }
 
 bool PostgreSQLConnector::insertCallSummary(const CallSummary& callSummary)
 {
-    if (!isConnected) 
+    try
     {
-        std::cerr << "Not connected to database" << std::endl;
-        return false;
-    }
+        if (!isConnected) 
+        {
+            appendLog("Not connected to database\n");
+            #ifdef DEBUG
+            std::cerr << "Not connected to database" << std::endl;
+            #endif
+            return false;
+        }
 
-    SQLHSTMT hstmt;
-    ret = SQLAllocHandle(SQL_HANDLE_STMT, hdbc, &hstmt);
-    if (!SQL_SUCCEEDED(ret)) 
-    {
-        showError(SQL_HANDLE_DBC, hdbc, "Allocating statement handle error");
-        return false;
-    }
+        SQLHSTMT hstmt;
+        ret = SQLAllocHandle(SQL_HANDLE_STMT, hdbc, &hstmt);
+        if (!SQL_SUCCEEDED(ret)) 
+        {
+            showError(SQL_HANDLE_DBC, hdbc, "Allocating statement handle error");
+            return false;
+        }
 
-    std::string checkTableQuery = R"(
-        SELECT EXISTS (
-            SELECT FROM information_schema.tables 
-            WHERE table_schema = 'public' 
-            AND table_name = 'calls'
-        )
-    )";
+        std::string checkTableQuery = R"(
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_schema = 'public' 
+                AND table_name = 'calls'
+            )
+        )";
 
-    ret = SQLExecDirectA(hstmt, (SQLCHAR*)checkTableQuery.c_str(), SQL_NTS);
-    if (!SQL_SUCCEEDED(ret)) 
-    {
-        showError(SQL_HANDLE_STMT, hstmt, "No such table exists, reconfigure required");
+        ret = SQLExecDirectA(hstmt, (SQLCHAR*)checkTableQuery.c_str(), SQL_NTS);
+        if (!SQL_SUCCEEDED(ret)) 
+        {
+            showError(SQL_HANDLE_STMT, hstmt, "No such table exists, reconfigure required");
+            SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
+            return false;
+        }
+
+        bool tableExists = false;
+        SQLFreeStmt(hstmt, SQL_CLOSE);
+
+        std::string insertQuery = R"(
+            INSERT INTO calls (
+                entry_id, call_direction, from_extension, from_number, 
+                to_number, line_number, create_time, forward_time, 
+                talk_time, end_time, entry_result, disconnect_reason, sip_call_id
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        )";
+
+        ret = SQLPrepareA(hstmt, (SQLCHAR*)insertQuery.c_str(), SQL_NTS);
+        if (!SQL_SUCCEEDED(ret)) 
+        {
+            showError(SQL_HANDLE_STMT, hstmt, "Preparing insert statement error");
+            SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
+            return false;
+        }
+
+        SQLBindParameter(hstmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
+                        255, 0, (SQLCHAR*)callSummary.entry_id.c_str(), 
+                        callSummary.entry_id.length(), NULL);
+        
+        SQLBindParameter(hstmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 
+                        0, 0, (SQLPOINTER)&callSummary.call_direction, 0, NULL);
+        
+        SQLBindParameter(hstmt, 3, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
+                        255, 0, (SQLCHAR*)callSummary.from_extension.c_str(), 
+                        callSummary.from_extension.length(), NULL);
+        
+        SQLBindParameter(hstmt, 4, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
+                        255, 0, (SQLCHAR*)callSummary.from_number.c_str(), 
+                        callSummary.from_number.length(), NULL);
+        
+        SQLBindParameter(hstmt, 5, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
+                        255, 0, (SQLCHAR*)callSummary.to_number.c_str(), 
+                        callSummary.to_number.length(), NULL);
+        
+        SQLBindParameter(hstmt, 6, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
+                        255, 0, (SQLCHAR*)callSummary.line_number.c_str(), 
+                        callSummary.line_number.length(), NULL);
+        
+        SQLBindParameter(hstmt, 7, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
+                        0, 0, (SQLPOINTER)&callSummary.create_time, 0, NULL);
+        
+        SQLBindParameter(hstmt, 8, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
+                        0, 0, (SQLPOINTER)&callSummary.forward_time, 0, NULL);
+        
+        SQLBindParameter(hstmt, 9, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
+                        0, 0, (SQLPOINTER)&callSummary.talk_time, 0, NULL);
+        
+        SQLBindParameter(hstmt, 10, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
+                        0, 0, (SQLPOINTER)&callSummary.end_time, 0, NULL);
+        
+        SQLBindParameter(hstmt, 11, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 
+                        0, 0, (SQLPOINTER)&callSummary.entry_result, 0, NULL);
+        
+        SQLBindParameter(hstmt, 12, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 
+                        0, 0, (SQLPOINTER)&callSummary.disconnect_reason, 0, NULL);
+        
+        SQLBindParameter(hstmt, 13, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
+                        255, 0, (SQLCHAR*)callSummary.sip_call_id.c_str(), 
+                        callSummary.sip_call_id.length(), NULL);
+
+        if (!beginTransaction()) 
+        {
+            throw std::runtime_error("Cannot begin transaction");
+        }
+        
+        ret = SQLExecute(hstmt);
+        if (!SQL_SUCCEEDED(ret)) 
+        {
+            showError(SQL_HANDLE_STMT, hstmt, "Executing insert statement error");
+            SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
+            rollbackTransaction();
+            throw std::runtime_error("Error while executing query");
+            return false;
+        }
+        if (!commitTransaction()) 
+        {
+            throw std::runtime_error("Transaction commit error");
+        }
+
         SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
+        appendLog("Call summary inserted successfully!\n");
+        #ifdef DEBUG
+        std::cout << "Call summary inserted successfully!" << std::endl;
+        #endif
+        return true;
+    }
+    catch (const std::exception& e) 
+    {
+        appendLog("Transaction error: " + std::string(e.what()) + "\n");
+        #ifdef DEBUG
+        std::cerr << "Transaction error: " << e.what() << std::endl;
+        #endif
         return false;
     }
-
-    bool tableExists = false;
-    if (SQL_SUCCEEDED(SQLFetch(hstmt))) 
-    {
-        SQLINTEGER exists;
-        SQLGetData(hstmt, 1, SQL_C_LONG, &exists, 0, NULL);
-        tableExists = (exists == 1);
-    }
-    SQLFreeStmt(hstmt, SQL_CLOSE);
-
-    std::string insertQuery = R"(
-        INSERT INTO calls (
-            entry_id, call_direction, from_extension, from_number, 
-            to_number, line_number, create_time, forward_time, 
-            talk_time, end_time, entry_result, disconnect_reason, sip_call_id
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    )";
-
-    ret = SQLPrepareA(hstmt, (SQLCHAR*)insertQuery.c_str(), SQL_NTS);
-    if (!SQL_SUCCEEDED(ret)) 
-    {
-        showError(SQL_HANDLE_STMT, hstmt, "Preparing insert statement error");
-        SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
-        return false;
-    }
-
-    SQLBindParameter(hstmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
-                    255, 0, (SQLCHAR*)callSummary.entry_id.c_str(), 
-                    callSummary.entry_id.length(), NULL);
-    
-    SQLBindParameter(hstmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 
-                    0, 0, (SQLPOINTER)&callSummary.call_direction, 0, NULL);
-    
-    SQLBindParameter(hstmt, 3, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
-                    255, 0, (SQLCHAR*)callSummary.from_extension.c_str(), 
-                    callSummary.from_extension.length(), NULL);
-    
-    SQLBindParameter(hstmt, 4, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
-                    255, 0, (SQLCHAR*)callSummary.from_number.c_str(), 
-                    callSummary.from_number.length(), NULL);
-    
-    SQLBindParameter(hstmt, 5, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
-                    255, 0, (SQLCHAR*)callSummary.to_number.c_str(), 
-                    callSummary.to_number.length(), NULL);
-    
-    SQLBindParameter(hstmt, 6, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
-                    255, 0, (SQLCHAR*)callSummary.line_number.c_str(), 
-                    callSummary.line_number.length(), NULL);
-    
-    SQLBindParameter(hstmt, 7, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
-                    0, 0, (SQLPOINTER)&callSummary.create_time, 0, NULL);
-    
-    SQLBindParameter(hstmt, 8, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
-                    0, 0, (SQLPOINTER)&callSummary.forward_time, 0, NULL);
-    
-    SQLBindParameter(hstmt, 9, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
-                    0, 0, (SQLPOINTER)&callSummary.talk_time, 0, NULL);
-    
-    SQLBindParameter(hstmt, 10, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
-                    0, 0, (SQLPOINTER)&callSummary.end_time, 0, NULL);
-    
-    SQLBindParameter(hstmt, 11, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 
-                    0, 0, (SQLPOINTER)&callSummary.entry_result, 0, NULL);
-    
-    SQLBindParameter(hstmt, 12, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 
-                    0, 0, (SQLPOINTER)&callSummary.disconnect_reason, 0, NULL);
-    
-    SQLBindParameter(hstmt, 13, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
-                    255, 0, (SQLCHAR*)callSummary.sip_call_id.c_str(), 
-                    callSummary.sip_call_id.length(), NULL);
-
-    ret = SQLExecute(hstmt);
-    if (!SQL_SUCCEEDED(ret)) 
-    {
-        showError(SQL_HANDLE_STMT, hstmt, "Executing insert statement error");
-        SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
-        return false;
-    }
-
-    SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
-    std::cout << "Call summary inserted successfully!" << std::endl;
-    return true;
 }
