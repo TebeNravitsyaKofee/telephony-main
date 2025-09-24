@@ -8,6 +8,9 @@
 #include <functional>
 #include <atomic>
 #include <unistd.h>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 #include "../settings.h"
 #include "../Parsers/call_state_parser.h"
@@ -276,7 +279,7 @@ void displayCalls()
             std::cout << val.call_state << std::endl;
             #endif
             CallStateEvent call = val;
-            buf = val.from_number + " " + val.call_state + " " + val.location + "\n";
+            buf = jsonToTimestamp(val.timestamp) + " " + val.from_extension + " " + val.to_number + " " + val.call_state +  "\n";
             ret.append(buf);
         };
         //this code clears terminal
@@ -285,189 +288,86 @@ void displayCalls()
     });
 }
 
-//struct for transfering data from server process to parent
-struct PipeMessage 
+bool sendJson(int fd, const json& j) 
 {
-    char type; //'U' - update, 'R' - remove, 'C' - clear
-    char call_id[65]; //+1 for null term
-    CallStateEvent event;
-    
-    //consctructor is needed to initialise "clear" pipe message before filling it with data
-    PipeMessage() : type(' ') 
-    {
-        memset(call_id, 0, sizeof(call_id));
-    }
-};
+    std::string msg = j.dump();
+    uint32_t len = msg.size();
 
+    if (write(fd, &len, sizeof(len)) != sizeof(len)) 
+    {
+        return false;
+    }
 
-void processPipeMessage(const PipeMessage& msg) 
-{
-    #ifdef DEBUG
-    if (msg.call_id[0] == '\0') 
+    if (write(fd, msg.data(), len) != (ssize_t)len) 
     {
-        std::cout << "ERROR: Empty call_id in pipe message" << std::endl;
-        return;
+        return false;
     }
-    
-    std::string call_id(msg.call_id);
-    
-    if (msg.event.call_state.empty()) {
-        std::cout << "ERROR: Empty call_state for call_id: " << call_id << std::endl;
-        return;
-    }
-    
-    std::cout << "PROCESSING: call_id = '" << call_id 
-              << "', call_state = '" << msg.event.call_state << "'" << std::endl;
-    #endif
-    
-    switch (msg.type) 
-    {
-        case 'U': //update
-            storeCallState(msg.event);
-            break;
-            
-        case 'R': //remove
-            activeCalls.erase(call_id);
-            break;
-            
-        case 'C': //clear all
-            activeCalls.clear();
-            break;
-            
-        default:
-            std::string error = "Unknown message type: '" + std::to_string(msg.type) + "'";
-            appendLog(error);
-            std::cout << error << std::endl;
-    }
+    return true;
 }
 
-//turns out pipes cant work with strings and optionals, this serialized data for it to go throuhg pipe correctly
-//CallStateEvent has strings and optionals, while pipe can only send chars safely
-//this scruct makes sure data is serialized properly
-struct SerializableCallStateEvent 
+
+bool recvJson(int fd, json& j) 
 {
-    char type; //'U' - update, 'R' - remove
-    char call_id[65];
-    char entry_id[65];
-    char call_state[20];
-    char from_extension[20];
-    char from_number[20];
-    char from_line_number[20];
-    char to_number[20];
-    char sip_call_id[100];
-    int64_t timestamp;
-    int seq;
-    int disconnect_reason; //-1 if empty
-    int dct_type; //-1 if empty
-    
-    //constructor that prepares memory with memset
-    SerializableCallStateEvent() : type(' '), timestamp(0), seq(0), 
-                                  disconnect_reason(-1), dct_type(-1) 
+    uint32_t len{};
+    ssize_t n = read(fd, &len, sizeof(len));
+    if (n == 0) return false;
+    if (n != sizeof(len)) return false;
+
+    std::string buf(len, '\0');
+    size_t total = 0;
+    while (total < len) 
     {
-        memset(call_id, 0, sizeof(call_id));
-        memset(entry_id, 0, sizeof(entry_id));
-        memset(call_state, 0, sizeof(call_state));
-        memset(from_extension, 0, sizeof(from_extension));
-        memset(from_number, 0, sizeof(from_number));
-        memset(from_line_number, 0, sizeof(from_line_number));
-        memset(to_number, 0, sizeof(to_number));
-        memset(sip_call_id, 0, sizeof(sip_call_id));
+        ssize_t r = read(fd, &buf[total], len - total);
+        if (r <= 0) return false;
+        total += r;
     }
-    
-    //converter from
-    static SerializableCallStateEvent fromCallStateEvent(const CallStateEvent& ev, char msg_type = 'U') 
-    {
-        SerializableCallStateEvent serial;
-        serial.type = msg_type;
-        
-        //copying strings with length check
-        copyString(serial.call_id, ev.call_id, sizeof(serial.call_id));
-        copyString(serial.entry_id, ev.entry_id, sizeof(serial.entry_id));
-        copyString(serial.call_state, ev.call_state, sizeof(serial.call_state));
-        copyString(serial.from_extension, ev.from_extension, sizeof(serial.from_extension));
-        copyString(serial.from_number, ev.from_number, sizeof(serial.from_number));
-        copyString(serial.from_line_number, ev.from_line_number, sizeof(serial.from_line_number));
-        copyString(serial.to_number, ev.to_number, sizeof(serial.to_number));
-        copyString(serial.sip_call_id, ev.sip_call_id, sizeof(serial.sip_call_id));
-        
-        serial.timestamp = ev.timestamp;
-        serial.seq = ev.seq;
-        
-        //optionals
-        serial.disconnect_reason = ev.disconnect_reason.value_or(-1);
-        serial.dct_type = ev.dct_type.value_or(-1);
-        
-        return serial;
-    }
-    
-    //converting to
-    CallStateEvent toCallStateEvent() const 
-    {
-        CallStateEvent ev;
-        ev.call_id = call_id;
-        ev.entry_id = entry_id;
-        ev.call_state = call_state;
-        ev.from_extension = from_extension;
-        ev.from_number = from_number;
-        ev.from_line_number = from_line_number;
-        ev.to_number = to_number;
-        ev.sip_call_id = sip_call_id;
-        ev.timestamp = timestamp;
-        ev.seq = seq;
-        
-        if (disconnect_reason != -1) 
-        {
-            ev.disconnect_reason = disconnect_reason;
-        }
-        if (dct_type != -1) 
-        {
-            ev.dct_type = dct_type;
-        }
-        
-        return ev;
-    }
-    
-private:
-    //this always sets last byte to null terminator
-    static void copyString(char* dest, const std::string& src, size_t dest_size) 
-    {
-        strncpy(dest, src.c_str(), dest_size - 1);
-        dest[dest_size - 1] = '\0';
-    }
-};
+
+    j = json::parse(buf);
+    return true;
+}
 
 void handlePipeMessagesThread() 
 {
-    SerializableCallStateEvent serial;
-    
     while (pipe_thread_running) 
     {
-        memset(&serial, 0, sizeof(serial));
-        
-        ssize_t bytes_read = read(pipe_fd[0], &serial, sizeof(serial));
-        
-        if (bytes_read == sizeof(serial)) 
+        json j;
+        if (!recvJson(pipe_fd[0], j)) 
         {
-            #ifdef DEBUG
-            std::cout << "RECEIVED: type = '" << serial.type 
-                      << "', call_id = '" << serial.call_id 
-                      << "', call_state = '" << serial.call_state << "'" << std::endl;
-            #endif
-            
-            if (serial.type == 'U' && serial.call_id[0] != '\0') 
-            {
-                CallStateEvent ev = serial.toCallStateEvent();
-                storeCallState(ev);
-            }
+            continue;
         }
-        else 
+
+        std::string type = j.value("msg_type", "");
+        if (type == "U") 
         {
-            //std::string error = "Incomplete pipe message: " + std::to_string(bytes_read) + "/" + 
-             //        std::to_string(sizeof(serial)) + " bytes";
-            //appendLog(error);
-            //#ifdef DEBUG
-            //std::cout << error << std::endl;
-            //#endif
+            CallStateEvent ev;
+            ev.entry_id = j.value("entry_id", "");
+            ev.call_id = j.value("call_id", "");
+            ev.timestamp = j.value("timestamp", 0);
+            ev.seq = j.value("seq", 0);
+            ev.call_state = j.value("call_state", "");
+            ev.location = j.value("location", "");
+            ev.from_extension = j.value("from_extension", "");
+            ev.from_number = j.value("from_number", "");
+            ev.from_line_number = j.value("from_line_number", "");
+            ev.to_number = j.value("to_number", "");
+            ev.sip_call_id = j.value("sip_call_id", "");
+
+            int dr = j.value("disconnect_reason", -1);
+            if (dr != -1) ev.disconnect_reason = dr;
+
+            int dct = j.value("dct_type", -1);
+            if (dct != -1) ev.dct_type = dct;
+
+            storeCallState(ev);
+        } 
+        else if (type == "R") 
+        {
+            std::string call_id = j.value("call_id", "");
+            activeCalls.erase(call_id);
+        } 
+        else if (type == "C") 
+        {
+            activeCalls.clear();
         }
     }
 }
@@ -475,7 +375,9 @@ void handlePipeMessagesThread()
 void stopPipeThread() 
 {
     pipe_thread_running = false;
-    if (pipe_thread.joinable()) {
+    if (pipe_thread.joinable()) 
+    {
         pipe_thread.join();
     }
 }
+

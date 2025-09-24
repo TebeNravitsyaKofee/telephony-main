@@ -3,6 +3,11 @@
 
 #include <variant>
 #include <optional>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
+std::string jsonToTimestamp(const json& j);
 
 struct CallStateEvent
 {

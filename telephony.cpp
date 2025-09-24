@@ -33,8 +33,6 @@ std::map<std::string,std::string> set
 int main(int argc, char *argv[])
 {
     sslInit();
-    stopServer();
-    startServer();
 
 
 

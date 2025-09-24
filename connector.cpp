@@ -943,17 +943,28 @@ void startHttpServer(int port, int write_pipe_fd)
                                     msg.call_id[sizeof(msg.call_id) - 1] = '\0';
                                     appendLog("CallID is too long to go through pipe!!!");
                                 }
-
-                                SerializableCallStateEvent serial = SerializableCallStateEvent::fromCallStateEvent(ev, 'U');
-                                #ifdef DEBUG
-                                std::cout << "SENDING: call_id = '" << serial.call_id 
-                                        << "', call_state = '" << serial.call_state << "'" << std::endl;
-                                #endif
-
-                                ssize_t bytes_written = write(write_pipe_fd, &serial, sizeof(serial));
-                                if (bytes_written != sizeof(serial))
+                                
+                                json j = 
                                 {
-                                    appendLog("Failed to send pipe message: " + std::string(strerror(errno)));
+                                    {"type", "CallStateEvent"},
+                                    {"msg_type", "U"},
+                                    {"entry_id", ev.entry_id},
+                                    {"call_id", ev.call_id},
+                                    {"timestamp", ev.timestamp},
+                                    {"seq", ev.seq},
+                                    {"call_state", ev.call_state},
+                                    {"location", ev.location},
+                                    {"from_extension", ev.from_extension},
+                                    {"from_number", ev.from_number},
+                                    {"from_line_number", ev.from_line_number},
+                                    {"to_number", ev.to_number},
+                                    {"sip_call_id", ev.sip_call_id},
+                                    {"disconnect_reason", ev.disconnect_reason.value_or(-1)},
+                                    {"dct_type", ev.dct_type.value_or(-1)}
+                                };
+
+                                if (!sendJson(write_pipe_fd, j)) {
+                                    appendLog("Failed to send JSON pipe message");
                                 }
                             }
                             else if (std::holds_alternative<RecordingEvent>(call_state)) 
