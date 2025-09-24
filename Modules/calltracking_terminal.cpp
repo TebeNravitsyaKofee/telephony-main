@@ -123,8 +123,10 @@ ObservableMap<std::string, CallStateEvent> activeCalls;
 //function that parses calls (only CallStateEvent) to map and controls call state flow
 void storeCallState(const CallStateEvent& ev) 
 {
-    std::cout << "DEBUG: call_state = '" << ev.call_state << "'" << std::endl;
-    std::cout << "DEBUG: call_id = '" << ev.call_id << "'" << std::endl;
+    #ifdef DEBUG
+    std::cout << "call_state = '" << ev.call_state << "'" << std::endl;
+    std::cout << "call_id = '" << ev.call_id << "'" << std::endl;
+    #endif
 
     if (ev.call_state == "Appeared") 
     {
@@ -228,20 +230,20 @@ void displayCalls()
         } 
         else 
         {
-            std::string error = "Не удалось запустить " + term + ". Переходим к следующему.\n";
+            std::string error = "Cannot open " + term + "\n";
             appendLog(error);
             #ifdef DEBUG
-                std::cerr << "Не удалось запустить " << term << ". Переходим к следующему." << std::endl;
+                std::cerr << "Cannot open " << term << std::endl;
             #endif
         }
     }
 
     if (!launched) 
     {
-        std::string error = "Не удалось запустить ни один терминал.\n";
+        std::string error = "Cannot open any of the terminals.\n";
         appendLog(error);
         #ifdef DEBUG
-            std::cerr << "Не удалось запустить ни один терминал." << std::endl;
+            std::cerr << "Cannot open any of the terminals." << std::endl;
         #endif
         return;
     }
@@ -251,11 +253,11 @@ void displayCalls()
     static std::ofstream out(fifo);
     if (!out.is_open()) 
     {
-        std::string error = "Не удалось открыть FIFO на запись.\n";
+        std::string error = "Cannot open fifo for writing.\n";
         appendLog(error);
         #ifdef DEBUG
         {
-            std::cerr << "Не удалось открыть FIFO на запись" << std::endl;   
+            std::cerr << "Cannot open fifo for writing" << std::endl;   
         }
         #endif
         return;
@@ -264,45 +266,23 @@ void displayCalls()
     //subbing to map changes, lambda refreshes the pipe
     activeCalls.subscribe([&]() 
     {
+        #ifdef DEBUG
         std::cout << "event" << std::endl;
+        #endif
         std::string ret;
         for(auto const& [key,val] : activeCalls)
         {
+            #ifdef DEBUG
             std::cout << val.call_state << std::endl;
+            #endif
             CallStateEvent call = val;
             buf = val.from_number + " " + val.call_state + " " + val.location + "\n";
             ret.append(buf);
-            
-
         };
         //this code clears terminal
         out << "\033[2J\033[H";
         out << ret << std::flush;
     });
-    
-    /*
-        ev.entry_id = j.value("entry_id", "");
-        ev.call_id = j.value("call_id", "");
-        ev.timestamp = j.value("timestamp", 0);
-        ev.seq = j.value("seq", 0);
-        ev.call_state = j.value("call_state", "");
-        ev.location = j.value("location", "");
-        if (j.contains("from")) 
-        {
-            ev.from_extension = j["from"].value("extension", "");
-            ev.from_number = j["from"].value("number", "");
-            ev.from_line_number = j["from"].value("line_number", "");
-        }
-        if (j.contains("to")) 
-        {
-            ev.to_number = j["to"].value("number", "");
-        }
-        if (j.contains("disconnect_reason"))
-            ev.disconnect_reason = j["disconnect_reason"].get<int>();
-        if (j.contains("dct"))
-            ev.dct_type = j["dct"].value("type", 0);
-        ev.sip_call_id = j.value("sip_call_id", "");
-        return ev; */
 }
 
 //struct for transfering data from server process to parent
@@ -355,7 +335,9 @@ void processPipeMessage(const PipeMessage& msg)
             break;
             
         default:
-            std::cout << "Unknown message type: '" << msg.type << "'" << std::endl;
+            std::string error = "Unknown message type: '" + std::to_string(msg.type) + "'";
+            appendLog(error);
+            std::cout << error << std::endl;
     }
 }
 
@@ -466,9 +448,11 @@ void handlePipeMessagesThread()
         
         if (bytes_read == sizeof(serial)) 
         {
+            #ifdef DEBUG
             std::cout << "RECEIVED: type = '" << serial.type 
                       << "', call_id = '" << serial.call_id 
                       << "', call_state = '" << serial.call_state << "'" << std::endl;
+            #endif
             
             if (serial.type == 'U' && serial.call_id[0] != '\0') 
             {
@@ -478,8 +462,12 @@ void handlePipeMessagesThread()
         }
         else 
         {
-            appendLog("Incomplete pipe message: " + std::to_string(bytes_read) + "/" + 
-                     std::to_string(sizeof(serial)) + " bytes");
+            //std::string error = "Incomplete pipe message: " + std::to_string(bytes_read) + "/" + 
+             //        std::to_string(sizeof(serial)) + " bytes";
+            //appendLog(error);
+            //#ifdef DEBUG
+            //std::cout << error << std::endl;
+            //#endif
         }
     }
 }

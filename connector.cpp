@@ -955,25 +955,6 @@ void startHttpServer(int port, int write_pipe_fd)
                                 {
                                     appendLog("Failed to send pipe message: " + std::string(strerror(errno)));
                                 }
-
-                                //debugging active calls
-                                #ifdef DEBUG
-                                {
-                                    if (activeCalls.empty()) 
-                                    {
-                                        std::cout << "Нет активных звонков\n";
-                                    } 
-                                    else 
-                                    {
-                                        for (auto& [id, call] : activeCalls) 
-                                        {
-                                            std::cout << "Активный звонок: " << id 
-                                                    << " состояние: " << call.call_state << "\n";
-                                        }
-                                    }
-                                
-                                }
-                                #endif
                             }
                             else if (std::holds_alternative<RecordingEvent>(call_state)) 
                             {

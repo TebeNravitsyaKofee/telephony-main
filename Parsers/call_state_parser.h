@@ -47,10 +47,10 @@ struct CallSummary
     std::string to_number;
     std::string line_number;
 
-    int64_t create_time;
-    int64_t forward_time;
-    int64_t talk_time;
-    int64_t end_time;
+    std::string create_time;
+    std::string forward_time;
+    std::string talk_time;
+    std::string end_time;
 
     int entry_result;
     int disconnect_reason;

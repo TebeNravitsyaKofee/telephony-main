@@ -290,10 +290,10 @@ bool PostgreSQLConnector::createDatabase(const std::string& dbName)
             to_number VARCHAR(255),
             line_number VARCHAR(255),
             
-            create_time BIGINT NOT NULL,
-            forward_time BIGINT,
-            talk_time BIGINT,
-            end_time BIGINT,
+            create_time TIMESTAMP WITH TIME ZONE NOT NULL,
+            forward_time TIMESTAMP WITH TIME ZONE,
+            talk_time TIMESTAMP WITH TIME ZONE,
+            end_time TIMESTAMP WITH TIME ZONE,
             
             entry_result INTEGER,
             disconnect_reason INTEGER,
@@ -536,18 +536,28 @@ bool PostgreSQLConnector::insertCallSummary(const CallSummary& callSummary)
         SQLBindParameter(hstmt, 6, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
                         255, 0, (SQLCHAR*)callSummary.line_number.c_str(), 
                         callSummary.line_number.length(), NULL);
+
         
-        SQLBindParameter(hstmt, 7, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
-                        0, 0, (SQLPOINTER)&callSummary.create_time, 0, NULL);
-        
-        SQLBindParameter(hstmt, 8, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
-                        0, 0, (SQLPOINTER)&callSummary.forward_time, 0, NULL);
-        
-        SQLBindParameter(hstmt, 9, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
-                        0, 0, (SQLPOINTER)&callSummary.talk_time, 0, NULL);
-        
-        SQLBindParameter(hstmt, 10, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, 
-                        0, 0, (SQLPOINTER)&callSummary.end_time, 0, NULL);
+        SQLBindParameter(hstmt, 7, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
+                        callSummary.create_time.size(), 0,
+                        (SQLPOINTER)callSummary.create_time.c_str(),
+                        callSummary.create_time.size(), NULL);
+
+        SQLBindParameter(hstmt, 8, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
+                        callSummary.forward_time.size(), 0,
+                        (SQLPOINTER)callSummary.forward_time.c_str(),
+                        callSummary.forward_time.size(), NULL);
+
+        SQLBindParameter(hstmt, 9, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
+                        callSummary.talk_time.size(), 0,
+                        (SQLPOINTER)callSummary.talk_time.c_str(),
+                        callSummary.talk_time.size(), NULL);
+
+        SQLBindParameter(hstmt, 10, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR, 
+                        callSummary.end_time.size(), 0,
+                        (SQLPOINTER)callSummary.end_time.c_str(),
+                        callSummary.end_time.size(), NULL);
+                        
         
         SQLBindParameter(hstmt, 11, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 
                         0, 0, (SQLPOINTER)&callSummary.entry_result, 0, NULL);

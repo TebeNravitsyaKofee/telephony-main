@@ -2,9 +2,33 @@
 #include <string.h>
 #include <variant>
 #include <optional>
+#include <iostream>
 
 
 using json = nlohmann::json;
+
+std::string jsonToTimestamp(const json& j) 
+{
+    if (j.is_null()) return "";
+
+    long long raw{};
+    if (j.is_number()) 
+    {
+        raw = j.get<long long>();
+    } else 
+    {
+        return "";
+    }
+    time_t ts = static_cast<time_t>(raw);
+
+    std::tm tm{};
+    gmtime_r(&ts, &tm);
+
+    std::ostringstream oss;
+    oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S+00");
+    return oss.str();
+}
+
 
 
 //data structures that store /call events
@@ -60,10 +84,10 @@ struct CallSummary
     std::string to_number;
     std::string line_number;
 
-    int64_t create_time;
-    int64_t forward_time;
-    int64_t talk_time;
-    int64_t end_time;
+    std::string create_time;
+    std::string forward_time;
+    std::string talk_time;
+    std::string end_time;
 
     int entry_result;
     int disconnect_reason;
@@ -137,10 +161,10 @@ CallEvent parseEvent(const std::string& jsonStr)
             ev.to_number = j["to"].value("number", "");
         }
         ev.line_number = j.value("line_number", "");
-        ev.create_time = j.value("create_time", 0);
-        ev.forward_time = j.value("forward_time", 0);
-        ev.talk_time = j.value("talk_time", 0);
-        ev.end_time = j.value("end_time", 0);
+        ev.create_time = jsonToTimestamp(j["create_time"]);
+        ev.forward_time = jsonToTimestamp(j["forward_time"]);
+        ev.talk_time = jsonToTimestamp(j["talk_time"]);
+        ev.end_time = jsonToTimestamp(j["end_time"]);
         ev.entry_result = j.value("entry_result", 0);
         ev.disconnect_reason = j.value("disconnect_reason", 0);
         ev.sip_call_id = j.value("sip_call_id", "");
