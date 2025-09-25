@@ -24,6 +24,8 @@
 #include <cstring>
 #include <functional>
 #include <atomic>
+#include <signal.h>
+#include <sys/resource.h>
 
 #include "settings.h"
 #include "Parsers/call_state_parser.h"
@@ -1010,7 +1012,55 @@ void startHttpServer(int port, int write_pipe_fd)
     
 }
 
-int startServer()
+//proper demonization
+int daemonize() 
+{
+    pid_t pid = fork();
+    if (pid < 0) 
+    {
+        return -1;
+    }
+    if (pid > 0) 
+    {
+        exit(0);
+    }
+
+    if (setsid() < 0) 
+    {
+        return -1;
+    }
+
+    pid = fork();
+    if (pid < 0) 
+    {
+        return -1;
+    }
+    if (pid > 0) 
+    {
+        exit(0);
+    }
+
+    //closing standart file descriptors
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
+
+    int fd = open("/dev/null", O_RDWR);
+    if (fd != -1) 
+    {
+        dup2(fd, STDIN_FILENO);
+        dup2(fd, STDOUT_FILENO);
+        dup2(fd, STDERR_FILENO);
+        if (fd > STDERR_FILENO) close(fd);
+    }
+
+    umask(0);
+    chdir("/");
+
+    return 0;
+}
+
+int startServer() 
 {
     if (isServerRunning()) 
     {
@@ -1018,7 +1068,7 @@ int startServer()
         return 0;
     }
 
-    //pipe for transfering call data from httpServer, has to be initialized before fork
+    //pipe has to be before demonization
     if (pipe(pipe_fd) == -1) 
     {
         perror("pipe");
@@ -1030,7 +1080,6 @@ int startServer()
 
     if (pid > 0) 
     {
-
         close(pipe_fd[1]); 
         std::cout << "Server launched (pid=" << pid << ")\n";
         
@@ -1040,26 +1089,29 @@ int startServer()
         return 0;
     }
 
-    
+    if (daemonize() < 0) 
+    {
+        exit(1);
+    }
 
     close(pipe_fd[0]);
-
-    setsid(); //disconnecting from terminal
     savePid();
 
     server_running = true;
-    startHttpServer(8058,pipe_fd[1]);
+    startHttpServer(8058, pipe_fd[1]);
+    
+    removePid();
     return 1;
 }
 
-int stopServer()
+int stopServer() 
 {
     std::cout << "Shutting down the server..." << std::endl; 
 
     stopPipeThread();
 
     std::ifstream pidFile(_PID_FILE);
-    if (!pidFile.is_open()) 
+    if (!pidFile.is_open())
     {
         std::cerr << "PID file not found. Server may not be running.\n";
         return 1;
@@ -1069,16 +1121,11 @@ int stopServer()
     pidFile >> pid;
     pidFile.close();
 
-    if (kill(pid, SIGTERM) == 0) 
-    {
-        std::cout << "Server stopped (pid=" << pid << ")\n";
-        removePid();
-        return 0;
-    } 
-    else 
-    {
-        perror("kill");
-        return 1;
-    }
+    
+    kill(pid, SIGKILL);
+    sleep(1);
+    removePid();
+    return 0;
+
 }
 
